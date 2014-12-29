@@ -22,7 +22,11 @@ var webPage      = require('webpage');
 var chrome_command =
     ( system.os.name == 'windows' )
     ? 'chrome.exe'
-    : 'google-chrome'
+    : (
+        (system.os.name == 'mac' )
+        ? '/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome'
+        :'google-chrome'
+    )
 ;
 
 // script-wide debugging:
@@ -559,13 +563,13 @@ function build_firefox() {
             console.log( 'Firefox Addon SDK is up-to-date.' );
             build_xpi();
         } else {
-            console.log( 'Downloading Firefox Addon SDK...' );
+            console.log( 'Downloading Firefox Addon SDK... from '+response.redirectURL );
             // PhantomJS refuses to download any file as large as the SDK (I think it's either about the encoding or the file size)
             // do it with `curl` instead:
-            console.log( 'Unpacking Firefox Addon SDK...', status );
-            childProcess.execFile( 'curl', ['--silent',response.redirectURL,'-o','temporary_file.tar.gz'], null, function(err, stdout, stderr) {
+            childProcess.execFile( 'curl', [response.redirectURL,'-o','temporary_file.tar.gz'], null, function(err, stdout, stderr) {
                 if ( stderr != '' ) { console.log(stderr.replace(/\n$/,'')); return program_counter.end(1); }
                 fs.makeDirectory('firefox-addon-sdk');
+                console.log( 'Unpacking Firefox Addon SDK...', status );
                 childProcess.execFile( 'tar', ["zxf",'temporary_file.tar.gz','-C','firefox-addon-sdk','--strip-components=1'], null, function(err,stdout,stderr) {
                     if ( stderr != '' ) { console.log(stderr.replace(/\n$/,'')); return program_counter.end(1); }
                     fs.remove('temporary_file.tar.gz');
@@ -1177,6 +1181,7 @@ function usage() {
     phantom.exit(1);
 }
 
+console.log('running on '+system.os.name+"\n");
 program_counter.begin();
 switch ( args[1] || '' ) {
 

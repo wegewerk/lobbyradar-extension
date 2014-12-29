@@ -7,13 +7,13 @@
     "id":            "abcdef01-2345-6789-9876-543210fedcba",
 
     // General config parameters
-    "name":        "babelext_your_name_here",
-    "title":       "BabelExt",
-    "description": "An extension created with BabelExt - www.babelext.com",
+    "name":        "lobbyradar",
+    "title":       "Lobbyradar",
+    "description": "Discover Lobby Networks",
     "license":     "GPL",
-    "author":      "honestbleeps",
-    "version":     "0.95",
-    "website":     "http://babelext.com",
+    "author":      "mdt",
+    "version":     "0.1",
+    "website":     "http://lobbyradar.com",
     "icons": {
         /*
         16:     "icon-16.png",
@@ -25,8 +25,7 @@
     },
 
     "long_description":
-        "This extension uses the BabelExt cross-browser development framework.\n" +
-        "Go to http://www.babelext.com for more information.",
+        "This extension shows additional Information to Person and Corporation names.",
 
     // userscript config parameters:
 
@@ -37,10 +36,10 @@
      * * 'middle' guarantees the DOM exists, but might run while the page is still loading
      * * 'late' guarantees the scripts are run aft the page finishes loading
      */
-    "contentScriptWhen": "middle",
+    "contentScriptWhen": "late",
 
     "contentScriptFiles": [ "extension.js" ],
-    "match_domain":       "babelext.com", // or *.babelext.com to include subdomains
+    "match_domain":       "*", // catchall (hopefully)
     // whether to match https://<match_domain>:
     "match_secure_domain": true,
 
