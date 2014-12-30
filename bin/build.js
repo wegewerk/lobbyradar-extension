@@ -520,8 +520,8 @@ function build_firefox() {
     fs.write(
         'Firefox/lib/settings.js',
         ( settings.match_secure_domain
-          ? 'exports.include = ["http://' + settings.match_domain + '/*","https://' + settings.match_domain + '/*"];\n'
-          :  'exports.include = ["http://' + settings.match_domain + '/*"];\n'
+          ? 'exports.include = ["http://' + settings.match_domain + '","https://' + settings.match_domain + '"];\n'
+          :  'exports.include = ["http://' + settings.match_domain + '"];\n'
         ) +
         'exports.contentScriptWhen = "' + when_string[settings.contentScriptWhen] + '";\n' +
         'exports.contentScriptFile = ' + JSON.stringify(settings.contentScriptFiles) + ";\n"
@@ -563,10 +563,10 @@ function build_firefox() {
             console.log( 'Firefox Addon SDK is up-to-date.' );
             build_xpi();
         } else {
-            console.log( 'Downloading Firefox Addon SDK... from '+response.redirectURL );
+            console.log( 'Downloading Firefox Addon SDK from '+response.redirectURL );
             // PhantomJS refuses to download any file as large as the SDK (I think it's either about the encoding or the file size)
             // do it with `curl` instead:
-            childProcess.execFile( 'curl', [response.redirectURL,'-o','temporary_file.tar.gz'], null, function(err, stdout, stderr) {
+            childProcess.execFile( 'curl', ['--silent',response.redirectURL,'-o','temporary_file.tar.gz'], null, function(err, stdout, stderr) {
                 if ( stderr != '' ) { console.log(stderr.replace(/\n$/,'')); return program_counter.end(1); }
                 fs.makeDirectory('firefox-addon-sdk');
                 console.log( 'Unpacking Firefox Addon SDK...', status );
@@ -633,6 +633,7 @@ function build_chrome() {
     };
 
     var match_url = ( settings.match_secure_domain ? "*://" : "http://" ) + settings.match_domain + '/*';
+    var background_scripts = ["background.js"];
 
     var manifest = {
         "name": settings.title,
@@ -641,7 +642,7 @@ function build_chrome() {
 	"manifest_version": 2,
         "description": settings.description,
 	"background": {
-	    "scripts": ["background.js"]
+	    "scripts": background_scripts.concat(settings.backgroundScriptFiles)
 	},
 	"content_scripts": [
 	    {

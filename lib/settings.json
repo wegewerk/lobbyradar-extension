@@ -4,7 +4,7 @@
  */
 {
     // In Linux, you can make a GUID by running `uuidgen` on the command line:
-    "id":            "abcdef01-2345-6789-9876-543210fedcba",
+    "id":            "AE718B05-21FF-4CF7-9739-6CBF7BAE94D3",
 
     // General config parameters
     "name":        "lobbyradar",
@@ -13,7 +13,7 @@
     "license":     "GPL",
     "author":      "mdt",
     "version":     "0.1",
-    "website":     "http://lobbyradar.com",
+    "website":     "http://lobbyradar.de",
     "icons": {
         /*
         16:     "icon-16.png",
@@ -39,6 +39,8 @@
     "contentScriptWhen": "late",
 
     "contentScriptFiles": [ "extension.js" ],
+    "backgroundScriptFiles": [ "dataUpdater.js" ],
+
     "match_domain":       "*", // catchall (hopefully)
     // whether to match https://<match_domain>:
     "match_secure_domain": true,
