@@ -639,16 +639,16 @@ function build_chrome() {
         "name": settings.title,
         "author": settings.author,
         "version": settings.version,
-	"manifest_version": 2,
+	    "manifest_version": 2,
         "description": settings.description,
-	"background": {
-	    "scripts": background_scripts.concat(settings.backgroundScriptFiles)
-	},
-	"content_scripts": [
+	    "background": {
+	        "scripts": background_scripts.concat(settings.backgroundScriptFiles)
+	    },
+	    "content_scripts": [
 	    {
-		"matches": [ match_url ],
-		"js": settings.contentScriptFiles,
-		"run_at": when_string[settings.contentScriptWhen]
+		    "matches": [ match_url ],
+		    "js": settings.contentScriptFiles,
+		    "run_at": when_string[settings.contentScriptWhen]
 	    }
 	],
 	"icons": settings.icons,
@@ -661,7 +661,7 @@ function build_chrome() {
 	]
     };
 
-    var extra_files = [];
+    var extra_files = [].concat( settings.backgroundScriptFiles.map(function(file) { return 'Chrome/'+file }) );
 
     if ( settings.preferences ) {
         manifest.options_page = "options.html";
@@ -738,7 +738,8 @@ function build_chrome() {
     fs.write( 'Chrome/manifest.json', JSON.stringify(manifest, null, '\t' ) + "\n", 'w' );
 
     // Copy scripts and icons into place:
-    settings.contentScriptFiles.forEach(function(file) { hardLink( 'lib/'+file               , 'Chrome/' + file                ) });
+    settings.contentScriptFiles.forEach(function(file)    { hardLink( 'lib/'+file               , 'Chrome/' + file             ) });
+    settings.backgroundScriptFiles.forEach(function(file) { hardLink( 'lib/'+file               , 'Chrome/' + file             ) });
     Object.keys(settings.icons).forEach(function(key ) { hardLink( 'lib/'+settings.icons[key], 'Chrome/' + settings.icons[key] ) });
 
     program_counter.begin();
@@ -768,6 +769,7 @@ function build_chrome() {
                 ['build/chrome-store-upload.zip','Chrome/background.js','Chrome/manifest.json']
                     .concat( extra_files )
                     .concat( settings.contentScriptFiles.map(function(file) { return 'Chrome/'+file }) )
+                    .concat( settings.backgroundScriptFiles.map(function(file) { return 'Chrome/'+file }) )
                     .concat( Object.keys(settings.icons).map(function(key ) { return 'Chrome/' + settings.icons[key] }) )
                 ,
                 null,
@@ -1188,8 +1190,8 @@ switch ( args[1] || '' ) {
 
 case 'build':
     if ( args.length != 2 ) usage();
-    build_safari();
-    build_firefox();
+//    build_safari();
+//    build_firefox();
     build_chrome ();
     break;
 

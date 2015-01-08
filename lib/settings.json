@@ -38,8 +38,8 @@
      */
     "contentScriptWhen": "late",
 
-    "contentScriptFiles": [ "extension.js" ],
-    "backgroundScriptFiles": [ "dataUpdater.js" ],
+    "contentScriptFiles": [ "lobbyradar.js" ],
+    "backgroundScriptFiles": [ "dataUpdater.js","names.json" ],
 
     "match_domain":       "*", // catchall (hopefully)
     // whether to match https://<match_domain>:
