@@ -38,8 +38,9 @@
      */
     "contentScriptWhen": "late",
 
-    "contentScriptFiles": [ "lobbyradar.js" ],
-    "backgroundScriptFiles": [ "dataUpdater.js","names.json" ],
+    "contentScriptFiles": [ "jquery.js","jquery_highlight.js","jquery.tooltipster.min.js","lobbyradar.js" ],
+    "contentCSSFiles": [ "style.css","tooltipster.css" ],
+    "backgroundScriptFiles": [ "underscore.js","dataUpdater.js","names.json" ],
 
     "match_domain":       "*", // catchall (hopefully)
     // whether to match https://<match_domain>:

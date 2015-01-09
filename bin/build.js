@@ -52,7 +52,8 @@ function symbolicLink( source, target ) {
                 if ( stderr != '' ) console.log(stderr.replace(/\n$/,''));
             });
         } else {
-            childProcess.execFile('ln', ["-s",source,target], null, function(err, stdout, stderr) {
+            console.log('copy '+source+'->'+target);
+            childProcess.execFile('cp ', ["-r",source,target], null, function(err, stdout, stderr) {
                 if ( stderr != '' ) console.log(stderr.replace(/\n$/,''));
             });
         }
@@ -69,7 +70,8 @@ function hardLink( source, target ) {
             if ( stderr != '' ) console.log(stderr.replace(/\n$/,''));
         });
     } else {
-        childProcess.execFile('ln', [source,target], null, function(err, stdout, stderr) {
+        console.log('copy '+source+'->'+target);
+        childProcess.execFile('cp', ["-r",source,target], null, function(err, stdout, stderr) {
             if ( stderr != '' ) console.log(stderr.replace(/\n$/,''));
         });
     }
@@ -647,7 +649,8 @@ function build_chrome() {
 	    "content_scripts": [
 	    {
 		    "matches": [ match_url ],
-		    "js": settings.contentScriptFiles,
+            "js": settings.contentScriptFiles,
+            "css": settings.contentCSSFiles,
 		    "run_at": when_string[settings.contentScriptWhen]
 	    }
 	],
@@ -739,6 +742,7 @@ function build_chrome() {
 
     // Copy scripts and icons into place:
     settings.contentScriptFiles.forEach(function(file)    { hardLink( 'lib/'+file               , 'Chrome/' + file             ) });
+    settings.contentCSSFiles.forEach(function(file)    { hardLink( 'lib/'+file               , 'Chrome/' + file             ) });
     settings.backgroundScriptFiles.forEach(function(file) { hardLink( 'lib/'+file               , 'Chrome/' + file             ) });
     Object.keys(settings.icons).forEach(function(key ) { hardLink( 'lib/'+settings.icons[key], 'Chrome/' + settings.icons[key] ) });
 

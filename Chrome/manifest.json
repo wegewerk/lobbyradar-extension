@@ -8,6 +8,7 @@
 		"scripts": [
 			"preferences.js",
 			"background.js",
+			"underscore.js",
 			"dataUpdater.js",
 			"names.json"
 		]
@@ -19,7 +20,14 @@
 			],
 			"js": [
 				"BabelExt.js",
+				"jquery.js",
+				"jquery_highlight.js",
+				"jquery.tooltipster.min.js",
 				"lobbyradar.js"
+			],
+			"css": [
+				"style.css",
+				"tooltipster.css"
 			],
 			"run_at": "document_idle"
 		}
