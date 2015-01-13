@@ -3,11 +3,9 @@
 /firefox-addon-sdk
 /lib/local_settings.json
 /Chrome.pem
-/build
 *~
-/Chrome/*.png
-/Chrome/options.html
 /Firefox/*.png
 /Firefox/data/*.js
 /Safari.safariextension/Settings.plist
 .DS_Store
+._*

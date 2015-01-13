@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head><title>Lobbyradar Options</title></head>
+<link rel="stylesheet" type="text/css" href="chrome-bootstrap.css" />
+<body class="chrome-bootstrap">
+<div class="overlay">
+<form class="page">
+<h1>Lobbyradar</h1>
+<div class="content-area">
+<div class="checkbox"><span class="controlled-setting-with-label"><input class="pref" id="myBool"  type="checkbox"><label for="myBool">myBool preference title</label></span></div>
+<div class="checkbox"><span class="controlled-setting-with-label"><input class="pref" id="myBoolint" data-on="1" data-off="0" checked type="checkbox"><label for="myBoolint">myBoolint preference title</label></span></div>
+<label title="myInteger short description for the preference">myInteger preference title: <input id="myInteger" class="pref" type="number" value="2"></label><br>
+<label title="myString short description for the preference">myString preference title: <input id="myString" class="pref" type="text" value="this is the default string value"></label><br>
+<div class="media-device-control"><span>myMenulist preference title:</span><select id="myMenulist" class="pref weakrtl"> <option value="0" selected>first label</option>
+ <option value="1">second label</option>
+ <option value="2">third label</option>
+</select></div><section><h3>myRadioTitle</h3><div class="radio"><span class="controlled-setting-with-label"><input id="myRadio-0" class="pref" type="radio" name="myRadio" value="a" checked><label for="myRadio-0">first label (recommended)</label></span></div><div class="radio"><span class="controlled-setting-with-label"><input id="myRadio-1" class="pref" type="radio" name="myRadio" value="b"><label for="myRadio-1">second label</label></span></div><div class="radio"><span class="controlled-setting-with-label"><input id="myRadio-2" class="pref" type="radio" name="myRadio" value="c"><label for="myRadio-2">third label</label></span></div></section></div>
+<div class="action-area"></div>
+</form>
+</div>
+<script src="options.js"></script>
+</body>
+</html>
