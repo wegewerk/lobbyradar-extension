@@ -15,13 +15,8 @@
     "version":     "0.1",
     "website":     "http://lobbyradar.de",
     "icons": {
-        /*
-        16:     "icon-16.png",
-        32:     "icon-32.png",
-        48:     "icon-48.png",
-        64:     "icon-64.png",
-        128:    "icon-128.png"
-    */
+            38: "lobbyradar-38.png",
+            128: "lobbyradar-128.png"
     },
 
     "long_description":
@@ -38,31 +33,20 @@
      */
     "contentScriptWhen": "late",
 
-    "contentScriptFiles": [ "jquery.js","jquery_highlight.js","jquery.tooltipster.min.js","lobbyradar.js" ],
+    "contentScriptFiles": [ "jquery.js","jquery_highlight.js","jquery.tooltipster.min.js","module_page.js" ],
     "contentCSSFiles": [ "style.css","tooltipster.css" ],
-    "backgroundScriptFiles": [ "underscore.js","dataUpdater.js","names.json" ],
+    "backgroundScriptFiles": [ "underscore.js","module_search.js","jquery.js","popup.js"],
 
     "match_domain":       "*", // catchall (hopefully)
     // whether to match https://<match_domain>:
     "match_secure_domain": true,
 
-    "environment_specific": {
-        /*
-         * If you set the "ENVIRONMENT" environment variable,
-         * variables from the relevant block will be used:
-         */
-        "development": {
-            "contentScriptFiles": [],
-        },
-
-        "test": {
-            "contentScriptFiles": [ "test-helper.js" ],
-        },
-
-        "production": {
-            "match_domain":       "babelext.com",
-        }
-
+    // Popup if supported by target platform
+    //
+    // reference for this feature is the functionality on the Chrome Platform
+    "popup": {
+        "page": "popup.html",
+        "scripts": ["popup.js"]
     },
 
     "preferences": [

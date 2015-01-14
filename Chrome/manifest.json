@@ -6,11 +6,11 @@
 	"description": "Discover Lobby Networks",
 	"background": {
 		"scripts": [
-			"preferences.js",
 			"background.js",
 			"underscore.js",
-			"dataUpdater.js",
-			"names.json"
+			"module_search.js",
+			"jquery.js",
+			"popup.js"
 		]
 	},
 	"content_scripts": [
@@ -23,7 +23,7 @@
 				"jquery.js",
 				"jquery_highlight.js",
 				"jquery.tooltipster.min.js",
-				"lobbyradar.js"
+				"module_page.js"
 			],
 			"css": [
 				"style.css",
@@ -32,7 +32,6 @@
 			"run_at": "document_idle"
 		}
 	],
-	"icons": {},
 	"permissions": [
 		"*://*/*",
 		"contextMenus",
@@ -41,5 +40,16 @@
 		"notifications",
 		"storage"
 	],
+	"icons": {
+		"38": "lobbyradar-38.png",
+		"128": "lobbyradar-128.png"
+	},
+	"browser_action": {
+		"default_icon": {
+			"38": "lobbyradar-38.png",
+			"128": "lobbyradar-128.png"
+		},
+		"default_popup": "popup.html"
+	},
 	"options_page": "options.html"
 }

@@ -46,17 +46,16 @@ phantom.onError = function(msg, trace) {
  * Create a symbolic link from source to target
  */
 function symbolicLink( source, target ) {
-    if ( ! fs.isLink(target) ) {
-        if ( system.os.name == 'windows' ) {
-            childProcess.execFile('mklink', [target,source], function(err, stdout, stderr) {
-                if ( stderr != '' ) console.log(stderr.replace(/\n$/,''));
-            });
-        } else {
-            console.log('copy '+source+'->'+target);
-            childProcess.execFile('cp ', ["-r",source,target], null, function(err, stdout, stderr) {
-                if ( stderr != '' ) console.log(stderr.replace(/\n$/,''));
-            });
-        }
+    if ( fs.exists(target) ) fs.remove(target);
+    if ( system.os.name == 'windows' ) {
+        childProcess.execFile('mklink', [target,source], function(err, stdout, stderr) {
+            if ( stderr != '' ) console.log(stderr.replace(/\n$/,''));
+        });
+    } else {
+        console.log('copy '+source+'->'+target);
+        childProcess.execFile('cp ', ["-r",source,target], null, function(err, stdout, stderr) {
+            if ( stderr != '' ) console.log(stderr.replace(/\n$/,''));
+        });
     }
 }
 
@@ -597,22 +596,22 @@ function build_firefox() {
 
     // Move the .xpi into place, fix its install.rdf, and update firefox-unpacked:
     function finalise_xpi(err, stdout, stderr) {
+        console.log( 'finalise_xpi...');
         if ( stderr != '' ) { console.log(stderr.replace(/\n$/,'')); return program_counter.end(1); }
-        fs.makeDirectory('build');
         var xpi = 'build/' + settings.name + '.xpi';
         if ( fs.exists(xpi) ) fs.remove(xpi);
         fs.list('Firefox').forEach(function(file) { if ( file.search(/\.xpi$/) != -1 ) fs.move( 'Firefox/' + file, xpi ); });
         fs.removeTree('firefox-unpacked');
         fs.makeDirectory('firefox-unpacked');
         childProcess.execFile( 'unzip', ['-d','firefox-unpacked',xpi], null, function(err,stdout,stderr) {
+            console.log( xpi+' unzipped');
             if ( stderr != '' ) { console.log(stderr.replace(/\n$/,'')); return program_counter.end(1); }
             fs.write(
                 'firefox-unpacked/install.rdf',
                 fs.read('firefox-unpacked/install.rdf').replace( /<em:maxVersion>.*<\/em:maxVersion>/, '<em:maxVersion>' + settings.firefox_max_version + '</em:maxVersion>' )
             );
             settings.contentScriptFiles.forEach(function(file) {
-                fs.remove('firefox-unpacked/resources/'+settings.name+'/data/'+file);
-                symbolicLink( '../../../../lib/'+file, 'firefox-unpacked/resources/'+settings.name+'/data/'+file )
+                hardLink( 'lib/'+file, 'firefox-unpacked/resources/'+settings.name+'/data/'+file )
             });
             fs.changeWorkingDirectory('firefox-unpacked');
             childProcess.execFile( 'zip', ['../'+xpi,'install.rdf'], null, function(err,stdout,stderr) {
@@ -654,7 +653,6 @@ function build_chrome() {
 		    "run_at": when_string[settings.contentScriptWhen]
 	    }
 	],
-	"icons": settings.icons,
 	"permissions": [
             match_url,
 	    "contextMenus",
@@ -664,14 +662,29 @@ function build_chrome() {
 	]
     };
 
-    var extra_files = [].concat( settings.backgroundScriptFiles.map(function(file) { return 'Chrome/'+file }) );
+    var extension_files = [] // default background-files for this platform already are in Chrome/ directory
+                             .concat( settings.contentScriptFiles)
+                             .concat( settings.contentCSSFiles)
+                             .concat( settings.backgroundScriptFiles);
+    var store_upload_files = ['Chrome/background.js','Chrome/chrome-bootstrap.css','Chrome/manifest.json'];
+    if( settings.icons ) {
+        manifest.icons = settings.icons;
+        manifest['browser_action']={'default_icon':settings.icons};
+        extension_files = extension_files.concat(
+            Object.keys(settings.icons).map(function(key ) { return settings.icons[key]; })
+        );
+    }
+    if( settings.popup && settings.popup != {} ) {
+        extension_files = extension_files.concat(settings.popup.page);
+        manifest['browser_action']['default_popup']=settings.popup.page;
+    }
 
     if ( settings.preferences ) {
         manifest.options_page = "options.html";
         manifest.permissions.push('storage');
-        manifest.background.scripts.unshift('preferences.js');
-        extra_files.push('Chrome/'+manifest.background.scripts[0]);
-        extra_files.push('Chrome/'+manifest.options_page);
+        store_upload_files.push('Chrome/preferences.js');
+        store_upload_files.push('Chrome/'+manifest.options_page);
+        store_upload_files.push('Chrome/options.js');
 
         fs.list('Chrome').forEach(function(file) {
             if ( file[0] == '.' ) return;
@@ -680,7 +693,7 @@ function build_chrome() {
         });
 
         fs.write(
-            'Chrome/' + manifest.background.scripts[0],
+            'Chrome/preferences.js',
             "var default_preferences = {" +
             settings.preferences.map(function(preference) {
                 switch ( preference.type ) {
@@ -740,11 +753,8 @@ function build_chrome() {
     // Create manifest.json:
     fs.write( 'Chrome/manifest.json', JSON.stringify(manifest, null, '\t' ) + "\n", 'w' );
 
-    // Copy scripts and icons into place:
-    settings.contentScriptFiles.forEach(function(file)    { hardLink( 'lib/'+file               , 'Chrome/' + file             ) });
-    settings.contentCSSFiles.forEach(function(file)    { hardLink( 'lib/'+file               , 'Chrome/' + file             ) });
-    settings.backgroundScriptFiles.forEach(function(file) { hardLink( 'lib/'+file               , 'Chrome/' + file             ) });
-    Object.keys(settings.icons).forEach(function(key ) { hardLink( 'lib/'+settings.icons[key], 'Chrome/' + settings.icons[key] ) });
+    // Copy all collected files from lib to Chrome/
+    extension_files.forEach(function(file)    { hardLink( 'lib/'+file, 'Chrome/' + file ) });
 
     program_counter.begin();
 
@@ -765,17 +775,14 @@ function build_chrome() {
             if ( stdout != 'Created the extension:\n\nChrome.crx\n' ) console.log(stdout.replace(/\n$/,''));
             var crx = 'build/' + settings.name + '.crx';
             if ( fs.exists(crx) ) fs.remove(crx);
-            fs.move( 'Chrome.crx', crx );
-            console.log('Built ' + crx);
+            if ( fs.exists('Chrome.crx') ) {
+                fs.move( 'Chrome.crx', crx );
+                console.log('Built ' + crx);
+            }
             if ( fs.exists('build/chrome-store-upload.zip') ) fs.remove('build/chrome-store-upload.zip');
             childProcess.execFile(
                 'zip',
-                ['build/chrome-store-upload.zip','Chrome/background.js','Chrome/manifest.json']
-                    .concat( extra_files )
-                    .concat( settings.contentScriptFiles.map(function(file) { return 'Chrome/'+file }) )
-                    .concat( settings.backgroundScriptFiles.map(function(file) { return 'Chrome/'+file }) )
-                    .concat( Object.keys(settings.icons).map(function(key ) { return 'Chrome/' + settings.icons[key] }) )
-                ,
+                ['build/chrome-store-upload.zip'].concat( store_upload_files ),
                 null,
                 function(err,stdout,stderr) {
                     if ( stderr != '' ) { console.log(stderr.replace(/\n$/,'')); return program_counter.end(1); }
