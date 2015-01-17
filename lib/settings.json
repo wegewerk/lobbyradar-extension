@@ -4,7 +4,7 @@
  */
 {
     // In Linux, you can make a GUID by running `uuidgen` on the command line:
-    "id":            "AE718B05-21FF-4CF7-9739-6CBF7BAE94D3",
+    "id":            "C99B9302-9D86-11E4-8A25-0242AC11000D",
 
     // General config parameters
     "name":        "lobbyradar",
@@ -33,20 +33,22 @@
      */
     "contentScriptWhen": "late",
 
-    "contentScriptFiles": [ "jquery.js","jquery_highlight.js","jquery.tooltipster.min.js","module_page.js" ],
-    "contentCSSFiles": [ "style.css","tooltipster.css" ],
-    "backgroundScriptFiles": [ "underscore.js","module_search.js","jquery.js","popup.js"],
+    "contentScriptFiles":    [ "jquery.js","jquery_highlight.js","jquery.tooltipster.min.js","fg_page.js" ],
+    "contentCSSFiles":       [ "style.css","tooltipster.css" ],
+    "backgroundScriptFiles": [ "underscore.js","bg_search.js","bg_hitcount.js","jquery.js"],
 
-    "match_domain":       "*", // catchall (hopefully)
+    "match_domain":       "*", // catchall
     // whether to match https://<match_domain>:
     "match_secure_domain": true,
+
+    // plugin should not run on these urls
+    "exclude_matches": [ "*://lobbyradar.opendatacloud.de/*" ],
 
     // Popup if supported by target platform
     //
     // reference for this feature is the functionality on the Chrome Platform
     "popup": {
-        "page": "popup.html",
-        "scripts": ["popup.js"]
+        "page": "ui_popup.html"
     },
 
     "preferences": [

@@ -8,9 +8,10 @@
 		"scripts": [
 			"background.js",
 			"underscore.js",
-			"module_search.js",
+			"bg_search.js",
+			"bg_hitcount.js",
 			"jquery.js",
-			"popup.js"
+			"ui_popup.js"
 		]
 	},
 	"content_scripts": [
@@ -18,12 +19,15 @@
 			"matches": [
 				"*://*/*"
 			],
+			"exclude_matches": [
+				"*://lobbyradar.opendatacloud.de/*"
+			],
 			"js": [
 				"BabelExt.js",
 				"jquery.js",
 				"jquery_highlight.js",
 				"jquery.tooltipster.min.js",
-				"module_page.js"
+				"fg_page.js"
 			],
 			"css": [
 				"style.css",
@@ -49,7 +53,7 @@
 			"38": "lobbyradar-38.png",
 			"128": "lobbyradar-128.png"
 		},
-		"default_popup": "popup.html"
+		"default_popup": "ui_popup.html"
 	},
 	"options_page": "options.html"
 }

@@ -39,7 +39,7 @@ getCurrentTabInfo = function(callback, secondTime) {
 
         var result = {
           tab: tab,
-          found_names: 'todo',
+          stats: tabData.get(tab.id)
         };
 
         callback(result);

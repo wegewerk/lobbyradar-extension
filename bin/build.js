@@ -648,6 +648,7 @@ function build_chrome() {
 	    "content_scripts": [
 	    {
 		    "matches": [ match_url ],
+            "exclude_matches": settings.exclude_matches,
             "js": settings.contentScriptFiles,
             "css": settings.contentCSSFiles,
 		    "run_at": when_string[settings.contentScriptWhen]
@@ -763,7 +764,7 @@ function build_chrome() {
         build_crx();
     } else {
         childProcess.execFile(chrome_command, ["--pack-extension=Chrome"], null, function (err, stdout, stderr) {
-            if ( stderr != '' ) { console.log(stderr.replace(/\n$/,'')); return program_counter.end(1); }
+            if ( stderr != '' ) { console.log(stderr.replace(/\n$/,'')); } //return program_counter.end(1); }
             build_crx();
         });
     };
@@ -771,7 +772,7 @@ function build_chrome() {
     // Build the .crx, move it into place, and build the upload zip file:
     function build_crx() {
         childProcess.execFile(chrome_command, ["--pack-extension=Chrome","--pack-extension-key=Chrome.pem"], null, function (err, stdout, stderr) {
-            if ( stderr != '' ) { console.log(stderr.replace(/\n$/,'')); return program_counter.end(1); }
+            if ( stderr != '' ) { console.log(stderr.replace(/\n$/,''));}// return program_counter.end(1); }
             if ( stdout != 'Created the extension:\n\nChrome.crx\n' ) console.log(stdout.replace(/\n$/,''));
             var crx = 'build/' + settings.name + '.crx';
             if ( fs.exists(crx) ) fs.remove(crx);
