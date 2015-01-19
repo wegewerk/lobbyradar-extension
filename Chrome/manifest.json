@@ -10,8 +10,7 @@
 			"underscore.js",
 			"bg_search.js",
 			"bg_hitcount.js",
-			"jquery.js",
-			"ui_popup.js"
+			"jquery.js"
 		]
 	},
 	"content_scripts": [
@@ -53,7 +52,7 @@
 			"38": "lobbyradar-38.png",
 			"128": "lobbyradar-128.png"
 		},
-		"default_popup": "ui_popup.html"
+		"default_popup": "popup/popup.html"
 	},
 	"options_page": "options.html"
 }

@@ -1,33 +1,29 @@
 <!doctype html>
 <html>
-  <head>
-    <title>Getting Started Extension's Popup</title>
-    <style>
-      body {
-        min-width: 357px;
-        overflow-x: hidden;
-      }
+    <head>
+        <meta charset="utf-8">
+        <title>Lobbyradar Popup</title>
+        <!-- fonts -->
+        <link href="css/font/roboto-slab.css" rel="stylesheet" type="text/css">
 
-      img {
-        margin: 5px;
-        border: 2px solid black;
-        vertical-align: middle;
-        width: 75px;
-        height: 75px;
-      }
-    </style>
+        <!-- css -->
+        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+        <link href="css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">
+        <link href="css/lobbyradar.css" rel="stylesheet" type="text/css">
 
-    <!--
-      - JavaScript and HTML must be in separate files: see our Content Security
-      - Policy documentation[1] for details and explanation.
-      -
-      - [1]: http://developer.chrome.com/extensions/contentSecurityPolicy.html
-     -->
-    <script src="jquery.js"></script>
-    <script src="ui_popup.js"></script>
-  </head>
-  <body>
-  <h1>Hallo Welt</h1>
-  </body>
+        <script src="jquery.js"></script>
+    </head>
+    <body>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">
+                <img src="lobbyradar.png">
+                Lobbyradar
+            </a>
+        </div>
+    </div>
+    </div>
+        <script src="ui_popup.js"></script>
+    </body>
 </html>
-

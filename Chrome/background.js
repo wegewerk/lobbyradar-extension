@@ -39,7 +39,7 @@ getCurrentTabInfo = function(callback, secondTime) {
 
         var result = {
           tab: tab,
-          stats: tabData.get(tab.id)
+          value: tabData.get(tab.id)
         };
 
         callback(result);

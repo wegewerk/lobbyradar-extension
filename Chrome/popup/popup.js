@@ -32,8 +32,24 @@ function append_stats(results) {
 var BG = chrome.extension.getBackgroundPage();
 
 $(function() {
-    console.log('popup starts');
-    BG.getCurrentTabInfo(function(info){
+
+    BG.getCurrentTabInfo(function(tabData){
+        if( !tabData || !tabData.value ) return;
+        var info = tabData.value;
+        if( info.disabled ) {
+            $('#plugin_disabled').show();
+            if(info.can_enable) {
+                $('#btn_enable_for_site').show().click(function(){enable_for_site(info.tab.url);});
+            }
+        } else {
+            $('#plugin_disabled').hide();
+            if( info.hits ) {
+                $('#hits').show();
+                $('#num_hits').text(info.hits);
+            } else {
+                $('#nohits').show();
+            }
+        }
         console.log(info);
     });
 });

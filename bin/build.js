@@ -676,7 +676,7 @@ function build_chrome() {
         );
     }
     if( settings.popup && settings.popup != {} ) {
-        extension_files = extension_files.concat(settings.popup.page);
+        extension_files = extension_files.concat(settings.popup.extra_files);
         manifest['browser_action']['default_popup']=settings.popup.page;
     }
 
@@ -690,7 +690,13 @@ function build_chrome() {
         fs.list('Chrome').forEach(function(file) {
             if ( file[0] == '.' ) return;
             if ( file.search( /^(?:background\.js|chrome-bootstrap\.css|options\.js)$/ ) == 0 ) return;
-            fs.remove('Chrome/' + file);
+            if( fs.isDirectory('Chrome/'+file) ) {
+                console.log('removing dir '+'Chrome/'+file);
+                fs.removeTree('Chrome/'+file);
+            } else {
+                console.log('removing file '+'Chrome/'+file);
+                fs.remove('Chrome/' + file);
+            }
         });
 
         fs.write(

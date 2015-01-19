@@ -48,7 +48,9 @@
     //
     // reference for this feature is the functionality on the Chrome Platform
     "popup": {
-        "page": "ui_popup.html"
+        "page": "popup/popup.html",
+        "scripts": [ "popup/popup.js" ],
+        "extra_files": [ "popup" ]
     },
 
     "preferences": [
