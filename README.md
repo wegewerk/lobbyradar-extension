@@ -1,69 +1,12 @@
-### LICENSE ###
 
-MIT (X11) license. See LICENSE.txt
+### Lobbyradar ###
 
-### What is BabelExt? ###
+Lobbyradar is a Browserextension which uses Data available on lobbyradar.opendatacloud.de
 
-BabelExt is a library (or perhaps more of a boilerplate) meant to simplify the
-development of cross-browser "userscript" style extensions for the following browsers:
 
-- Chrome
-- Firefox
-- Opera
-- Safari
+### Build process ###
 
-You can see a "kitchen sink" demonstration at [http://BabelExt.com/demo/](http://BabelExt.com/demo/)
-
-### Who is BabelExt for? ###
-
-It's likely that BabelExt will appeal most to either new extension developers, or
-to the existing pool of Greasemonkey script developers - which is how I got started
-with extension development.  The transition from Greasemonkey development to browser
-extension development wasn't too difficult - but there are a few nuances in each
-browser that are a bit of a pain to circumvent if you're in a "Greasemonkey mindset"
-
-BabelExt is definitely more suited for developers wanting to create "content enhancement"
-extensions that enhance websites.  It's not made for creating addons such as AdBlock Plus, etc.
-
-### What does BabelExt do to help me? ###
-
-BabelExt takes care of commonly used functionality that you might want to perform
-in content-script-like extension.  Some of these things seem simple, but each browser
-has its own function calls and way of working, including, but not limited to:
-
-- Accessing and controlling tabs (i.e. opening a link in a new one and choosing if it's focused)
-- Cross domain http requests (extensions require)
-- Storing data (using HTML5 localStorage or similar/equivalent engines)
-- Managing add-on preferences (which some browsers call options or settings)
-- Triggering notifications (desktop or browser, depending on the browser's particular level of support)
-- Adding URLs to history (to mark links as visited)
-	- Note: this is a bit of a hack in all non-Chrome browsers...
-- Adding CSS to the page
-
-### What does BabelExt NOT do? ###
-
-Well, a lot! Most things, in fact! However, I have some clear goals, and some clear
-things I'm probably not interested in adding to BabelExt... Specifically, it's geared
-towards assisting in content script development - extensions that enhance specific
-websites or functionality on the web.  For this reason, functionality that is not supported
-by one or more of the 4 BabelExt browsers (Chrome, Firefox, Opera, Safari) may not be added
-to BabelExt.
-
-Because each browser implements preferences in a slightly different way, BabelExt only supports
-the baseline functionality that can be supported across all browsers.  That might be enough if
-you only need a few buttons and options, but with the 4 supported browsers all handling modern
-HTML/CSS/Javascript so well - it makes sense (to me, anyhow) to build preference pages into the
-site your extension is for.
-
-That's what I did with Reddit Enhancement Suite, and it has worked rather well. I am considering
-adding the automatic form rendering code from RES into BabelExt, but I will need to devote some
-thought to how to make it more universally useful.
-
-### Great, now how do I get started? ###
-
-First, download all of the source from Github and put it together within a folder.
-
-Then, download PhantomJS (http://phantomjs.org), which is used to build and deploy extensions.
+Download PhantomJS (http://phantomjs.org), which is used to build and deploy extensions.
 
 In UNIX-based OSes, run `./bin/build.sh build` to build packages, and `./bin/build.sh release`
 to release them.
@@ -148,3 +91,7 @@ different requirements for their extensions.
 
 After the initial release, fill in local_settings.json and run `bin/build.js` with the "release"
 command to release and update metadata.
+
+### LICENSE ###
+
+MIT (X11) license. See LICENSE.txt

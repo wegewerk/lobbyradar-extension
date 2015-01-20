@@ -34,6 +34,7 @@ var BG = chrome.extension.getBackgroundPage();
 $(function() {
 
     BG.getCurrentTabInfo(function(tabData){
+        debugger;
         if( !tabData || !tabData.value ) return;
         var info = tabData.value;
         if( info.disabled ) {
@@ -43,7 +44,8 @@ $(function() {
             }
         } else {
             $('#plugin_disabled').hide();
-            if( info.hits ) {
+            $('#btn_disable_for_site').show();
+           if( info.hits ) {
                 $('#hits').show();
                 $('#num_hits').text(info.hits);
             } else {
