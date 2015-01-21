@@ -354,7 +354,7 @@ settings.preferences.forEach(function(preference) {
      * directory - not supported by Safari
      * control - not supported by Safari, not clear what we'd do with it anyway
      */
-    if ( preference.type.search(/^(bool|boolint|integer|string|menulist|radio)$/) == -1 ) {
+    if ( preference.type.search(/^(bool|boolint|integer|string|menulist|radio|text)$/) == -1 ) {
         console.log(
             'Preference type "' + preference.type + ' is not supported.\n' +
             'Please specify a valid preference type: bool, boolint, integer, string, menulist, radio\n'
@@ -679,6 +679,9 @@ function build_chrome() {
         extension_files = extension_files.concat(settings.popup.extra_files);
         manifest['browser_action']['default_popup']=settings.popup.page;
     }
+    if( settings.extra_files && settings.extra_files != {} ) {
+        extension_files = extension_files.concat(settings.extra_files);
+    }
 
     if ( settings.preferences ) {
         manifest.options_page = "options.html";
@@ -717,19 +720,31 @@ function build_chrome() {
             'Chrome/' + manifest.options_page,
             "<!DOCTYPE html>\n" +
             "<html>\n" +
-            "<head><title>" + settings.title + " Options</title></head>\n" +
-            '<link rel="stylesheet" type="text/css" href="chrome-bootstrap.css" />\n' +
-            '<body class="chrome-bootstrap">\n' +
-            '<div class="overlay">\n' +
-            '<form class="page">\n' +
-            '<h1>' + settings.title + '</h1>\n' +
-            '<div class="content-area">\n' +
+            "<head><title>" + settings.title + " Options</title>\n" +
+            '<link href="css/font/roboto-slab.css" rel="stylesheet" type="text/css">' +
+            '<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />\n' +
+            '<link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css" />\n' +
+            '<link rel="stylesheet" type="text/css" href="css/lobbyradar.css" />\n' +
+            '</head><body">\n' +
+            '<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">' +
+            '    <div class="container-fluid">' +
+            '        <div class="navbar-header">' +
+            '            <a class="navbar-brand" href="http://lobbyradar.opendatacloud.de">' +
+            '                <img src="lobbyradar.png">' +
+            '                Lobbyradar' +
+            '            </a>' +
+            '        </div>' +
+            '    </div>' +
+            '</div>' +
+            '<div class="container">' +
+            '<form>\n' +
             settings.preferences.map(function(preference) {
                 switch ( preference.type ) {
-                case 'bool'   : return '<div class="checkbox"><span class="controlled-setting-with-label"><input class="pref" id="' + preference.name + '" ' + (preference.value?' checked':'') + ' type="checkbox"><label for="' + preference.name + '">' + preference.title + '</label></span></div>\n';
-                case 'boolint': return '<div class="checkbox"><span class="controlled-setting-with-label"><input class="pref" id="' + preference.name + '" data-on="1" data-off="0"' + (preference.value?' checked':'') + ' type="checkbox"><label for="' + preference.name + '">' + preference.title + '</label></span></div>\n';
-                case 'integer': return '<label title="' + preference.description + '">' + preference.title + ': <input id="' + preference.name + '" class="pref" type="number" value="' + preference.value + '"></label><br>\n';
-                case 'string': return '<label title="' + preference.description + '">' + preference.title + ': <input id="' + preference.name + '" class="pref" type="text" value="' + preference.value + '"></label><br>\n';
+                case 'bool'   : return '<div class="checkbox"><label><input class="form-control" id="' + preference.name + '" ' + (preference.value?' checked':'') + ' type="checkbox">' + preference.title + '</label></div>\n';
+                case 'boolint': return '<div class="checkbox"><label><input class="form-control" id="' + preference.name + '" data-on="1" data-off="0"' + (preference.value?' checked':'') + ' type="checkbox">' + preference.title + '</label></div>\n';
+                case 'integer': return '<div class="form-group"><label for="' + preference.name + '">' + preference.title + '</label><input class="form-control" id="' + preference.name + '" type="number" value="' + preference.value + '"></div>\n';
+                case 'string' : return '<div class="form-group"><label for="' + preference.name + '">' + preference.title + '</label><input class="form-control" id="' + preference.name + '" type="text"   value="' + preference.value + '"></div>\n';
+                case 'text'   : return '<div class="form-group"><label for="' + preference.name + '">' + preference.title + '</label><textarea class="form-control" id="' + preference.name + '" cols="40" rows="10">' + preference.value + '</textarea><span class="help-block">'+preference.description+'</span></div>\n';
                 case 'menulist':
                     return '<div class="media-device-control"><span>' + preference.title + ':</span><select id="' + preference.name + '" class="pref weakrtl">' +
                         preference.options.map(function(option) {

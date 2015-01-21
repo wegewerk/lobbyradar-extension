@@ -25,3 +25,7 @@ span[class^="lobbradar_hit"]::before
 .tooltipster-content p {
     font-family: sans-serif !important;
 }
+#lobbyradar_list {
+    overflow-x:hidden;
+    overflow-y: auto;
+}

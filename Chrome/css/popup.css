@@ -3,3 +3,8 @@
 #plugin_disabled, #hits, #nohits {
     display:none;
 }
+
+.lighttext {
+    font-size: 9px;
+    color: #666;
+}

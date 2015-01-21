@@ -2,7 +2,7 @@
 
 function get_preferences() {
     var preferences = {};
-    [].slice.call(document.querySelectorAll('.pref')).forEach(function(element) {
+    [].slice.call(document.querySelectorAll('.form-control')).forEach(function(element) {
         switch ( element.nodeName ) {
         case 'INPUT':
             switch ( element.type ) {
@@ -21,6 +21,7 @@ function get_preferences() {
             }
             break;
         case 'SELECT': preferences[element.id] = element.value; break;
+        case 'TEXTAREA': preferences[element.id] = element.value.split("\n"); break;
         }
     });
     return preferences;
@@ -28,7 +29,7 @@ function get_preferences() {
 
 document.addEventListener('DOMContentLoaded', function() {
     chrome.storage.local.get(get_preferences(), function(preferences) {
-        [].slice.call(document.querySelectorAll('.pref')).forEach(function(element) {
+        [].slice.call(document.querySelectorAll('.form-control')).forEach(function(element) {
             switch ( element.nodeName ) {
             case 'INPUT':
                 switch ( element.type ) {
@@ -42,10 +43,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 break;
             case 'SELECT': element.value = preferences[element.id]; break;
+            case 'TEXTAREA': element.value = preferences[element.id].join("\n"); break;
             }
         });
     });
 });
 
-document.addEventListener('click', function() { chrome.storage.local.set(get_preferences(), function() {}); });
-document.addEventListener('input', function() { chrome.storage.local.set(get_preferences(), function() {}); });
+function storePreferences() {
+    chrome.storage.local.set(get_preferences(), function() {
+        chrome.runtime.sendMessage({requestType:'optionsChanged'});
+    });
+}
+document.addEventListener('click', storePreferences);
+document.addEventListener('input', storePreferences);

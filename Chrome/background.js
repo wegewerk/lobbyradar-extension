@@ -18,7 +18,25 @@ SAFARI = (function() {
   return (typeof safari !== "undefined");
 })();
 
-getCurrentTabInfo = function(callback, secondTime) {
+var parseURL = function(url) {
+    var parser = document.createElement('a'),
+        searchObject = {},
+        queries, split, i;
+    // Let the browser do the work
+    parser.href = url;
+
+    return {
+        protocol: parser.protocol,
+        host: parser.host,
+        hostname: parser.hostname,
+        port: parser.port,
+        pathname: parser.pathname,
+        search: parser.search,
+        hash: parser.hash
+    };
+}
+
+var getCurrentTabInfo = function(callback, secondTime) {
     if (!SAFARI) {
       chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         if (tabs.length === 0)
