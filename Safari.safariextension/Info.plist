@@ -9,7 +9,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>Lobbyradar</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.honestbleeps.AE718B05-21FF-4CF7-9739-6CBF7BAE94D3</string>
+	<string>com.yourcompany.lobbyradar</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleShortVersionString</key>
@@ -22,32 +22,15 @@
 		<real>10485760</real>
 		<key>Global Page</key>
 		<string>background.html</string>
-		<key>Popovers</key>
-		<array>
-			<dict>
-				<key>Filename</key>
-				<string>notification.html</string>
-				<key>Identifier</key>
-				<string>notification</string>
-			</dict>
-		</array>
 		<key>Toolbar Items</key>
 		<array>
 			<dict>
-				<key>Command</key>
-				<string></string>
 				<key>Identifier</key>
-				<string>notificationButton</string>
+				<string>lobbyradarBtn</string>
 				<key>Image</key>
-				<string>notification.png</string>
+				<string>lobbyradar-16.png</string>
 				<key>Label</key>
-				<string>Notifications</string>
-				<key>Palette Label</key>
-				<string>Notifications</string>
-				<key>Popover</key>
-				<string>notification</string>
-				<key>Tool Tip</key>
-				<string>Notifications from this BabelExt Extension</string>
+				<string>Lobbyradar</string>
 			</dict>
 		</array>
 	</dict>
@@ -57,13 +40,21 @@
 		<dict>
 			<key>End</key>
 			<array>
-				<string>extension.js</string>
+				<string>jquery.js</string>
+				<string>jquery_highlight.js</string>
+				<string>jquery.tooltipster.min.js</string>
+				<string>fg_page.js</string>
 			</array>
 			<key>Start</key>
 			<array>
 				<string>BabelExt.js</string>
 			</array>
 		</dict>
+		<key>Stylesheets</key>
+		<array>
+			<string>style.css</string>
+			<string>tooltipster.css</string>
+		</array>
 	</dict>
 	<key>Description</key>
 	<string>Discover Lobby Networks</string>

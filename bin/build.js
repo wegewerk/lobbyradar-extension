@@ -430,11 +430,33 @@ function build_safari() {
     get_node('Author').textContent = settings.author;
 
     get_node('CFBundleDisplayName'       ).textContent = settings.title;
-    get_node('CFBundleIdentifier'        ).textContent = 'com.honestbleeps.' + settings.id;
+    get_node('CFBundleIdentifier'        ).textContent = settings.bundleid;
     get_node('CFBundleShortVersionString').textContent = settings.version;
     get_node('CFBundleVersion'           ).textContent = settings.version;
     get_node('Description'               ).textContent = settings.description;
     get_node('Website'                   ).textContent = settings.website;
+    if( settings.popup ) {
+        var  toolbar_items_dict = get_node('Toolbar Items');
+        while (toolbar_items_dict.firstChild) toolbar_items_dict.removeChild(toolbar_items_dict.firstChild);
+        toolbar_items_dict.appendChild( document.createTextNode('\n\t\t\t') );
+        var toolbar_items=toolbar_items_dict.appendChild( document.createElement('dict') );
+        toolbar_items_dict.appendChild( document.createTextNode('\n\t\t') );
+
+        [ { key:'Identifier', value:settings.title.toLowerCase()+'Btn'},
+          { key:'Image'     ,value:  settings.popup.icon },
+          { key:'Label'     ,value: settings.title }
+        ].forEach(function(toolbar_item){
+            var key = document.createElement("key");
+            key.textContent = toolbar_item.key;
+            var value = document.createElement("string");
+            value.textContent = toolbar_item.value;
+            [key,value].forEach(function(child){
+                toolbar_items.appendChild( document.createTextNode('\n\t\t\t\t') );
+                toolbar_items.appendChild(child);
+            });
+        });
+        toolbar_items.appendChild( document.createTextNode('\n\t\t\t') );
+    }
 
     var match_domains = get_node('Allowed Domains');
     while (match_domains.firstChild) match_domains.removeChild(match_domains.firstChild);
@@ -453,12 +475,18 @@ function build_safari() {
     while (start_scripts.firstChild) start_scripts.removeChild(start_scripts.firstChild);
     while (  end_scripts.firstChild)   end_scripts.removeChild(  end_scripts.firstChild);
 
+    // list of files to be copied into extension dir
+    var extension_files = [].concat( settings.contentScriptFiles)
+                            .concat( settings.contentCSSFiles)
+                            .concat( settings.backgroundScriptFiles);
+    // Copy all collected files from lib to Safari.safariextension/
+    extension_files.forEach(function(file)    { hardLink( 'lib/'+file, 'Safari.safariextension/' + file ) });
+
+    // make entries in plist file for contentscripts
     settings.contentScriptFiles.forEach(function(file) {
-        hardLink( 'lib/'+file, 'Safari.safariextension/' + file )
 
         var script = document.createElement("string");
         script.textContent = file;
-
 
         if ( file == 'BabelExt.js' || when_string[ settings.contentScriptWhen ] == 'Start' ) {
             start_scripts.appendChild( document.createTextNode('\n\t\t\t\t') );
@@ -484,7 +512,7 @@ function build_safari() {
                     else if ( typeof(values[value]) == 'boolean' ) return '\n\t\t<key>' + value + '</key>\n\t\t<' + values[value] + '/>';
                     else    /* must be an array */                 return '\n\t\t<key>' + value + '</key>\n\t\t<array>' + values[value].map(function(v) { return '\n\t\t\t<string>'+v+'</string>'; }).join('') + '\n\t\t</array>'
                 }).join('') +
-	        '\n\t</dict>\n'
+            '\n\t</dict>\n'
         }
         fs.write(
             'Safari.safariextension/Settings.plist',
@@ -498,6 +526,7 @@ function build_safari() {
                 case 'boolint' : return build_dict( preference, { Type: 'CheckBox', FalseValue: 0, TrueValue: 1 } );
                 case 'integer' : return build_dict( preference, { Type: 'Slider'   } );
                 case 'string'  : return build_dict( preference, { Type: 'TextField', Password: false } );
+                case 'text'    : return build_dict( preference, { Type: 'TextField', Password: false } );
                 case 'menulist': return build_dict( preference, { Type: 'ListBox', Titles: preference.options.map(function(o) { return o.label }), Values: preference.options.map(function(o) { return o.value }),  } );
                 case 'radio'   : return build_dict( preference, { Type: 'RadioButtons', Titles: preference.options.map(function(o) { return o.label }), Values: preference.options.map(function(o) { return o.value }),  } );
                 }
@@ -640,27 +669,27 @@ function build_chrome() {
         "name": settings.title,
         "author": settings.author,
         "version": settings.version,
-	    "manifest_version": 2,
+        "manifest_version": 2,
         "description": settings.description,
-	    "background": {
-	        "scripts": background_scripts.concat(settings.backgroundScriptFiles)
-	    },
-	    "content_scripts": [
-	    {
-		    "matches": [ match_url ],
+        "background": {
+            "scripts": background_scripts.concat(settings.backgroundScriptFiles)
+        },
+        "content_scripts": [
+        {
+            "matches": [ match_url ],
             "exclude_matches": settings.exclude_matches,
             "js": settings.contentScriptFiles,
             "css": settings.contentCSSFiles,
-		    "run_at": when_string[settings.contentScriptWhen]
-	    }
-	],
-	"permissions": [
+            "run_at": when_string[settings.contentScriptWhen]
+        }
+    ],
+    "permissions": [
             match_url,
-	    "contextMenus",
-	    "tabs",
-	    "history",
-	    "notifications"
-	]
+        "contextMenus",
+        "tabs",
+        "history",
+        "notifications"
+    ]
     };
 
     var extension_files = [] // default background-files for this platform already are in Chrome/ directory
@@ -817,429 +846,17 @@ function build_chrome() {
 
 }
 
-
-/*
- * RELEASE COMMANDS
- */
-
-function release_amo(login_info) {
-
-    program_counter.begin();
-    if ( !login_info.password ) {
-        if ( system.env.hasOwnProperty('AMO_PASSWORD') ) {
-            login_info.password = system.env.AMO_PASSWORD;
-        } else {
-            console.log("Please specify a password for addons.mozilla.org");
-            return program_counter.end(1);
-        }
-    }
-
-    var name = settings.name.substr(0,30);
-
-    page( 'https://addons.mozilla.org/en-US/developers/addon/' + name + '/edit', function(page) { get_changelog(function(changelog) {
-
-        page.evaluate( function() { Tabzilla.disableEasterEgg() });
-
-        page.submit_form(
-            "#login-submit",
-            {
-                "#id_username": login_info.username,
-                "#id_password": login_info.password,
-            }
-        );
-
-        page.waitForElementsPresent(
-            [ '#edit-addon-basic a.button', '#edit-addon-media a.button' ],
-            function() {
-                setTimeout(function() {
-
-                    function submit_section(section, values) {
-                        // Doing the AJAX request manually turns out less hassle than clicking the buttons:
-                        page.evaluate(function(addon, section, values) {
-                            $.ajax({
-                                async: false,
-                                url: 'https://addons.mozilla.org/en-US/developers/addon/' + addon + '/edit_' + section + '/edit',
-                                dataType: 'html',
-                                success: function(html) {
-                                    var data = {};
-                                    $(html).find('[name]').each(function() {
-                                        if ( $(this).filter(':radio,:checkbox').length ) {
-                                            if ( $(this).prop('checked') ) {
-                                                if ( !data.hasOwnProperty($(this).attr('name')) )
-                                                    data[ $(this).attr('name') ]  =  [ $(this).val() ];
-                                                else
-                                                    data[ $(this).attr('name') ].push( $(this).val() );
-                                            }
-                                        } else {
-                                            data[ $(this).attr('name') ] = $(this).val();
-                                        };
-                                    });
-                                    Object.keys(values).forEach(function(key) {
-                                        data[key] = values[key];
-                                    });
-                                    $.ajax({
-                                        async: false,
-                                        type: "POST",
-                                        url: 'https://addons.mozilla.org/en-US/developers/addon/' + addon + '/edit_' + section + '/edit',
-                                        headers: { 'X-CSRFToken': $('meta[name=csrf]').attr('content') },
-                                        data: data,
-                                        dataType: 'html',
-                                        //success: function(html) { console.log(html) },
-                                        traditional: true
-                                    });
-                                }
-                            });
-                        }, name, section, values);
-                    }
-
-                    submit_section( 'basic', {
-                        'form-INITIAL_FORMS': 1,
-                        'form-MAX_NUM_FORMS': 1000,
-                        'form-TOTAL_FORMS'  : 1,
-                        'name_en-us'        : settings.title,
-                        'slug'              : settings.name.substr(0,30),
-                        'summary_en-us'     : settings.description,
-                    });
-
-                    submit_section( 'details', {
-                        'description_en-us': settings.long_description
-                    });
-
-                    var best_icon = settings.icons[64] || settings.icons[128] || settings.icons[32] || settings.icons[48] || settings.icons[16];
-                    if ( best_icon ) {
-                        page.click('#edit-addon-media a.button');
-                        page.waitForElementsPresent(
-                            [ '#id_icon_upload', '.edit-media-button.listing-footer button' ],
-                            function() {
-                                setTimeout(function() {
-                                    page.submit_form(
-                                        '#id_icon_upload',
-                                        {
-                                            '#id_icon_upload': 'lib/'+best_icon
-                                        },
-                                        function() {
-                                            setTimeout(function() {
-                                                page.click('.edit-media-button.listing-footer button');
-                                                page.waitForElementsNotPresent('#id_icon_upload', function() {
-                                                    release_new_version();
-                                                })
-                                            }, 2000);
-                                        }
-                                    );
-                                }, 2000 );
-                            }
-                        )
-                    } else {
-                        release_new_version();
-                    };
-
-                }, 1000 );
-
-            }
-        );
-
-        function release_new_version() {
-            page.open( 'https://addons.mozilla.org/en-US/developers/addon/' + name + '/versions#version-upload', function() {
-                page.submit_form(
-                    '#upload-addon',
-                    {
-                        '#upload-addon': 'build/' + settings.name + '.xpi'
-                    },
-                    function() {
-                        page.waitForElementsPresent(
-                            '#upload-status-results.status-pass',
-                            function() {
-                                page.click('#upload-file-finish');
-                                page.submit_form(
-                                    '.listing-footer button[type="submit"]',
-                                    {
-                                        '#id_releasenotes_0': changelog
-                                    },
-                                    function() {
-                                        page.waitForElementsPresent(
-                                            '.notification-box.success',
-                                            function() {
-                                                console.log('Released to https://addons.mozilla.org/en-US/firefox/addon/' + name);
-                                                return program_counter.end(0);
-                                                }
-                                        );
-                                    }
-                                );
-                            }
-                        );
-                    }
-                );
-            });
-        }
-    })});
-
-}
-
-function release_chrome(login_info) {
-
-    program_counter.begin();
-    if ( !login_info.password ) {
-        if ( system.env.hasOwnProperty('CHROME_PASSWORD') ) {
-            login_info.password = system.env.CHROME_PASSWORD;
-        } else {
-            console.log("Please specify a password for the Chrome store");
-            return program_counter.end(1);
-        }
-    }
-
-    page( 'https://chrome.google.com/webstore/developer/edit/' + login_info.id, function(page) {
-
-        page.hideConsoleMessage();
-
-        page.submit_form(
-            "#signIn",
-            {
-                "#Email" : login_info.username,
-                "#Passwd": login_info.password,
-            },
-            function() { change_details(page) }
-        );
-
-    });
-
-    function change_details(page) {
-
-        if ( settings.icons[128] ) {
-            page.click(".id-upload-icon-image");
-            setTimeout(function() {
-                page.submit_form(
-                    '.id-upload-image.cx-bold',
-                    {
-                        '#cx-img-uploader-input': 'lib/' + settings.icons[128]
-                    },
-                    function() {
-                        page.waitForElementsPresent(
-                            [ 'b#cx-error-html' ],
-                            function() {
-                                setTimeout( publish_details, 1000 );
-                            }
-                        );
-                    }
-                );
-            }, 100 );
-        } else {
-            publish_details();
-        }
-
-        function publish_details() {
-            page.submit_form(
-                '.id-publish',
-                {
-                    '#cx-dev-edit-desc': settings.description
-                },
-                function() {
-                    setTimeout(function() {
-                        page.click('.id-confirm-dialog-publish-ok');
-                        page.waitForElementsPresent(
-                            [ '#hist_state' ],
-                            get_access_code
-                        )
-                    }, 100 );
-                }
-            );
-        }
-
-    };
-
-    function get_access_code() {
-
-        page(
-            'https://accounts.google.com/o/oauth2/auth?response_type=code&scope=https://www.googleapis.com/auth/chromewebstore&redirect_uri=urn:ietf:wg:oauth:2.0:oob&client_id=' + login_info.client_id,
-            function(page) {
-
-                page.waitForElementsPresent(
-                    '#submit_approve_access',
-                    function() {
-                        page.hideConsoleMessage();
-                        setTimeout(
-                            function() {
-                                page.click('#submit_approve_access');
-                                page.waitForElementsPresent(
-                                    '#code',
-                                    function() {
-                                        get_auth_key( page.evaluate(function() { return document.getElementById('code').value }) );
-                                    }
-                                )
-                            },
-                            3000
-                        );
-                    }
-                );
-
-            }
-        );
-
-        function get_auth_key(code) {
-            var post_data = "grant_type=authorization_code&redirect_uri=urn:ietf:wg:oauth:2.0:oob&client_id=" + login_info.client_id + "&client_secret=" + login_info.client_secret + "&code=" + code;
-
-            // PhantomJS refuses to download chunked data, do it with `curl` instead:
-            childProcess.execFile( 'curl', ["--silent","https://accounts.google.com/o/oauth2/token",'-d',post_data], null, function(err, json, stderr) {
-                if ( stderr != '' ) { console.log(stderr.replace(/\n$/,'')); return program_counter.end(1); }
-                upload_and_publish( JSON.parse(json) );
-            });
-        }
-
-        function upload_and_publish(data) {
-
-            var page = webPage.create();
-            page.customHeaders = {
-                "Authorization": "Bearer " + data.access_token,
-                "x-goog-api-version": 2,
-            };
-
-            page.open(
-                "https://www.googleapis.com/upload/chromewebstore/v1.1/items/" + login_info.id,
-                'PUT',
-                fs.open('build/chrome-store-upload.zip', 'rb').read(),
-                function (status) {
-                    if ( status == "success" ) {
-                        var result = JSON.parse(page.plainText);
-                        if ( result.error ) {
-                            console.log( page.plainText );
-                            return program_counter.end(1);
-                        }
-                        page.open(
-                            "https://www.googleapis.com/chromewebstore/v1.1/items/" + login_info.id + "/publish",
-                            'POST',
-                            '',
-                            function (status) {
-                                if ( result.error ) {
-                                    console.log( page.plainText );
-                                    return program_counter.end(1);
-                                }
-                                if ( status == "success" ) {
-                                    console.log('Released to https://chrome.google.com/webstore/detail/' + login_info.id);
-                                    return program_counter.end(0);
-                                } else {
-                                    console.log( "Couln't upload new version" );
-                                    return program_counter.end(1);
-                                }
-                            }
-                        );
-                    }
-                }
-            );
-
-        }
-
-    }
-
-}
-
-function release_opera(login_info) {
-
-    program_counter.begin();
-    if ( !login_info.password ) {
-        if ( system.env.hasOwnProperty('OPERA_PASSWORD') ) {
-            login_info.password = system.env.OPERA_PASSWORD;
-        } else {
-            console.log("Please specify a password for the Opera Developer site");
-            return program_counter.end(1);
-        }
-    }
-
-    get_changelog(function(changelog) {
-
-        page( 'https://addons.opera.com/en-gb/developer/upgrade/' + settings.name, function(page) {
-
-            page.submit_form(
-                'button[type="submit"]',
-                {
-                    "#login-page-username": login_info.username,
-                    "#login-page-password": login_info.password,
-                }
-            );
-
-            page.submit_form(
-                '.submit-button',
-                {
-                    '#id_package_file': 'build/' + settings.name + '.crx'
-                },
-                function() {
-                    page.submit_form(
-                        '.submit-button',
-                        {
-                            '#id_translations-0-short_description': settings.description,
-                            '#id_translations-0-long_description' : settings.long_description,
-                            '#id_translations-0-changelog'        : changelog,
-                            '#id_target_platform-comment'         : login_info.tested_on,
-                            '#id_icons-0-icon'                    : settings.icons[64] ? 'lib/' + settings.icons[64] : undefined,
-                        },
-                        function() {
-                            page.click('input.submit-button[type="submit"][name="approve_widget"]');
-                            page.waitForElementsPresent(
-                                [ '#dev-sel-container' ],
-                                function() {
-                                    console.log('Released to https://addons.opera.com/en-gb/extensions/details/' + settings.name);
-                                    return program_counter.end(0);
-                                }
-                            );
-                        }
-                    );
-                }
-            );
-        });
-
-    });
-
-}
-
-function release_safari() {
-    /*
-     * Safari support is limited at the moment, as it's the least-used browser and the hardest to support.
-     *
-     * To release a Safari extension, start here: https://developer.apple.com/programs/safari/
-     * For instructions on building a Safari extension package on the command line, start here: http://developer.streak.com/2013/01/how-to-build-safari-extension-using.html
-     *
-     * Patches welcome!
-     *
-     */
-}
-
 /*
  * MAIN SECTION
  */
 
 var args = system.args;
 
-function usage() {
-    console.log(
-        'Usage: ' + args[0] + ' <command> [<arguments>]\n' +
-        'Commands:\n' +
-        '    build - builds extensions for all browsers\n' +
-        '    release <target> - release extension to either "amo" (addons.mozilla.org) "chrome" (Chrome store) or "opera" (Opera site)'
-    );
-    phantom.exit(1);
-}
-
 console.log('running on '+system.os.name+"\n");
 program_counter.begin();
-switch ( args[1] || '' ) {
 
-case 'build':
-    if ( args.length != 2 ) usage();
-//    build_safari();
-//    build_firefox();
-    build_chrome ();
-    break;
+build_safari();
+//   build_firefox();
+//    build_chrome ();
 
-case 'release':
-    if ( args.length != 3 ) usage();
-    switch ( args[2] ) {
-    case 'amo'   : release_amo   (local_settings.   amo_login_info); break;
-    case 'chrome': release_chrome(local_settings.chrome_login_info); break;
-    case 'opera' : release_opera (local_settings. opera_login_info); break;
-    case 'safari': release_safari(local_settings.safari_login_info); break;
-    }
-    break;
-
-default:
-    usage();
-
-}
 program_counter.end(0);

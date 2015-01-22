@@ -1,6 +1,11 @@
 <html>
 <head>
-	<script>	
+    <script src="underscore.js"></script>
+    <script src="bg_common.js"></script>
+    <script src="bg_search.js"></script>
+    <script src="bg_hitcount.js"></script>
+
+	<script>
 	function respondToMessage (msgEvent) {
 		var request = msgEvent.message;
 		request.requestType = msgEvent.name;
@@ -49,8 +54,8 @@
 					case 'getItem':
 						sendResponse({
 							callbackID: request.callbackID,
-							status: true, 
-							key: request.itemName, 
+							status: true,
+							key: request.itemName,
 							value: localStorage.getItem(request.itemName)
 						}, msgEvent);
 						break;
@@ -58,7 +63,7 @@
 						localStorage.removeItem(request.itemName);
 						sendResponse({
 							callbackID: request.callbackID,
-							status: true, 
+							status: true,
 							value: null
 						}, msgEvent);
 						break;
@@ -66,8 +71,8 @@
 						localStorage.setItem(request.itemName, request.itemValue);
 						sendResponse({
 							callbackID: request.callbackID,
-							status: true, 
-							key: request.itemName, 
+							status: true,
+							key: request.itemName,
 							value: request.itemValue
 						}, msgEvent);
 						break;

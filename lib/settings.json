@@ -5,6 +5,7 @@
 {
     // In Linux, you can make a GUID by running `uuidgen` on the command line:
     "id":            "C99B9302-9D86-11E4-8A25-0242AC11000D",
+    "bundleid":      "com.yourcompany.lobbyradar", // used by safari only
 
     // General config parameters
     "name":        "lobbyradar",
@@ -15,6 +16,7 @@
     "version":     "0.1",
     "website":     "http://lobbyradar.de",
     "icons": {
+            16: "lobbyradar-16.png",
             38: "lobbyradar-38.png",
             128: "lobbyradar-128.png"
     },
@@ -35,7 +37,7 @@
 
     "contentScriptFiles":    [ "jquery.js","jquery_highlight.js","jquery.tooltipster.min.js","fg_page.js" ],
     "contentCSSFiles":       [ "style.css","tooltipster.css" ],
-    "backgroundScriptFiles": [ "underscore.js","bg_search.js","bg_hitcount.js","jquery.js",],
+    "backgroundScriptFiles": [ "underscore.js","bg_common.js", "bg_search.js","bg_hitcount.js","jquery.js",],
     "extra_files":           [ "css","lobbyradar.png" ],
 
     "match_domain":       "*", // catchall
@@ -50,7 +52,8 @@
     // reference for this feature is the functionality on the Chrome Platform
     "popup": {
         "page": "popup/popup.html",
-        "extra_files": [ "popup" ]
+        "extra_files": [ "popup" ],
+        "icon": "lobbyradar-16.png", // safari only. Chrome uses best match from icons{} array
     },
 
     "preferences": [
