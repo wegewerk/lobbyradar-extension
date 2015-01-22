@@ -857,6 +857,6 @@ program_counter.begin();
 
 build_safari();
 //   build_firefox();
-//    build_chrome ();
+build_chrome ();
 
 program_counter.end(0);
