@@ -10,7 +10,7 @@
 			"underscore.js",
 			"bg_common.js",
 			"bg_search.js",
-			"bg_hitcount.js",
+			"bg_browserbutton.js",
 			"jquery.js"
 		]
 	},

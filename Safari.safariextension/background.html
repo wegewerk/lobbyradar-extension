@@ -3,7 +3,7 @@
     <script src="underscore.js"></script>
     <script src="bg_common.js"></script>
     <script src="bg_search.js"></script>
-    <script src="bg_hitcount.js"></script>
+    <script src="bg_browserbutton.js"></script>
 
 	<script>
 	function respondToMessage (msgEvent) {
@@ -114,29 +114,6 @@
 	}
 	safari.application.addEventListener("message",respondToMessage,false);
 
-	function validateHandler(event) {
-		// update the HTML...
-		if (event.target.identifier == 'notificationButton') {
-			event.target.badge = notifications.length;
-		}
-	}
-
-	function popoverHandler(event) {
-		// ok we rendered the HTML, now we can clear out the notifications array and badge..
-			// event.target.popover.contentWindow.document.getElementById('noNotifications').innerHTML = 'THIS IS A TEST';
-		if (event.target.identifier == 'notification') {
-			if (typeof(event.target.contentWindow.renderNotifications) == 'function')
-				// draw the notifications in the popover window...
-				event.target.contentWindow.renderNotifications(notifications);
-				// set the height of the popover to 600 or however tall the list of notifications is - whichever is less.
-				event.target.height = Math.min((event.target.contentWindow.document.getElementById('notificationList').scrollHeight + 10),600);
-				notifications = [];
-		}
-	}
-
-	safari.application.addEventListener("validate", validateHandler, true);
-	safari.application.addEventListener("popover", popoverHandler, true);
-
 	// object to store items added to the context menu
 	var contextMenuItems = {};
 
@@ -154,7 +131,7 @@
 			event.target.page = safari.application.activeBrowserWindow.activeTab.page;
 		}
 		if (!event.name) {
-			event.name = "contextMenu.click";
+			return;
 		}
 		sendResponse({
 			name: "contextMenu.click",

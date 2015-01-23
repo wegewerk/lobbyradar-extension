@@ -37,7 +37,7 @@
 
     "contentScriptFiles":    [ "jquery.js","jquery_highlight.js","jquery.tooltipster.min.js","fg_page.js" ],
     "contentCSSFiles":       [ "style.css","tooltipster.css" ],
-    "backgroundScriptFiles": [ "underscore.js","bg_common.js", "bg_search.js","bg_hitcount.js","jquery.js",],
+    "backgroundScriptFiles": [ "underscore.js","bg_common.js", "bg_search.js","bg_browserbutton.js","jquery.js",],
     "extra_files":           [ "css","lobbyradar.png" ],
 
     "match_domain":       "*", // catchall
@@ -54,6 +54,8 @@
         "page": "popup/popup.html",
         "extra_files": [ "popup" ],
         "icon": "lobbyradar-16.png", // safari only. Chrome uses best match from icons{} array
+        "width": 280,
+        "height": 200
     },
 
     "preferences": [

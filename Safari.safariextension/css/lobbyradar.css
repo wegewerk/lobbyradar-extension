@@ -1,0 +1,30 @@
+body {
+    min-width: 280px;
+    min-height: 200px;
+}
+.navbar-brand,
+.navbar-nav li a {
+	line-height: 80px;
+	height: 80px;
+	padding-top: 0;
+}
+
+.navbar-form {
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+
+.navbar-brand {
+	font-size: 30px;
+	font-family: "Roboto Slab";
+	color: #eee !important;
+}
+
+.navbar-brand img {
+	height: 60px;
+	margin: -15px 5px -10px 0px;
+}
+
+.navbar+.container {
+	margin-top: 100px;
+}

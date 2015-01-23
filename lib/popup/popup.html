@@ -15,6 +15,7 @@
         <script src="../jquery.js"></script>
         <script src="../underscore.js"></script>
         <script src="../BabelExt.js"></script>
+        <script src="../bg_common.js"></script>
 
     </head>
     <body>
@@ -29,18 +30,18 @@
             </div>
         </div>
         <div class="container">
-            <div id="hits">
+            <div id="hits" class="dynamic">
                 <span id="num_hits" class="lobbyradar_hits"></span> Treffer auf dieser Seite.<span class="lighttext">(<span id="searchtime"></span>ms)</span>
             </div>
-            <div id="nohits">
+            <div id="nohits" class="dynamic">
                 Keine Zusatzinformationen auf dieser Seite.
             </div>
-            <div id="btn_disable_for_site" class="btn btn-default">deaktivieren</div>
-            <div id="plugin_disabled">
+            <div id="btn_disable_for_site" class="dynamic btn btn-default">deaktivieren</div>
+            <div id="plugin_disabled" class="dynamic">
                 Auf dieser Seite deaktiviert.
-                <div id="btn_enable_for_site" class="btn btn-default">aktivieren</div>
+                <div id="btn_enable_for_site" class="dynamic btn btn-default">aktivieren</div>
             </div>
-            <div id="btn_settings" class="btn btn-default">Einstellungen</div>
+            <div id="btn_settings" class="hide_in_safari btn btn-default">Einstellungen</div>
         </div>
         <script src="popup.js"></script>
     </body>

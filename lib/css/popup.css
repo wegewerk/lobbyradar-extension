@@ -8,3 +8,6 @@
     font-size: 9px;
     color: #666;
 }
+body {
+    overflow: hidden;
+}

@@ -63,7 +63,13 @@ function symbolicLink( source, target ) {
  * Create a hard link from source to target
  */
 function hardLink( source, target ) {
-    if ( fs.exists(target) ) fs.remove(target);
+    if ( fs.exists(target) ) {
+        if( fs.isDirectory(target) ) {
+            fs.removeTree(target);
+        } else {
+            fs.remove(target);
+        }
+    }
     if ( system.os.name == 'windows' ) {
         childProcess.execFile('mklink', ['/H',target,source], function(err, stdout, stderr) {
             if ( stderr != '' ) console.log(stderr.replace(/\n$/,''));
@@ -427,6 +433,30 @@ function build_safari() {
         get_node(key).textContent = value;
     }
 
+    function update_dict( parentKey, dictvalues ) {
+        var  toolbar_items_dict = get_node(parentKey);
+        while (toolbar_items_dict.firstChild) toolbar_items_dict.removeChild(toolbar_items_dict.firstChild);
+        toolbar_items_dict.appendChild( document.createTextNode('\n\t\t\t') );
+        var toolbar_items=toolbar_items_dict.appendChild( document.createElement('dict') );
+        toolbar_items_dict.appendChild( document.createTextNode('\n\t\t') );
+
+        dictvalues.forEach(function(toolbar_item){
+            var key = document.createElement("key");
+            key.textContent = toolbar_item.key;
+            if( isFinite(toolbar_item.value)) {
+                var value = document.createElement("real");
+            } else {
+                var value = document.createElement("string");
+            }
+            value.textContent = toolbar_item.value;
+            [key,value].forEach(function(child){
+                toolbar_items.appendChild( document.createTextNode('\n\t\t\t\t') );
+                toolbar_items.appendChild(child);
+            });
+        });
+        toolbar_items.appendChild( document.createTextNode('\n\t\t\t') );
+    }
+
     get_node('Author').textContent = settings.author;
 
     get_node('CFBundleDisplayName'       ).textContent = settings.title;
@@ -436,26 +466,22 @@ function build_safari() {
     get_node('Description'               ).textContent = settings.description;
     get_node('Website'                   ).textContent = settings.website;
     if( settings.popup ) {
-        var  toolbar_items_dict = get_node('Toolbar Items');
-        while (toolbar_items_dict.firstChild) toolbar_items_dict.removeChild(toolbar_items_dict.firstChild);
-        toolbar_items_dict.appendChild( document.createTextNode('\n\t\t\t') );
-        var toolbar_items=toolbar_items_dict.appendChild( document.createElement('dict') );
-        toolbar_items_dict.appendChild( document.createTextNode('\n\t\t') );
+        if( settings.popup && settings.popup.page ) {
+            var popoverID = settings.title.toLowerCase()+'Popover';
+            update_dict( 'Popovers',
+                         [ { key:'Identifier',value: popoverID},
+                           { key:'Filename'  ,value: settings.popup.page   },
+                           { key:'Width'     ,value: settings.popup.width  },
+                           { key:'Height'    ,value: settings.popup.height }
+                         ]);
+        }
+        var tbItem = [ { key:'Identifier',value: settings.title.toLowerCase()+'Btn'},
+                       { key:'Image'     ,value: settings.popup.icon },
+                       { key:'Label'     ,value: settings.title }
+                     ];
+        if(settings.popup.page) tbItem.push({ key:'Popover', value: popoverID });
+        update_dict( 'Toolbar Items', tbItem );
 
-        [ { key:'Identifier', value:settings.title.toLowerCase()+'Btn'},
-          { key:'Image'     ,value:  settings.popup.icon },
-          { key:'Label'     ,value: settings.title }
-        ].forEach(function(toolbar_item){
-            var key = document.createElement("key");
-            key.textContent = toolbar_item.key;
-            var value = document.createElement("string");
-            value.textContent = toolbar_item.value;
-            [key,value].forEach(function(child){
-                toolbar_items.appendChild( document.createTextNode('\n\t\t\t\t') );
-                toolbar_items.appendChild(child);
-            });
-        });
-        toolbar_items.appendChild( document.createTextNode('\n\t\t\t') );
     }
 
     var match_domains = get_node('Allowed Domains');
@@ -479,6 +505,12 @@ function build_safari() {
     var extension_files = [].concat( settings.contentScriptFiles)
                             .concat( settings.contentCSSFiles)
                             .concat( settings.backgroundScriptFiles);
+    if( settings.popup && settings.popup.extra_files ) {
+        extension_files = extension_files.concat(settings.popup.extra_files);
+    }
+    if( settings.extra_files && settings.extra_files != {} ) {
+        extension_files = extension_files.concat(settings.extra_files);
+    }
     // Copy all collected files from lib to Safari.safariextension/
     extension_files.forEach(function(file)    { hardLink( 'lib/'+file, 'Safari.safariextension/' + file ) });
 
@@ -723,10 +755,8 @@ function build_chrome() {
             if ( file[0] == '.' ) return;
             if ( file.search( /^(?:background\.js|chrome-bootstrap\.css|options\.js)$/ ) == 0 ) return;
             if( fs.isDirectory('Chrome/'+file) ) {
-                console.log('removing dir '+'Chrome/'+file);
                 fs.removeTree('Chrome/'+file);
             } else {
-                console.log('removing file '+'Chrome/'+file);
                 fs.remove('Chrome/' + file);
             }
         });
