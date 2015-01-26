@@ -13,7 +13,7 @@
     "description": "Discover Lobby Networks",
     "license":     "GPL",
     "author":      "mdt",
-    "version":     "0.1",
+    "version":     "0.11",
     "website":     "http://lobbyradar.de",
     "icons": {
             16: "lobbyradar-16.png",
@@ -67,7 +67,7 @@
          */
         {
             "name": "whitelist",
-            "type": "text",
+            "type": "string",
             "title": "Whitelist",
             "description": "Pers&ouml;nliche Liste von Domains auf denen Lobbyradar aktiv ist. Ein Eintrag pro Zeile.",
             "value": "",

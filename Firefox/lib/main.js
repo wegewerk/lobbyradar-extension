@@ -201,7 +201,7 @@ pageMod.PageMod({
 				});
 				break;
 			default:
-				worker.postMessage({status: "unrecognized request type"});
+				worker.postMessage({status: "unrecognized request '"+request.requestType+"'"});
 				break;
 		}
 

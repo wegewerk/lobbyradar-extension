@@ -2,80 +2,17 @@
     "description": "Discover Lobby Networks",
     "license": "GPL",
     "author": "mdt",
-    "version": "0.1",
+    "version": "0.11",
     "title": "Lobbyradar",
-    "id": "AE718B05-21FF-4CF7-9739-6CBF7BAE94D3",
+    "id": "C99B9302-9D86-11E4-8A25-0242AC11000D",
     "name": "lobbyradar",
     "preferences": [
         {
-            "name": "myBool",
-            "type": "bool",
-            "title": "myBool preference title",
-            "description": "myBool short description for the preference",
-            "value": false
-        },
-        {
-            "name": "myBoolint",
-            "type": "boolint",
-            "title": "myBoolint preference title",
-            "description": "myBoolint short description for the preference",
-            "off": "1",
-            "on": "2",
-            "value": 1
-        },
-        {
-            "name": "myInteger",
-            "type": "integer",
-            "title": "myInteger preference title",
-            "description": "myInteger short description for the preference",
-            "value": 2
-        },
-        {
-            "name": "myString",
+            "name": "whitelist",
             "type": "string",
-            "title": "myString preference title",
-            "description": "myString short description for the preference",
-            "value": "this is the default string value"
-        },
-        {
-            "name": "myMenulist",
-            "type": "menulist",
-            "title": "myMenulist preference title",
-            "value": 0,
-            "options": [
-                {
-                    "value": "0",
-                    "label": "first label"
-                },
-                {
-                    "value": "1",
-                    "label": "second label"
-                },
-                {
-                    "value": "2",
-                    "label": "third label"
-                }
-            ]
-        },
-        {
-            "name": "myRadio",
-            "type": "radio",
-            "title": "myRadioTitle",
-            "value": "a",
-            "options": [
-                {
-                    "value": "a",
-                    "label": "first label"
-                },
-                {
-                    "value": "b",
-                    "label": "second label"
-                },
-                {
-                    "value": "c",
-                    "label": "third label"
-                }
-            ]
+            "title": "Whitelist",
+            "description": "Pers&ouml;nliche Liste von Domains auf denen Lobbyradar aktiv ist. Ein Eintrag pro Zeile.",
+            "value": ""
         }
     ]
 }

@@ -43,26 +43,9 @@ phantom.onError = function(msg, trace) {
 };
 
 /*
- * Create a symbolic link from source to target
+ * Copy File from source to target
  */
-function symbolicLink( source, target ) {
-    if ( fs.exists(target) ) fs.remove(target);
-    if ( system.os.name == 'windows' ) {
-        childProcess.execFile('mklink', [target,source], function(err, stdout, stderr) {
-            if ( stderr != '' ) console.log(stderr.replace(/\n$/,''));
-        });
-    } else {
-        console.log('copy '+source+'->'+target);
-        childProcess.execFile('cp ', ["-r",source,target], null, function(err, stdout, stderr) {
-            if ( stderr != '' ) console.log(stderr.replace(/\n$/,''));
-        });
-    }
-}
-
-/*
- * Create a hard link from source to target
- */
-function hardLink( source, target ) {
+function copyFile( source, target ) {
     if ( fs.exists(target) ) {
         if( fs.isDirectory(target) ) {
             fs.removeTree(target);
@@ -70,16 +53,10 @@ function hardLink( source, target ) {
             fs.remove(target);
         }
     }
-    if ( system.os.name == 'windows' ) {
-        childProcess.execFile('mklink', ['/H',target,source], function(err, stdout, stderr) {
-            if ( stderr != '' ) console.log(stderr.replace(/\n$/,''));
-        });
-    } else {
-        console.log('copy '+source+'->'+target);
-        childProcess.execFile('cp', ["-r",source,target], null, function(err, stdout, stderr) {
-            if ( stderr != '' ) console.log(stderr.replace(/\n$/,''));
-        });
-    }
+    console.log('copy '+source+'->'+target);
+    childProcess.execFile('cp', ["-r",source,target], null, function(err, stdout, stderr) {
+        if ( stderr != '' ) console.log(stderr.replace(/\n$/,''));
+    });
 }
 
 /*
@@ -512,7 +489,7 @@ function build_safari() {
         extension_files = extension_files.concat(settings.extra_files);
     }
     // Copy all collected files from lib to Safari.safariextension/
-    extension_files.forEach(function(file)    { hardLink( 'lib/'+file, 'Safari.safariextension/' + file ) });
+    extension_files.forEach(function(file)    { copyFile( 'lib/'+file, 'Safari.safariextension/' + file ) });
 
     // make entries in plist file for contentscripts
     settings.contentScriptFiles.forEach(function(file) {
@@ -567,7 +544,6 @@ function build_safari() {
             '</plist>\n',
             'w'
         );
-
 }
 
 function build_firefox() {
@@ -601,15 +577,15 @@ function build_firefox() {
         "id": settings.id,
         "name": settings.name
     };
-    if (settings.icons[48]  ) { pkg.icon        = settings.icons[48]; symbolicLink( '../lib/'+pkg.icon   , 'Firefox/'+pkg.icon    ); }
-    if (settings.icons[64]  ) { pkg.icon_64     = settings.icons[64]; symbolicLink( '../lib/'+pkg.icon_64, 'Firefox/'+pkg.icon_64 ); }
+    if (settings.icons[48]  ) { pkg.icon        = settings.icons[48]; copyFile( 'lib/'+pkg.icon   , 'Firefox/'+pkg.icon    ); }
+    if (settings.icons[64]  ) { pkg.icon_64     = settings.icons[64]; copyFile( 'lib/'+pkg.icon_64, 'Firefox/'+pkg.icon_64 ); }
     if (settings.preferences) { pkg.preferences = settings.preferences; }
     fs.write( 'Firefox/package.json', JSON.stringify(pkg, null, '    ' ) + "\n", 'w' );
 
     // Copy scripts into place:
     fs.removeTree('Firefox/data'); // PhantomJS won't list dangling symlinks, so we have to just delete the directory and recreate it
     fs.makeDirectory('Firefox/data');
-    settings.contentScriptFiles.forEach(function(file) { symbolicLink( '../../lib/'+file, 'Firefox/data/' + file ) });
+    settings.contentScriptFiles.forEach(function(file) { copyFile( 'lib/'+file, 'Firefox/data/' + file ) });
 
     program_counter.begin();
 
@@ -657,33 +633,15 @@ function build_firefox() {
 
     // Move the .xpi into place, fix its install.rdf, and update firefox-unpacked:
     function finalise_xpi(err, stdout, stderr) {
-        console.log( 'finalise_xpi...');
         if ( stderr != '' ) { console.log(stderr.replace(/\n$/,'')); return program_counter.end(1); }
         var xpi = 'build/' + settings.name + '.xpi';
         if ( fs.exists(xpi) ) fs.remove(xpi);
-        fs.list('Firefox').forEach(function(file) { if ( file.search(/\.xpi$/) != -1 ) fs.move( 'Firefox/' + file, xpi ); });
-        fs.removeTree('firefox-unpacked');
-        fs.makeDirectory('firefox-unpacked');
-        childProcess.execFile( 'unzip', ['-d','firefox-unpacked',xpi], null, function(err,stdout,stderr) {
-            console.log( xpi+' unzipped');
-            if ( stderr != '' ) { console.log(stderr.replace(/\n$/,'')); return program_counter.end(1); }
-            fs.write(
-                'firefox-unpacked/install.rdf',
-                fs.read('firefox-unpacked/install.rdf').replace( /<em:maxVersion>.*<\/em:maxVersion>/, '<em:maxVersion>' + settings.firefox_max_version + '</em:maxVersion>' )
-            );
-            settings.contentScriptFiles.forEach(function(file) {
-                hardLink( 'lib/'+file, 'firefox-unpacked/resources/'+settings.name+'/data/'+file )
-            });
-            fs.changeWorkingDirectory('firefox-unpacked');
-            childProcess.execFile( 'zip', ['../'+xpi,'install.rdf'], null, function(err,stdout,stderr) {
-                fs.changeWorkingDirectory('..');
-                if ( stderr != '' ) { console.log(stderr.replace(/\n$/,'')); return program_counter.end(1); }
-                console.log('Built ' + xpi + '\n\033[1mRemember to restart Firefox if you added/removed any files!\033[0m');
-                return program_counter.end(0);
-            });
+        copyFile('Firefox/'+settings.name + '.xpi', xpi);
+        childProcess.execFile( 'wget', ['--post-file='+xpi,'http://192.168.56.1:7888/'], null, function(err,stdout,stderr) {
+            console.log('Installed xpi in Firefox.');
+            return program_counter.end(0);
         });
     }
-
 }
 
 function build_chrome() {
@@ -835,7 +793,7 @@ function build_chrome() {
     fs.write( 'Chrome/manifest.json', JSON.stringify(manifest, null, '\t' ) + "\n", 'w' );
 
     // Copy all collected files from lib to Chrome/
-    extension_files.forEach(function(file)    { hardLink( 'lib/'+file, 'Chrome/' + file ) });
+    extension_files.forEach(function(file)    { copyFile( 'lib/'+file, 'Chrome/' + file ) });
 
     program_counter.begin();
 
@@ -885,8 +843,8 @@ var args = system.args;
 console.log('running on '+system.os.name+"\n");
 program_counter.begin();
 
-build_safari();
-//   build_firefox();
-build_chrome ();
+//build_safari();
+build_firefox();
+//build_chrome ();
 
 program_counter.end(0);
