@@ -13,6 +13,13 @@
             "title": "Whitelist",
             "description": "Pers&ouml;nliche Liste von Domains auf denen Lobbyradar aktiv ist. Ein Eintrag pro Zeile.",
             "value": ""
+        },
+        {
+            "name": "updateinterval",
+            "type": "integer",
+            "title": "Update Interval",
+            "value": 30,
+            "description": "Aktualisierungsinterval für Lobbydaten (sekunden)"
         }
     ]
 }

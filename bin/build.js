@@ -579,7 +579,14 @@ function build_firefox() {
     };
     if (settings.icons[48]  ) { pkg.icon        = settings.icons[48]; copyFile( 'lib/'+pkg.icon   , 'Firefox/'+pkg.icon    ); }
     if (settings.icons[64]  ) { pkg.icon_64     = settings.icons[64]; copyFile( 'lib/'+pkg.icon_64, 'Firefox/'+pkg.icon_64 ); }
-    if (settings.preferences) { pkg.preferences = settings.preferences; }
+    if (settings.preferences) {
+        pkg.preferences = settings.preferences.map(function(preference) {
+            switch ( preference.type ) {
+                case 'text': preference.type='string'; // no break here
+                default:     return preference
+            }
+        });
+    }
     fs.write( 'Firefox/package.json', JSON.stringify(pkg, null, '    ' ) + "\n", 'w' );
 
     // Copy scripts into place:
@@ -844,7 +851,7 @@ console.log('running on '+system.os.name+"\n");
 program_counter.begin();
 
 //build_safari();
-build_firefox();
-//build_chrome ();
+//build_firefox();
+build_chrome ();
 
 program_counter.end(0);

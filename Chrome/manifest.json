@@ -1,7 +1,7 @@
 {
 	"name": "Lobbyradar",
 	"author": "mdt",
-	"version": "0.1",
+	"version": "0.11",
 	"manifest_version": 2,
 	"description": "Discover Lobby Networks",
 	"background": {

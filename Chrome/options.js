@@ -21,7 +21,7 @@ function get_preferences() {
             }
             break;
         case 'SELECT': preferences[element.id] = element.value; break;
-        case 'TEXTAREA': preferences[element.id] = element.value.split("\n"); break;
+        case 'TEXTAREA': preferences[element.id] = element.value.split("\n").join(","); break;
         }
     });
     return preferences;
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 break;
             case 'SELECT': element.value = preferences[element.id]; break;
-            case 'TEXTAREA': element.value = preferences[element.id].join("\n"); break;
+            case 'TEXTAREA': element.value = preferences[element.id].split(',').join("\n"); break;
             }
         });
     });
