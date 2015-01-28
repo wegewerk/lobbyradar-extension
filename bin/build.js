@@ -562,7 +562,9 @@ function build_firefox() {
           :  'exports.include = ["http://' + settings.match_domain + '"];\n'
         ) +
         'exports.contentScriptWhen = "' + when_string[settings.contentScriptWhen] + '";\n' +
-        'exports.contentScriptFile = ' + JSON.stringify(settings.contentScriptFiles) + ";\n"
+        'exports.contentScriptFile = ' + JSON.stringify(settings.contentScriptFiles) + ";\n"+
+        'exports.contentStyleFile = ' + JSON.stringify(settings.contentCSSFiles) + ";\n"+
+        'exports.icons = ' + JSON.stringify(settings.icons) + ";\n"
         ,
         'w'
     );
@@ -577,13 +579,15 @@ function build_firefox() {
         "id": settings.id,
         "name": settings.name
     };
+    var extension_files = [];
+
     if (settings.icons[48]  ) { pkg.icon        = settings.icons[48]; copyFile( 'lib/'+pkg.icon   , 'Firefox/'+pkg.icon    ); }
     if (settings.icons[64]  ) { pkg.icon_64     = settings.icons[64]; copyFile( 'lib/'+pkg.icon_64, 'Firefox/'+pkg.icon_64 ); }
     if (settings.preferences) {
-        pkg.preferences = settings.preferences.map(function(preference) {
+        pkg.preferences = settings.preferences.filter(function(preference) {
             switch ( preference.type ) {
-                case 'text': preference.type='string'; // no break here
-                default:     return preference
+                case 'text': return false;
+                default:     return true;
             }
         });
     }
@@ -592,7 +596,17 @@ function build_firefox() {
     // Copy scripts into place:
     fs.removeTree('Firefox/data'); // PhantomJS won't list dangling symlinks, so we have to just delete the directory and recreate it
     fs.makeDirectory('Firefox/data');
-    settings.contentScriptFiles.forEach(function(file) { copyFile( 'lib/'+file, 'Firefox/data/' + file ) });
+    extension_files = extension_files.concat(settings.contentScriptFiles);
+    extension_files = extension_files.concat(settings.contentCSSFiles);
+    if (settings.icons[16]  ) extension_files.push( settings.icons[16] );
+    if (settings.icons[32]  ) extension_files.push( settings.icons[32] );
+    if( settings.popup && settings.popup != {} ){
+        extension_files = extension_files.concat(settings.popup.extra_files);
+    }
+    if( settings.extra_files && settings.extra_files != {} ) {
+        extension_files = extension_files.concat(settings.extra_files);
+    }
+    extension_files.forEach(function(file) { copyFile( 'lib/'+file, 'Firefox/data/' + file ) });
 
     program_counter.begin();
 
@@ -644,6 +658,7 @@ function build_firefox() {
         var xpi = 'build/' + settings.name + '.xpi';
         if ( fs.exists(xpi) ) fs.remove(xpi);
         copyFile('Firefox/'+settings.name + '.xpi', xpi);
+        console.log('wget --post-file='+xpi,'http://192.168.56.1:7888/');
         childProcess.execFile( 'wget', ['--post-file='+xpi,'http://192.168.56.1:7888/'], null, function(err,stdout,stderr) {
             console.log('Installed xpi in Firefox.');
             return program_counter.end(0);
@@ -758,7 +773,7 @@ function build_chrome() {
             '       <div class="container-fluid">\n' +
             '           <div class="navbar-header">\n' +
             '               <a class="navbar-brand" href="http://lobbyradar.opendatacloud.de">\n' +
-            '                   Lobbyradar\n' +
+            '                   Lobby<strong>radar</strong>\n' +
             '               </a>\n' +
             '           </div>\n' +
             '       </div>\n' +
@@ -869,7 +884,7 @@ console.log('running on '+system.os.name+"\n");
 program_counter.begin();
 
 build_safari();
-//build_firefox();
+build_firefox();
 build_chrome ();
 
 program_counter.end(0);

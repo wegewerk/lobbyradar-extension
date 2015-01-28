@@ -13,12 +13,16 @@
     "description": "Discover Lobby Networks",
     "license":     "GPL",
     "author":      "mdt",
-    "version":     "0.11",
-    "website":     "http://lobbyradar.de",
+    "version":     "0.2",
+    "website":     "http://lobbyradar.opendatacloud.de",
     "icons": {
-            16: "lobbyradar-16.png",
-            38: "lobbyradar-38.png",
-            128: "lobbyradar-128.png"
+            "16": "lobbyradar-16.png",
+            "16m": "lobbyradar-16-mono.png",
+            "32": "lobbyradar-32.png",
+            "38": "lobbyradar-38.png",
+            "48": "lobbyradar-48.png",
+            "64": "lobbyradar-64.png",
+            "128": "lobbyradar-128.png"
     },
 
     "long_description":
@@ -53,7 +57,7 @@
     "popup": {
         "page": "popup/popup.html",
         "extra_files": [ "popup" ],
-        "icon": "lobbyradar-16.png", // safari only. Chrome uses best match from icons{} array
+        "icon": "lobbyradar-16-mono.png", // safari only. Chrome uses best match from icons{} array
         "width": 280,
         "height": 200
     },
@@ -80,19 +84,19 @@
             "description": "Aktualisierungsinterval für Lobbydaten",
             "options": [
                 {
-                    "value": 10*60,
+                    "value": "600",
                     "label": "alle 10 Minuten"
                 },
                 {
-                    "value": 3600,
+                    "value": "3600",
                     "label": "stündlich"
                 },
                 {
-                    "value": 60*60*24,
+                    "value": "86400",
                     "label": "täglich"
                 },
                 {
-                    "value": 60*60*24*7,
+                    "value": "604800",
                     "label": "wöchentlich"
                 }
             ]

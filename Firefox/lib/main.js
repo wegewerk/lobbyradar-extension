@@ -1,5 +1,6 @@
 // Import the APIs we need.
 
+var { on, once, off, emit } = require('sdk/event/core');
 var pageMod = require("sdk/page-mod");
 var Request = require("sdk/request").Request;
 var notifications = require("sdk/notifications");
@@ -11,9 +12,13 @@ var contextMenu = require("sdk/context-menu");
 var priv = require("sdk/private-browsing");
 var windows = require("sdk/windows").browserWindows;
 var prefs = require("sdk/simple-prefs").prefs;
+var tabData = require('tabData').tabData;
+
+var lobbyradar = require("bg_search");
 
 // require chrome allows us to use XPCOM objects...
 const {Cc, Ci, Cu, Cr} = require("chrome");
+const {Services} = Cu.import('resource://gre/modules/Services.jsm');
 
 var historyService = Cc["@mozilla.org/browser/history;1"].getService(Ci.mozIAsyncHistory);
 
@@ -45,11 +50,31 @@ localStorage.removeItem = function(key) {
 };
 
 var settings = require("./settings.js");
+var lobbyradarBtn  =  require('bg_browserbutton').buttonfunctions;
 
+// globales Tabdata-Objekt an den Button und das Suchmodul übergeben
+lobbyradarBtn.initialize(tabData);
+lobbyradar.lobbyradar.initialize(tabData);
+
+// über das tabdata-Objekt kommuniziert das Popup mit dem Suchmodul
+on(tabData,'addWhitelist',lobbyradar.lobbyradar.addWhitelist);
+on(tabData,'removeWhitelist',lobbyradar.lobbyradar.removeWhitelist);
+// Popup möchte Einstellungsseite öffnen
+on(tabData,'openPrefs',function(){
+    Services.wm.getMostRecentWindow('navigator:browser')
+            .BrowserOpenAddonsMgr('addons://detail/'+self.id+'/preferences');
+
+});
+// alle Einstellungsänderungen an einen change-handler weitergeben
+require("sdk/simple-prefs").on("", lobbyradar.lobbyradar.prefsChanged);
+
+// content-scripte in Seite einfügen
 pageMod.PageMod({
   include: settings.include,
   contentScriptWhen: settings.contentScriptWhen,
   contentScriptFile: settings.contentScriptFile.map(function(file) { return self.data.url(file) }),
+  contentStyleFile:  settings.contentStyleFile.map(function(file) { return self.data.url(file) }),
+  attachTo:'top',
   onAttach: function(worker) {
 	tabs.on('activate', function(tab) {
 		// run some code when a tab is activated...
@@ -63,7 +88,20 @@ pageMod.PageMod({
 
 	worker.on('message', function(data) {
 		var request = data;
+        request.tab = worker.tab;
 		switch(request.requestType) {
+            case 'updateBrowserButton': lobbyradarBtn.updateBrowserButton(worker.tab);break;
+            case 'setBrowserButton_waiting': lobbyradarBtn.setBrowserButton_waiting(worker.tab);break;
+            case 'detail_for_id':
+            case 'searchNames': lobbyradar.lobbyradar.dispatch(request,function(returnvalue) {
+                                    worker.postMessage({message:{
+                                        name: request.requestType,
+                                        callbackID: request.callbackID,
+                                        status: true,
+                                        value: returnvalue
+                                    }});
+
+                                });break;
 			case 'xmlhttpRequest':
 				var responseObj = {
 					callbackID: request.callbackID,

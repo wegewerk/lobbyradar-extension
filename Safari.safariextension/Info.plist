@@ -13,9 +13,9 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.11</string>
+	<string>0.2</string>
 	<key>CFBundleVersion</key>
-	<string>0.11</string>
+	<string>0.2</string>
 	<key>Chrome</key>
 	<dict>
 		<key>Database Quota</key>
@@ -25,14 +25,14 @@
 		<key>Popovers</key>
 		<array>
 			<dict>
-				<key>Filename</key>
-				<string>popup/popup.html</string>
-				<key>Height</key>
-				<real>200</real>
 				<key>Identifier</key>
 				<string>lobbyradarPopover</string>
+				<key>Filename</key>
+				<string>popup/popup.html</string>
 				<key>Width</key>
 				<real>280</real>
+				<key>Height</key>
+				<real>200</real>
 			</dict>
 		</array>
 		<key>Toolbar Items</key>
@@ -41,7 +41,7 @@
 				<key>Identifier</key>
 				<string>lobbyradarBtn</string>
 				<key>Image</key>
-				<string>lobbyradar-16.png</string>
+				<string>lobbyradar-16-mono.png</string>
 				<key>Label</key>
 				<string>Lobbyradar</string>
 				<key>Popover</key>
@@ -93,6 +93,6 @@
 		</dict>
 	</dict>
 	<key>Website</key>
-	<string>http://lobbyradar.de</string>
+	<string>http://lobbyradar.opendatacloud.de</string>
 </dict>
 </plist>

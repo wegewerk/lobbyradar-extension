@@ -32,9 +32,13 @@ function update_content() {
         var tab = tabData.tab;
         $('#btn_enable_for_site').click(function(){
             enable_for_site(tab.url);
+            $('.dynamic').hide();
+            $('#reloadhint').show();
         });
         $('#btn_disable_for_site').click(function(){
             disable_for_site(tab.url);
+            $('.dynamic').hide();
+            $('#reloadhint').show();
         });
         if( info.disabled ) {
             $('#plugin_disabled').show();

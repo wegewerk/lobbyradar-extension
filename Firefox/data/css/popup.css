@@ -1,0 +1,19 @@
+#btn_disable_for_site,
+#btn_enable_for_site,
+#plugin_disabled, #hits, #nohits {
+    display:none;
+}
+
+.lighttext {
+    opacity: 0;
+}
+.lighttext:hover {
+    opacity: 0.8;
+}
+body {
+    overflow: hidden;
+}
+
+html, body {
+    height: auto;
+}

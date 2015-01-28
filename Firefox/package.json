@@ -2,24 +2,37 @@
     "description": "Discover Lobby Networks",
     "license": "GPL",
     "author": "mdt",
-    "version": "0.11",
+    "version": "0.2",
     "title": "Lobbyradar",
     "id": "C99B9302-9D86-11E4-8A25-0242AC11000D",
     "name": "lobbyradar",
+    "icon": "lobbyradar-48.png",
+    "icon_64": "lobbyradar-64.png",
     "preferences": [
         {
-            "name": "whitelist",
-            "type": "string",
-            "title": "Whitelist",
-            "description": "Pers&ouml;nliche Liste von Domains auf denen Lobbyradar aktiv ist. Ein Eintrag pro Zeile.",
-            "value": ""
-        },
-        {
             "name": "updateinterval",
-            "type": "integer",
+            "type": "menulist",
             "title": "Update Interval",
-            "value": 30,
-            "description": "Aktualisierungsinterval für Lobbydaten (sekunden)"
+            "value": 3600,
+            "description": "Aktualisierungsinterval für Lobbydaten",
+            "options": [
+                {
+                    "value": "600",
+                    "label": "alle 10 Minuten"
+                },
+                {
+                    "value": "3600",
+                    "label": "stündlich"
+                },
+                {
+                    "value": "86400",
+                    "label": "täglich"
+                },
+                {
+                    "value": "604800",
+                    "label": "wöchentlich"
+                }
+            ]
         }
     ]
 }
