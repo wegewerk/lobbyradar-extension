@@ -535,7 +535,7 @@ function build_safari() {
                 case 'boolint' : return build_dict( preference, { Type: 'CheckBox', FalseValue: 0, TrueValue: 1 } );
                 case 'integer' : return build_dict( preference, { Type: 'Slider'   } );
                 case 'string'  : return build_dict( preference, { Type: 'TextField', Password: false } );
-                case 'text'    : return build_dict( preference, { Type: 'TextField', Password: false } );
+                case 'text'    : return build_dict( preference, { Type: 'Hidden' } );
                 case 'menulist': return build_dict( preference, { Type: 'ListBox', Titles: preference.options.map(function(o) { return o.label }), Values: preference.options.map(function(o) { return o.value }),  } );
                 case 'radio'   : return build_dict( preference, { Type: 'RadioButtons', Titles: preference.options.map(function(o) { return o.label }), Values: preference.options.map(function(o) { return o.value }),  } );
                 }
