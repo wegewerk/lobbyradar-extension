@@ -1,5 +1,4 @@
-//var updateURL = 'http://lobbyradar.opendatacloud.de/api/entity/export?apikey=8ee0f9b87sjaret2md5a';
-var updateURL = 'http://mdt.vts8.hq.wegewerk.com/lobbyradar-testpage/names.json'
+var updateURL = 'http://lobbyradar.opendatacloud.de/api/entity/export?apikey=8ee0f9b87sjaret2md5a';
 
 var storage = require("sdk/simple-storage").storage;
 var prefs = require("sdk/simple-prefs").prefs;
