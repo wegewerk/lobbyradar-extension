@@ -27,7 +27,8 @@
 				"jquery.js",
 				"jquery_highlight.js",
 				"jquery.tooltipster.min.js",
-				"fg_page.js"
+				"fg_page.js",
+				"moment.js"
 			],
 			"css": [
 				"style.css",

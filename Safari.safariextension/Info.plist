@@ -13,9 +13,9 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.1</string>
+	<string>0.11</string>
 	<key>CFBundleVersion</key>
-	<string>0.1</string>
+	<string>0.11</string>
 	<key>Chrome</key>
 	<dict>
 		<key>Database Quota</key>
@@ -59,6 +59,7 @@
 				<string>jquery_highlight.js</string>
 				<string>jquery.tooltipster.min.js</string>
 				<string>fg_page.js</string>
+				<string>moment.js</string>
 			</array>
 			<key>Start</key>
 			<array>

@@ -1,3 +1,6 @@
+html, body {
+    height: 100%;
+}
 body {
 	min-width: 280px;
 	min-height: 200px;
@@ -56,7 +59,7 @@ a.navbar-brand:focus {
 	margin: -15px 5px -10px 0px;
 }
 
-.lighttext { 	
+.lighttext {
 	font-size:100%!important;
 	margin-left:10px;
 	color:white!important;
@@ -69,4 +72,8 @@ a.navbar-brand:focus {
 .navbar+.container {
 	margin-top: 80px;
 	color:white;
+}
+
+.help-block {
+    color: #fff;
 }

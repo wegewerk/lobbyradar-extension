@@ -1,15 +1,35 @@
 <!DOCTYPE html>
 <html>
-<head><title>Lobbyradar Options</title>
-<link href="css/font/roboto-slab.css" rel="stylesheet" type="text/css"><link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
-<link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css" />
-<link rel="stylesheet" type="text/css" href="css/lobbyradar.css" />
-</head><body">
-<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">    <div class="container-fluid">        <div class="navbar-header">            <a class="navbar-brand" href="http://lobbyradar.opendatacloud.de">                <img src="lobbyradar.png">                Lobbyradar            </a>        </div>    </div></div><div class="container"><form>
-<div class="form-group"><label for="whitelist">Whitelist</label><textarea class="form-control" id="whitelist" cols="40" rows="10"></textarea><span class="help-block">Pers&ouml;nliche Liste von Domains auf denen Lobbyradar aktiv ist. Ein Eintrag pro Zeile.</span></div>
-<div class="form-group"><label for="updateinterval">Update Interval</label><input class="form-control" id="updateinterval" type="number" value="30"></div>
-</div>
-<div class="action-area"></div>
+<head>   <title>Lobbyradar Options</title>
+   <meta charset="utf-8">
+   <link href="css/font/roboto-slab.css" rel="stylesheet" type="text/css">
+   <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+   <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css" />
+   <link rel="stylesheet" type="text/css" href="css/lobbyradar.css" />
+   <script src="jquery.js"></script>
+   <script src="moment.js"></script>
+</head><body>
+   <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+       <div class="container-fluid">
+           <div class="navbar-header">
+               <a class="navbar-brand" href="http://lobbyradar.opendatacloud.de">
+                   Lobbyradar
+               </a>
+           </div>
+       </div>
+   </div>
+<div class="container">
+<form>
+    <div class="form-group"><label for="whitelist">Whitelist</label><textarea class="form-control" id="whitelist" cols="40" rows="10"></textarea>
+    <span class="help-block" id="whitelist_help">Persönliche Liste von Domains auf denen Lobbyradar aktiv ist. Ein Eintrag pro Zeile.</span></div>
+
+    <div class="media-device-control"><span>Update Interval:</span><select id="updateinterval" class="form-control weakrtl"> <option value="600">alle 10 Minuten</option>
+ <option value="3600" selected>stündlich</option>
+ <option value="86400">täglich</option>
+ <option value="604800">wöchentlich</option>
+</select></div>
+    <span class="help-block" id="updateinterval_help">Aktualisierungsinterval für Lobbydaten</span></div>
+    </div>
 </form>
 </div>
 <script src="options.js"></script>

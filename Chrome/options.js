@@ -6,18 +6,18 @@ function get_preferences() {
         switch ( element.nodeName ) {
         case 'INPUT':
             switch ( element.type ) {
-            case 'checkbox':
-                if ( element.checked ) {
-                    preferences[element.id] =
-                        element.hasAttribute('data-on') ? parseInt(element.getAttribute('data-on'),10) : true;
-                } else {
-                    preferences[element.id] =
-                        element.hasAttribute('data-off') ? parseInt(element.getAttribute('data-off'),10) : false;
-                }
-                break;
-            case 'radio' : if ( element.checked ) preferences[element.name] = element.value; break;
-            case 'number': preferences[element.id] = parseInt(element.value,10); break;
-            case 'text'  : preferences[element.id] = element.value; break;
+                case 'checkbox':
+                    if ( element.checked ) {
+                        preferences[element.id] =
+                            element.hasAttribute('data-on') ? parseInt(element.getAttribute('data-on'),10) : true;
+                    } else {
+                        preferences[element.id] =
+                            element.hasAttribute('data-off') ? parseInt(element.getAttribute('data-off'),10) : false;
+                    }
+                    break;
+                case 'radio' : if ( element.checked ) preferences[element.name] = element.value; break;
+                case 'number': preferences[element.id] = parseInt(element.value,10); break;
+                case 'text'  : preferences[element.id] = element.value; break;
             }
             break;
         case 'SELECT': preferences[element.id] = element.value; break;
@@ -56,3 +56,14 @@ function storePreferences() {
 }
 document.addEventListener('click', storePreferences);
 document.addEventListener('input', storePreferences);
+
+$(function(){
+    moment.locale('de');
+    chrome.storage.local.get('last_update',function(last_update){
+        var string_last_update = "noch nie.";
+        if(last_update.last_update){
+            string_last_update = moment(last_update.last_update).calendar();
+        }
+        $('#updateinterval_help').append('<br/>Letzte Aktualisierung: '+string_last_update);
+    });
+});

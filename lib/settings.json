@@ -35,7 +35,7 @@
      */
     "contentScriptWhen": "late",
 
-    "contentScriptFiles":    [ "jquery.js","jquery_highlight.js","jquery.tooltipster.min.js","fg_page.js" ],
+    "contentScriptFiles":    [ "jquery.js","jquery_highlight.js","jquery.tooltipster.min.js","fg_page.js","moment.js" ],
     "contentCSSFiles":       [ "style.css","tooltipster.css" ],
     "backgroundScriptFiles": [ "underscore.js","bg_common.js", "bg_search.js","bg_browserbutton.js","jquery.js",],
     "extra_files":           [ "css","lobbyradar.png" ],
@@ -69,16 +69,34 @@
             "name": "whitelist",
             "type": "text",
             "title": "Whitelist",
-            "description": "Pers&ouml;nliche Liste von Domains auf denen Lobbyradar aktiv ist. Ein Eintrag pro Zeile.",
+            "description": "Persönliche Liste von Domains auf denen Lobbyradar aktiv ist. Ein Eintrag pro Zeile.",
             "value": "",
         },
         {
             "name": "updateinterval",
-            "type": "integer",
+            "type": "menulist",
             "title": "Update Interval",
-            "value": 30,
-            "description": "Aktualisierungsinterval für Lobbydaten (sekunden)",
-        },
+            "value": 3600,
+            "description": "Aktualisierungsinterval für Lobbydaten",
+            "options": [
+                {
+                    "value": 10*60,
+                    "label": "alle 10 Minuten"
+                },
+                {
+                    "value": 3600,
+                    "label": "stündlich"
+                },
+                {
+                    "value": 60*60*24,
+                    "label": "täglich"
+                },
+                {
+                    "value": 60*60*24*7,
+                    "label": "wöchentlich"
+                }
+            ]
+        }
     ],
 
     "firefox_max_version": '32.*'

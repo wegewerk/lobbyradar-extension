@@ -744,48 +744,66 @@ function build_chrome() {
             'Chrome/' + manifest.options_page,
             "<!DOCTYPE html>\n" +
             "<html>\n" +
-            "<head><title>" + settings.title + " Options</title>\n" +
-            '<link href="css/font/roboto-slab.css" rel="stylesheet" type="text/css">' +
-            '<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />\n' +
-            '<link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css" />\n' +
-            '<link rel="stylesheet" type="text/css" href="css/lobbyradar.css" />\n' +
-            '</head><body">\n' +
-            '<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">' +
-            '    <div class="container-fluid">' +
-            '        <div class="navbar-header">' +
-            '            <a class="navbar-brand" href="http://lobbyradar.opendatacloud.de">' +
-            '                <img src="lobbyradar.png">' +
-            '                Lobbyradar' +
-            '            </a>' +
-            '        </div>' +
-            '    </div>' +
-            '</div>' +
-            '<div class="container">' +
-            '<form>\n' +
+            "<head>" +
+            "   <title>" + settings.title + " Options</title>\n" +
+            '   <meta charset="utf-8">\n'+
+            '   <link href="css/font/roboto-slab.css" rel="stylesheet" type="text/css">\n' +
+            '   <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />\n' +
+            '   <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css" />\n' +
+            '   <link rel="stylesheet" type="text/css" href="css/lobbyradar.css" />\n' +
+            '   <script src="jquery.js"></script>\n' +
+            '   <script src="moment.js"></script>\n' +
+            '</head><body>\n' +
+            '   <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">\n' +
+            '       <div class="container-fluid">\n' +
+            '           <div class="navbar-header">\n' +
+            '               <a class="navbar-brand" href="http://lobbyradar.opendatacloud.de">\n' +
+            '                   Lobbyradar\n' +
+            '               </a>\n' +
+            '           </div>\n' +
+            '       </div>\n' +
+            '   </div>\n' +
+            '<div class="container">\n' +
+            '<form>\n    ' +
             settings.preferences.map(function(preference) {
+                var prefline = "";
                 switch ( preference.type ) {
-                case 'bool'   : return '<div class="checkbox"><label><input class="form-control" id="' + preference.name + '" ' + (preference.value?' checked':'') + ' type="checkbox">' + preference.title + '</label></div>\n';
-                case 'boolint': return '<div class="checkbox"><label><input class="form-control" id="' + preference.name + '" data-on="1" data-off="0"' + (preference.value?' checked':'') + ' type="checkbox">' + preference.title + '</label></div>\n';
-                case 'integer': return '<div class="form-group"><label for="' + preference.name + '">' + preference.title + '</label><input class="form-control" id="' + preference.name + '" type="number" value="' + preference.value + '"></div>\n';
-                case 'string' : return '<div class="form-group"><label for="' + preference.name + '">' + preference.title + '</label><input class="form-control" id="' + preference.name + '" type="text"   value="' + preference.value + '"></div>\n';
-                case 'text'   : return '<div class="form-group"><label for="' + preference.name + '">' + preference.title + '</label><textarea class="form-control" id="' + preference.name + '" cols="40" rows="10">' + preference.value + '</textarea><span class="help-block">'+preference.description+'</span></div>\n';
-                case 'menulist':
-                    return '<div class="media-device-control"><span>' + preference.title + ':</span><select id="' + preference.name + '" class="pref weakrtl">' +
-                        preference.options.map(function(option) {
-                            return ' <option value="' + option.value + '"' + ( option.value == preference.value ? ' selected' : '' ) + '>' + option.label + '</option>\n';
-                        }).join('') +
-                        '</select></div>'
-                    ;
-                case 'radio':
-                    return '<section><h3>' + preference.title + '</h3>' +
+                    case 'bool'   : prefline = '<div class="checkbox"><label><input class="form-control" id="' + preference.name + '" ' + (preference.value?' checked':'') + ' type="checkbox">' + preference.title + '</label></div>\n';break;
+                    case 'boolint': prefline = '<div class="checkbox"><label><input class="form-control" id="' + preference.name + '" data-on="1" data-off="0"' + (preference.value?' checked':'') + ' type="checkbox">' + preference.title + '</label></div>\n';break;
+                    case 'integer': prefline = '<div class="form-group"><label for="' + preference.name + '">' + preference.title + '</label><input class="form-control" id="' + preference.name + '" type="number" value="' + preference.value + '"></div>\n';break;
+                    case 'string' : prefline = '<div class="form-group"><label for="' + preference.name + '">' + preference.title + '</label><input class="form-control" id="' + preference.name + '" type="text"   value="' + preference.value + '"></div>\n';break;
+                    case 'text'   : prefline = '<div class="form-group"><label for="' + preference.name + '">' + preference.title + '</label><textarea class="form-control" id="' + preference.name + '" cols="40" rows="10">' + preference.value + '</textarea>';break;
+                    case 'menulist':
+                        prefline = '<div class="media-device-control"><span>'
+                                   + preference.title + ':</span><select id="'
+                                   + preference.name + '" class="form-control weakrtl">' +
+                            preference.options.map(function(option) {
+                                return ' <option value="' + option.value + '"' + ( option.value == preference.value ? ' selected' : '' ) + '>' + option.label + '</option>\n';
+                            }).join('') +
+                            '</select></div>'
+                        ;break;
+                    case 'radio':
+                        prefline = '<section><h3>' + preference.title + '</h3>' +
                         preference.options.map(function(option,index) {
-                            return '<div class="radio"><span class="controlled-setting-with-label"><input id="' + preference.name + '-' + index + '" class="pref" type="radio" name="' + preference.name + '" value="' + option.value + '"' + ( option.value == preference.value ? ' checked' : '' ) + '><label for="' + preference.name + '-' + index + '">' + option.label + ( option.value == preference.value ? ' (recommended)' : '' ) + '</label></span></div>'
-                        }).join('') + '</section>';
+                            return '<div class="radio"><span class="controlled-setting-with-label"><input id="'
+                                   + preference.name + '-' + index + '" class="form-control" type="radio" name="'
+                                   + preference.name + '" value="'
+                                   + option.value + '"'
+                                   + ( option.value == preference.value ? ' checked' : '' )
+                                   + '><label for="' + preference.name + '-' + index + '">'
+                                   + option.label + ( option.value == preference.value ? ' (recommended)' : '' )
+                                   + '</label></span></div>'
+                        }).join("\n        ")
+                        + '</section>';break;
                 }
-            }).join('') +
+                if( preference.description ) {
+                    prefline += '\n    <span class="help-block" id="'+preference.name+'_help">'+preference.description+'</span></div>\n';
+                }
+                return prefline;
 
-            '</div>\n' +
-            '<div class="action-area"></div>\n' + // no buttons because we apply changes on click, but the padding makes the page look better
+            }).join('\n    ') +
+
+            '    </div>\n' +
             '</form>\n' +
             '</div>\n' +
             "<script src=\"options.js\"></script>\n" +
@@ -850,7 +868,7 @@ var args = system.args;
 console.log('running on '+system.os.name+"\n");
 program_counter.begin();
 
-//build_safari();
+build_safari();
 //build_firefox();
 build_chrome ();
 

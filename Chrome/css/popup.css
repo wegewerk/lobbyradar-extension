@@ -5,9 +5,15 @@
 }
 
 .lighttext {
-    font-size: 9px;
-    color: #666;
+    opacity: 0;
+}
+.lighttext:hover {
+    opacity: 0.8;
 }
 body {
     overflow: hidden;
+}
+
+html, body {
+    height: auto;
 }
