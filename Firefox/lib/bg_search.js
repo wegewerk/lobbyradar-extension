@@ -6,11 +6,6 @@ var { setInterval, clearInterval } = require('sdk/timers');
 var names = false;
 var whitelist = []; // personal whitelist
 var vendor_whitelist = [
-    "de.wikipedia.org",
-    "en.wikipedia.org",
-    "it.wikipedia.org",
-    "getbootstrap.com",
-    "projects.loc.int"
 ]; // the default whitelist
 var blacklist = ['lobbyradar.opendatacloud.de'];
 var callbackQ = [];

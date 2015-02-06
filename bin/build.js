@@ -658,11 +658,10 @@ function build_firefox() {
         var xpi = 'build/' + settings.name + '.xpi';
         if ( fs.exists(xpi) ) fs.remove(xpi);
         copyFile('Firefox/'+settings.name + '.xpi', xpi);
-        console.log('wget --post-file='+xpi,'http://192.168.56.1:7888/');
-        childProcess.execFile( 'wget', ['--post-file='+xpi,'http://192.168.56.1:7888/'], null, function(err,stdout,stderr) {
-            console.log('Installed xpi in Firefox.');
-            return program_counter.end(0);
-        });
+//        childProcess.execFile( 'wget', ['--post-file='+xpi,'http://192.168.56.1:7888/'], null, function(err,stdout,stderr) {
+//            console.log('Installed xpi in Firefox.');
+//            return program_counter.end(0);
+//        });
     }
 }
 
