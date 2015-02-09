@@ -21,6 +21,11 @@ body {
 	padding-top: 0;
 }
 
+.navbar-brand img {
+	max-width:150px;
+	height:auto!important;
+}
+
 .navbar-form {
 	padding-top: 15px;
 	padding-bottom: 15px;
