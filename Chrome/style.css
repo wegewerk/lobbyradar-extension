@@ -1,9 +1,10 @@
 span[class^="lobbradar_hit"] {
-	background: rgba(20, 59, 82, 0.9);
-	border-radius: 2px;
-	color:white;
-	cursor: pointer;
-	padding: 2px 4px 2px 3px;
+	border-bottom: 2px dotted rgba(20, 59, 82, 0.9);
+	background:rgba(20, 59, 82, 0.1);
+
+/*	color:white;
+*/	cursor: pointer;
+	padding: 2px 4px 0px 3px;
 }
 
 span[class^="lobbradar_hit"] > a:hover {
