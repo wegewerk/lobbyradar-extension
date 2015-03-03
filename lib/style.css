@@ -30,9 +30,10 @@ span[class^="lobbradar_hit"]::before {
 .tooltipster-content p {
 	font-family: sans-serif !important;
 }
-#lobbyradar_list {
-	overflow-x:hidden;
-	overflow-y: auto;
+.lobbyradar_list {
+	overflow-x: hidden !important;
+	overflow-y: auto !important;
+    padding: 0 !important;
 }
 
 .tooltipster-content {
@@ -66,7 +67,7 @@ span[class^="lobbradar_hit"]::before {
 }
 
 .lobbyradar_top a {
-	color:white!important; 
+	color:white!important;
 }
 .lobbyradar_middle {
 	background:transparent!important;

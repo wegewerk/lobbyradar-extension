@@ -12,8 +12,19 @@ var callbackQ = [];
 function parseNameList(result) {
     var local_names = {};
     _.each(result.result,function(ent,uid){
-        local_names[uid]={names:ent[1], connections:ent[2]};
-    })
+        local_names[uid]={names:ent[1], connections:ent[2], regexes:new Array()};
+        // make Regexes from names
+        _.each(local_names[uid].names,function(name) {
+            // make regex matching this exact string by escaping chars special to regexes
+            var nameReg = name.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+            // require word boundaries
+            // simple \b does not work with unicode text
+            // see http://stackoverflow.com/questions/10590098/javascript-regexp-word-boundaries-unicode-characters
+            //var pattern = "\b" + nameReg + "\b";
+            var pattern = "(?:^|[,.-\\s])" + nameReg + "(?:$|[,.-\\s])";
+            local_names[uid].regexes.push(new RegExp(pattern, 'gi'));
+        });
+    });
     console.log('loaded '+_.size(local_names)+' entities');
     return local_names;
 }
@@ -118,23 +129,13 @@ function do_search(bodytext,tabId,vendor_whitelisted) {
 
     var found_names = [];
     var searches = 0;
-    console.log('bodytext length: '+_.size(bodytext));
     _.each(names,function(person,uid){
-        _.each(person.names,function(name) {
+        _.each(person.names,function(name,nameidx) {
             searches++;
-            // make regex matching this exact string by escaping chars special to regexes
-            var nameReg = name.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-            // require word boundaries
-            // simple \b does not work with unicode text
-            // see http://stackoverflow.com/questions/10590098/javascript-regexp-word-boundaries-unicode-characters
-            //var pattern = "\b" + nameReg + "\b";
-            var pattern = "(?:^|[,.-\\s])" + nameReg + "(?:$|[,.-\\s])";
-            var re = new RegExp(pattern, 'gi');
-            var result = bodytext.match(re);
+            var result = bodytext.match(person.regexes[nameidx]);
             if( result ) {
                 found_names.push({uid:uid,name:name,result:result});
             }
-            if(searches % 1000 == 0) console.log(searches);
         })
     });
     stop = new Date().getTime();
