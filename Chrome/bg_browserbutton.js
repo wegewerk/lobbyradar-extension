@@ -25,6 +25,8 @@ if(SAFARI) {
         var storedTabdata = tabData.get(tabId);
         if(storedTabdata.hits) {
             chrome.browserAction.setBadgeText({text:storedTabdata.hits.toString(),tabId:tabId});
+        } else {
+            chrome.browserAction.setBadgeText({text:"0",tabId:tabId});
         }
     }
 

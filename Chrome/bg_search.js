@@ -118,7 +118,6 @@ function do_search(bodytext,tabId,vendor_whitelisted) {
 
     var found_names = [];
     var searches = 0;
-    console.log(bodytext);
     console.log('bodytext length: '+_.size(bodytext));
     _.each(names,function(person,uid){
         _.each(person.names,function(name) {
@@ -144,6 +143,7 @@ function do_search(bodytext,tabId,vendor_whitelisted) {
     stats['searches'] = searches;
     stats['can_disable'] = !vendor_whitelisted;
     tabData.set(tabId, stats);
+    console.log((stats['searchtime']/1000).toPrecision(2)+' s');
     return found_names;
 }
 
