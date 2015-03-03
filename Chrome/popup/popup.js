@@ -54,7 +54,7 @@ function update_content() {
            if( info.hits ) {
                 $('#hits').show();
                 $('#num_hits').text(info.hits);
-                $('#searchtime').text(info.searchtime);
+                $('#searchtime').text((info.searchtime/1000).toPrecision(2));
             } else {
                 $('#nohits').show();
             }
