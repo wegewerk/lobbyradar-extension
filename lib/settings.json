@@ -17,6 +17,7 @@
     "website":     "http://lobbyradar.opendatacloud.de",
     "icons": {
             "16": "lobbyradar-16.png",
+            "16m": "lobbyradar-16-mono.png",
             "32": "lobbyradar-32.png",
             "38": "lobbyradar-38.png",
             "48": "lobbyradar-48.png",
