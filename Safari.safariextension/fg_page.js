@@ -42,6 +42,10 @@ function applyTooltips() {
 }
 
 function mark_hits(found_names,cb) {
+    if(!found_names.length){
+        cb();
+        return;
+    }
     console.log('mark_hits started');
     var start_t = new Date().getTime();
     var $body=$('body');
