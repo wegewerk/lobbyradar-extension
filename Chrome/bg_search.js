@@ -31,9 +31,7 @@ function parseNameList(result) {
 
 function parseWhitelist(result) {
     var res = result.result;
-    res.push('www.heute.de');
     console.log(_.size(res)+' urls in whitelist');
-    console.log( res );
     return res;
 }
 
