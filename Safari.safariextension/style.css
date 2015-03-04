@@ -30,9 +30,12 @@ span[class^="lobbradar_hit"]::before {
 .tooltipster-content p {
 	font-family: sans-serif !important;
 }
-#lobbyradar_list {
-	overflow-x:hidden;
-	overflow-y: auto;
+.lobbyradar_list {
+	overflow-x: hidden !important;
+	overflow-y: auto !important;
+    padding: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
 }
 
 .tooltipster-content {
@@ -44,6 +47,9 @@ span[class^="lobbradar_hit"]::before {
 	background: -ms-linear-gradient(top,  #11354b 0%,#a1bdc9 65%,#a1bdc9 77%,#6392a8 100%); /* IE10+ */
 	background: linear-gradient(to bottom,  #11354b 0%,#a1bdc9 65%,#a1bdc9 77%,#6392a8 100%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#11354b', endColorstr='#6392a8',GradientType=0 ); /* IE6-9 */
+}
+.tooltipster-content .lobbyradar_middle section {
+    margin: 0 !important;
 }
 
 .lobbyradar_top,
@@ -66,7 +72,7 @@ span[class^="lobbradar_hit"]::before {
 }
 
 .lobbyradar_top a {
-	color:white!important; 
+	color:white!important;
 }
 .lobbyradar_middle {
 	background:transparent!important;
