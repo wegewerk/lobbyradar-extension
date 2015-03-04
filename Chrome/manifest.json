@@ -1,7 +1,7 @@
 {
 	"name": "Lobbyradar",
 	"author": "mdt",
-	"version": "0.2",
+	"version": "1.0",
 	"manifest_version": 2,
 	"description": "Discover Lobby Networks",
 	"background": {
@@ -47,7 +47,6 @@
 	],
 	"icons": {
 		"16": "lobbyradar-16.png",
-		"16m": "lobbyradar-16-mono.png",
 		"32": "lobbyradar-32.png",
 		"38": "lobbyradar-38.png",
 		"48": "lobbyradar-48.png",
@@ -57,7 +56,6 @@
 	"browser_action": {
 		"default_icon": {
 			"16": "lobbyradar-16.png",
-			"16m": "lobbyradar-16-mono.png",
 			"32": "lobbyradar-32.png",
 			"38": "lobbyradar-38.png",
 			"48": "lobbyradar-48.png",
