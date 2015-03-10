@@ -132,7 +132,8 @@ function do_search(bodytext,tabId,vendor_whitelisted) {
         _.each(person.names,function(name,nameidx) {
             searches++;
             var result = bodytext.match(person.regexes[nameidx]);
-            if( result ) {
+            // Name in found_names aufnehmen, wenn noch nicht vorhanden
+            if( result && !_.where(found_names,{name:name}).length) {
                 found_names.push({uid:uid,name:name,result:result});
             }
         })

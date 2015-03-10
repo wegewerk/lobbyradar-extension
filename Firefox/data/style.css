@@ -59,7 +59,7 @@ span[class^="lobbradar_hit"]::before {
 }
 
 .lobbyradar_top {
-	padding:15px;
+	padding:15px !important;
 }
 
 .lobbyradar_top  .header-person {

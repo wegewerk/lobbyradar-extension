@@ -69,7 +69,7 @@
 .tooltipster-content .lobbyradar_item {
 	display: block;
 	list-style: none;
-	padding: 10px 0;
+	padding: 10px 0 !important;
 	width: 314px;
 	border-bottom: 1px solid rgb(216,216,226);
 	margin: 0;
@@ -133,7 +133,7 @@
 	cursor: pointer;
 }
 .tooltipster-content a:first-child .lobbyradar_button {
-	margin-right: 11px;
+	margin-right: 11px !important;
 }
 .tooltipster-content .lobbyradar_button:hover {
 	background: rgb(204,204,210);
