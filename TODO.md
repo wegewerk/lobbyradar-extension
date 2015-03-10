@@ -1,10 +1,12 @@
-http://de.wikipedia.org/wiki/Kabinett_Merkel_II
-pofalla wird nicht gefunden
+Bugfixes
+---------
+- Bugs im Safari beheben (Icon, Badge)
+- Safari, Spiegel.de -> Tooltip 
+- http://www.sueddeutsche.de/politik/vorschlag-von-juncker-merkel-begruesst-idee-einer-europaeischen-armee-1.2384732
 
-http://www1.wdr.de/daserste/hartaberfair/sendungen/russischroulette102.html
-Jens span wird nicht gefunden (h4)
 
-- Tooltip bleibt nicht stehen
-
+Change Requests
+-----------------
+- Anzahl der Verbindungen im Tooltip anzeigen
 - Liste im Tooltip nach anzahl Verbindungen sortieren, nur die ersten 10 anzeigen
-- Installationspackage safari button
+- Anpassung an Spezielle Seiten (bitkom/lobbypedia/...)
