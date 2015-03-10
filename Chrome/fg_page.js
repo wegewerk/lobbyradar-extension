@@ -118,6 +118,10 @@ function generateTooltip(id, callback) {
 
 
 (function(u) {
+    // check if the parent frame is the top-level frame, not an iframe.
+    if (window.top !== window) return;
+
+    // this is the top-level frame
     BabelExt.utils.dispatch({
         match_elements: [match_elements],
         callback: function( stash, pathname, params) {
