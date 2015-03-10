@@ -18,7 +18,7 @@ var childProcess = require('child_process');
 var fs           = require('fs');
 var system       = require('system');
 var webPage      = require('webpage');
-
+console.dir(fs);
 var chrome_command =
     ( system.os.name == 'windows' )
     ? 'chrome.exe'
@@ -54,9 +54,11 @@ function copyFile( source, target ) {
         }
     }
     console.log('copy '+source+'->'+target);
-    childProcess.execFile('cp', ["-r",source,target], null, function(err, stdout, stderr) {
-        if ( stderr != '' ) console.log(stderr.replace(/\n$/,''));
-    });
+    if( fs.isDirectory(source) ) {
+        fs.copyTree(source,target);
+    } else {
+        fs.copy(source,target);
+    }
 }
 
 /*
@@ -607,6 +609,7 @@ function build_firefox() {
         extension_files = extension_files.concat(settings.extra_files);
     }
     extension_files.forEach(function(file) { copyFile( 'lib/'+file, 'Firefox/data/' + file ) });
+    fs.remove('Firefox/data/popup/popup.js');
 
     program_counter.begin();
 
@@ -656,12 +659,11 @@ function build_firefox() {
     function finalise_xpi(err, stdout, stderr) {
         if ( stderr != '' ) { console.log(stderr.replace(/\n$/,'')); return program_counter.end(1); }
         var xpi = 'build/' + settings.name + '.xpi';
-        if ( fs.exists(xpi) ) fs.remove(xpi);
         copyFile('Firefox/'+settings.name + '.xpi', xpi);
-//        childProcess.execFile( 'wget', ['--post-file='+xpi,'http://192.168.56.1:7888/'], null, function(err,stdout,stderr) {
-//            console.log('Installed xpi in Firefox.');
-//            return program_counter.end(0);
-//        });
+        childProcess.execFile( 'wget', ['--post-file='+xpi,'http://192.168.56.1:7888/'], null, function(err,stdout,stderr) {
+            console.log('Installed xpi in Firefox.');
+            return program_counter.end(0);
+        });
     }
 }
 
@@ -882,8 +884,8 @@ var args = system.args;
 console.log('running on '+system.os.name+"\n");
 program_counter.begin();
 
-//build_safari();
-//build_firefox();
+build_safari();
+build_firefox();
 build_chrome ();
 
 program_counter.end(0);

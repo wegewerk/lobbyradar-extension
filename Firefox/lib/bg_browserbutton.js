@@ -32,11 +32,14 @@ exports.buttonfunctions = {
         if(storedTabdata && storedTabdata.hits) {
             ToolbarButton.state(tab,{ badge:storedTabdata.hits.toString() } );
         } else {
-            ToolbarButton.state(tab,{ badge:'' } );
+            ToolbarButton.state(tab,{ badge:'0' } );
         }
     },
-    setBrowserButton_waiting: function( tab ) {
+    setBrowserButton_searching: function( tab ) {
             ToolbarButton.state(tab,{ badge:'...' } );
+    },
+    setBrowserButton_waiting: function( tab ) {
+            ToolbarButton.state(tab,{ badge:'+++' } );
     }
 }
 

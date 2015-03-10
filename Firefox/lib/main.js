@@ -92,6 +92,7 @@ pageMod.PageMod({
 		switch(request.requestType) {
             case 'updateBrowserButton': lobbyradarBtn.updateBrowserButton(worker.tab);break;
             case 'setBrowserButton_waiting': lobbyradarBtn.setBrowserButton_waiting(worker.tab);break;
+            case 'setBrowserButton_searching': lobbyradarBtn.setBrowserButton_searching(worker.tab);break;
             case 'detail_for_id':
             case 'searchNames': lobbyradar.lobbyradar.dispatch(request,function(returnvalue) {
                                     worker.postMessage({message:{

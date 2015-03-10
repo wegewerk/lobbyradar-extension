@@ -1,19 +1,21 @@
-var updateURL = 'http://lobbyradar.opendatacloud.de/api/entity/export?apikey=8ee0f9b87sjaret2md5a';
-
 var storage = require("sdk/simple-storage").storage;
 var prefs = require("sdk/simple-prefs").prefs;
 var { setInterval, clearInterval } = require('sdk/timers');
-var names = false;
-var whitelist = []; // personal whitelist
-var vendor_whitelist = [
-]; // the default whitelist
-var blacklist = ['lobbyradar.opendatacloud.de'];
-var callbackQ = [];
-var update_pending = false;
-var namesUpdater = false;
 var Request = require("sdk/request").Request;
 var _ = require("underscore");
 var lobbyradar_tools = require('bg_common').lobbyradar_tools;
+
+var update_names_URL     = 'http://lobbyradar.opendatacloud.de/api/plugin/export';
+var update_whitelist_URL = 'http://lobbyradar.opendatacloud.de/api/plugin/whitelist';
+var update_pending = false;
+var names = false;
+var whitelist = []; // personal whitelist
+var vendor_whitelist = false; // default whitelist. wird per API aktualisiert
+var blacklist = ['lobbyradar.opendatacloud.de'];
+
+var remoteUpdater = false;
+var default_update_interval = 60*60; // 1 hour
+var callbackQ = [];
 var tabData = false; // wird von initialize gesetzt
 
 function parseNameList(result) {
@@ -28,7 +30,7 @@ function parseNameList(result) {
             // simple \b does not work with unicode text
             // see http://stackoverflow.com/questions/10590098/javascript-regexp-word-boundaries-unicode-characters
             //var pattern = "\b" + nameReg + "\b";
-            var pattern = "(?:^|[,.-\\s])" + nameReg + "(?:$|[,.-\\s])";
+            var pattern = "(?:^|[,.-\\s]|)" + nameReg + "(?:$|[,.-\\s]|)";
             local_names[uid].regexes.push(new RegExp(pattern, 'gi'));
         });
     });
@@ -36,29 +38,78 @@ function parseNameList(result) {
     return local_names;
 }
 
-function updateNames(callback) {
-    var url = updateURL;
-    var result;
-    update_pending=true;
+function parseWhitelist(result) {
+    var res = result.result;
+    res.push('www.heute.de');
+    console.log(_.size(res)+' urls in whitelist');
+    console.log( res );
+    return res;
+}
+
+function updateAll(callback) {
     if (typeof(callback) === 'function') {
         callbackQ.push(callback);
     }
+    var update_ready = {names:false, whitelist: false}
+
+    var updateReady = function(updateId) {
+        update_ready[updateId] = true;
+        if(_.every(update_ready,function(i){
+                return i===true;
+        }) ) {
+            console.log('alle Updates erfolgreich, setze neuen Updatezeitpunkt');
+            storage['last_update']=+new Date; // + converts date to int
+            update_pending=false;
+            _.each(callbackQ,function(cb){
+                cb();
+            })
+            callbackQ=[];
+        }
+    }
+    update_pending = true;
+    updateWhitelist(function(){
+        updateReady('whitelist');
+    });
+    updateNames(function(){
+        updateReady('names');
+    });
+}
+
+function updateNames(callback) {
+    var url = update_names_URL;
+    var result;
     console.log('updatenames from '+url);
+
     Request({
         url: url,
         onComplete: function(response) {
             if( response.status == 200) {
-                update_pending=false;
                 result = JSON.parse(response.text);
                 names = parseNameList(result);
                 storage['lobby_entities']=names;
-                storage['last_update']=+new Date; // + converts date to int
-                if( callbackQ.length ) {
-                    console.log('calling '+callbackQ.length+' callbacks');
-                    for (var i = callbackQ.length - 1; i >= 0; i--) {
-                        callbackQ[i]();
-                    };
-                    callbackQ=[];
+                if (typeof(callback) === 'function') {
+                    callback();
+                }
+            }
+        }
+    }).get();
+    return true;
+}
+
+function updateWhitelist(callback) {
+    var url = update_whitelist_URL;
+    var result;
+    console.log('updatenames from '+url);
+
+    Request({
+        url: url,
+        onComplete: function(response) {
+            if( response.status == 200) {
+                result = JSON.parse(response.text);
+                vendor_whitelist = parseWhitelist(result);
+                storage['vendor_whitelist']=vendor_whitelist;
+                if (typeof(callback) === 'function') {
+                    callback();
                 }
             }
         }
@@ -70,11 +121,11 @@ function startUpdater(updateInterval) {
     if(!updateInterval) return;
     updateInterval = updateInterval*1000;
     console.log('starting updater with interval '+updateInterval);
-    if( namesUpdater ){
-        console.log('updater found. '+namesUpdater);
-        clearInterval(namesUpdater);
+    if( remoteUpdater ){
+        console.log('updater found. '+remoteUpdater);
+        clearInterval(remoteUpdater);
     }
-    namesUpdater=setInterval(updateNames,updateInterval);
+    remoteUpdater=setInterval(updateAll,updateInterval);
 }
 
 function do_search(bodytext,tabId,vendor_whitelisted) {
@@ -157,14 +208,14 @@ function removeWhitelist( hostname ) {
     storage['whitelist']=whitelist.join(',');
 }
 
-function init_whitelist() {
+function load_personal_whitelist() {
     whitelist = storage['whitelist'];
     if(_.isUndefined(whitelist)) whitelist = "";
     whitelist = whitelist.split(',');
     if(!_.isArray(whitelist)) whitelist = _.values(whitelist);
 }
 
-function init_names() {
+function init_data() {
     names = storage['lobby_entities'];
     var last_update = new Date( parseInt(storage['last_update']) );
     var now = new Date;
@@ -172,8 +223,8 @@ function init_names() {
     console.log('Last update was '+updateDiff+' seconds ago.');
     var updateInterval = prefs['updateinterval'];
 
-    if( !names || !updateDiff || updateDiff > updateInterval ) {
-        updateNames();
+    if( !vendor_whitelist || !names || !updateDiff || updateDiff > updateInterval ) {
+        updateAll();
         startUpdater(updateInterval);
     } else {
         startUpdater(updateInterval);
@@ -182,8 +233,8 @@ function init_names() {
 
 exports.lobbyradar = {
     initialize: function(global_tabData) {
-        init_whitelist();
-        init_names();
+        load_personal_whitelist();
+        init_data();
         tabData=global_tabData;
     },
     prefsChanged: function (callback) {

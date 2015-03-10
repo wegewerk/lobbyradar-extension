@@ -13,9 +13,9 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.2</string>
+	<string>1.0</string>
 	<key>CFBundleVersion</key>
-	<string>0.2</string>
+	<string>1.0</string>
 	<key>Chrome</key>
 	<dict>
 		<key>Database Quota</key>
@@ -25,14 +25,14 @@
 		<key>Popovers</key>
 		<array>
 			<dict>
-				<key>Identifier</key>
-				<string>lobbyradarPopover</string>
 				<key>Filename</key>
 				<string>popup/popup.html</string>
-				<key>Width</key>
-				<real>280</real>
 				<key>Height</key>
 				<real>200</real>
+				<key>Identifier</key>
+				<string>lobbyradarPopover</string>
+				<key>Width</key>
+				<real>280</real>
 			</dict>
 		</array>
 		<key>Toolbar Items</key>
