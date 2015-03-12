@@ -1,8 +1,3 @@
-Bugfixes
----------
-- Bugs im Safari beheben (Icon, Badge)
-- Safari, Spiegel.de -> Tooltip 
-- http://www.sueddeutsche.de/politik/vorschlag-von-juncker-merkel-begruesst-idee-einer-europaeischen-armee-1.2384732
 
 
 Change Requests

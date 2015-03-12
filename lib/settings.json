@@ -5,7 +5,7 @@
 {
     // In Linux, you can make a GUID by running `uuidgen` on the command line:
     "id":            "C99B9302-9D86-11E4-8A25-0242AC11000D",
-    "bundleid":      "com.yourcompany.lobbyradar", // used by safari only
+    "bundleid":      "de.miz-babelsberg.lobbyradar", // used by safari only
 
     // General config parameters
     "name":        "lobbyradar",
