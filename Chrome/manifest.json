@@ -28,7 +28,8 @@
 				"jquery_highlight.js",
 				"jquery.tooltipster.min.js",
 				"fg_page.js",
-				"moment.js"
+				"moment.js",
+				"worker_search.js"
 			],
 			"css": [
 				"style.css",

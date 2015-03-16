@@ -2,6 +2,8 @@ var storage = require("sdk/simple-storage").storage;
 var prefs = require("sdk/simple-prefs").prefs;
 var { setInterval, clearInterval } = require('sdk/timers');
 var Request = require("sdk/request").Request;
+var {ChromeWorker} = require("chrome")
+var self = require("sdk/self");
 var _ = require("underscore");
 var lobbyradar_tools = require('bg_common').lobbyradar_tools;
 
@@ -30,8 +32,13 @@ function parseNameList(result) {
             // simple \b does not work with unicode text
             // see http://stackoverflow.com/questions/10590098/javascript-regexp-word-boundaries-unicode-characters
             //var pattern = "\b" + nameReg + "\b";
-            var pattern = "(?:^|[,.-\\s]|)" + nameReg + "(?:$|[,.-\\s]|)";
-            local_names[uid].regexes.push(new RegExp(pattern, 'gi'));
+            var pattern = "(?:^|[,.\-\\s]|)" + nameReg + "(?:$|[,.\-\\s]|)";
+            try {
+                local_names[uid].regexes.push(new RegExp(pattern, 'gi'));
+            } catch(e) {
+                console.log(e);
+                console.log(pattern);
+            }
         });
     });
     console.log('loaded '+_.size(local_names)+' entities');
@@ -128,31 +135,6 @@ function startUpdater(updateInterval) {
     remoteUpdater=setInterval(updateAll,updateInterval);
 }
 
-function do_search(bodytext,tabId,vendor_whitelisted) {
-    var stats ={};
-    var search_start = new Date().getTime();
-
-    var found_names = [];
-    var searches = 0;
-    _.each(names,function(person,uid){
-        _.each(person.names,function(name,nameidx) {
-            searches++;
-            var result = bodytext.match(person.regexes[nameidx]);
-            if( result ) {
-                found_names.push({uid:uid,name:name,result:result});
-            }
-        })
-    });
-    stop = new Date().getTime();
-    stats['searchtime'] = (stop-search_start);
-    stats['hits'] = found_names.length;
-    stats['searches'] = searches;
-    stats['can_disable'] = !vendor_whitelisted;
-    tabData.set(tabId, stats);
-    console.log((stats['searchtime']/1000).toPrecision(2)+' s');
-    return found_names;
-}
-
 function searchNames(bodytext, sendResponse, senderTab) {
     if(  update_pending ){
         console.log('Update in progress, adding to callback list');
@@ -166,7 +148,9 @@ function searchNames(bodytext, sendResponse, senderTab) {
         var vendor_whitelisted = _.indexOf( vendor_whitelist, hostname) >=0;
         var blacklisted = _.indexOf( blacklist, hostname) >=0;
         if( (personal_whitelisted || vendor_whitelisted) && !blacklisted ) {
-            sendResponse(do_search(bodytext,senderTab.id,vendor_whitelisted));
+            var searchWorker = new ChromeWorker(self.data.url("worker_search.js"));
+            searchWorker.postMessage([bodytext,senderTab.id,vendor_whitelisted]);
+            searchWorker.onmessage = sendResponse;
         } else {
             tabData.set(senderTab.id, { disabled:true,
                                         can_enable: !blacklisted } );

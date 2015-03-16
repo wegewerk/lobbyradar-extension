@@ -2,8 +2,8 @@ var start = new Date().getTime();
 var startuptime;
 var match_elements = 'p,td,h1,h2,h3,h4,h5,h6,a';
 var detail_url_extern = 'http://lobbyradar.opendatacloud.de/entity/';
-var contribute_url_extern = 'http://lobbyradar.opendatacloud.de/contribute/';
-var complain_url_extern = 'http://lobbyradar.opendatacloud.de/complain/';
+var contribute_url_extern = 'http://www.lobbyradar.zdf.de/verbindung-melden';
+var complain_url_extern = 'http://www.lobbyradar.zdf.de/fehler-melden';
 
 function applyTooltips() {
     var updateTTheight = function(id) {
@@ -96,7 +96,7 @@ function generateTooltip(id, callback) {
             conn_requests = person.connections.length;
             $.each(person.connections,function(i,conn_id) {
                 BabelExt.bgMessage({requestType:'detail_for_id',id:conn_id},function(person){
-                    tt_content += '<li class="lobbyradar_item"><a target="_blank" title="Mehr Infos zu dieser Organisation" href="';
+                    tt_content += '<li class="lobbyradar_item"><a target="_blank" href="';
                     tt_content += detail_url_extern+conn_id + '">';
                     tt_content += person.names[0];
                     tt_content +="</a>";
@@ -126,7 +126,7 @@ function generateTooltip(id, callback) {
         match_elements: [match_elements],
         callback: function( stash, pathname, params) {
             var $ = jQuery;
-            var bodytext = $(match_elements).not("script").text();
+            var bodytext = $(match_elements).not("script").filter(":visible").text();
             var stop = new Date().getTime();
             BabelExt.bgMessage({requestType:'setBrowserButton_searching'});
             startuptime = (stop-start);
@@ -136,7 +136,7 @@ function generateTooltip(id, callback) {
                     mark_hits(found_names,function(){
                         BabelExt.bgMessage({requestType:'updateBrowserButton'});
                     });
-                },1000);
+                },10);
             });
         }
     });

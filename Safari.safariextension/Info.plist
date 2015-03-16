@@ -9,7 +9,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>Lobbyradar</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.yourcompany.lobbyradar</string>
+	<string>de.miz-babelsberg.lobbyradar</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleShortVersionString</key>
@@ -25,14 +25,14 @@
 		<key>Popovers</key>
 		<array>
 			<dict>
-				<key>Filename</key>
-				<string>popup/popup.html</string>
-				<key>Height</key>
-				<real>200</real>
 				<key>Identifier</key>
 				<string>lobbyradarPopover</string>
+				<key>Filename</key>
+				<string>popup/popup.html</string>
 				<key>Width</key>
 				<real>280</real>
+				<key>Height</key>
+				<real>200</real>
 			</dict>
 		</array>
 		<key>Toolbar Items</key>
@@ -60,6 +60,7 @@
 				<string>jquery.tooltipster.min.js</string>
 				<string>fg_page.js</string>
 				<string>moment.js</string>
+				<string>worker_search.js</string>
 			</array>
 			<key>Start</key>
 			<array>
