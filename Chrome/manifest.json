@@ -1,7 +1,7 @@
 {
 	"name": "Lobbyradar",
 	"author": "mdt",
-	"version": "1.0",
+	"version": "1.1",
 	"manifest_version": 2,
 	"description": "Discover Lobby Networks",
 	"background": {
@@ -29,6 +29,7 @@
 				"jquery.tooltipster.min.js",
 				"fg_page.js",
 				"moment.js",
+				"underscore.js",
 				"worker_search.js"
 			],
 			"css": [

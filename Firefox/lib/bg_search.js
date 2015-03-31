@@ -148,9 +148,19 @@ function searchNames(bodytext, sendResponse, senderTab) {
         var vendor_whitelisted = _.indexOf( vendor_whitelist, hostname) >=0;
         var blacklisted = _.indexOf( blacklist, hostname) >=0;
         if( (personal_whitelisted || vendor_whitelisted) && !blacklisted ) {
+            console.log('worker url '+self.data.url());
             var searchWorker = new ChromeWorker(self.data.url("worker_search.js"));
-            searchWorker.postMessage([bodytext,senderTab.id,vendor_whitelisted]);
-            searchWorker.onmessage = sendResponse;
+            searchWorker.postMessage({
+                bodytext:bodytext,
+                basedir:self.data.url(),
+                names:names
+            });
+            searchWorker.onmessage = function(workerResult) {
+                console.log('recieved worker result',workerResult.data);
+                workerResult.data.stats['can_disable'] = !vendor_whitelisted;
+                tabData.set(senderTab.id, workerResult.data.stats);
+                sendResponse(workerResult.data.found_names);
+            }
         } else {
             tabData.set(senderTab.id, { disabled:true,
                                         can_enable: !blacklisted } );
