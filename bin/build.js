@@ -18,7 +18,7 @@ var childProcess = require('child_process');
 var fs           = require('fs');
 var system       = require('system');
 var webPage      = require('webpage');
-console.dir(fs);
+
 var chrome_command =
     ( system.os.name == 'windows' )
     ? 'chrome.exe'
@@ -53,7 +53,6 @@ function copyFile( source, target ) {
             fs.remove(target);
         }
     }
-    console.log('copy '+source+'->'+target);
     if( fs.isDirectory(source) ) {
         fs.copyTree(source,target);
     } else {
@@ -61,170 +60,6 @@ function copyFile( source, target ) {
     }
 }
 
-/*
- * Utility functions for pages
- */
-
-function _waitForEvent( test, callback ) { // low-level interface - see waitFor* below
-
-    // originally based on http://newspaint.wordpress.com/2013/04/05/waiting-for-page-to-load-in-phantomjs/
-
-    var timeout = 10000;
-    var expiry = new Date().getTime() + timeout;
-
-    var interval = setInterval(checkEvent,100);
-
-    var page = this;
-
-    function checkEvent() {
-        var failure_reason = test(this);
-        if ( !failure_reason ) {
-            clearInterval(interval);
-            interval = undefined;
-            if ( callback ) callback('success');
-            return true;
-        } else if ( new Date().getTime() > expiry ) {
-            clearInterval(interval);
-            //callback('fail');
-            console.log('Waited for ' + timeout + 'ms, but ' + failure_reason + ' - see fail.png and fail.html');
-            fs.write( 'fail.html', page.content );
-            page.render('fail.png');
-            return program_counter.end(1);
-        }
-        return false;
-    };
-
-    return checkEvent();
-
-}
-
-function _waitForElementsPresent( selectors, callback ) { // call callback when all selectors exist on the page
-
-    if ( typeof(selectors) == "string" )
-        selectors = [ selectors ];
-
-    var page = this;
-
-    return this.waitForEvent(
-        function() {
-            var missing_elements = [];
-            selectors.forEach(
-                function(selector) {
-                    if ( ! page.evaluate(function(selector) {return document.querySelector(selector)}, selector ) )
-                        missing_elements.push(selector);
-                }
-            );
-            if ( missing_elements.length )
-                return JSON.stringify(missing_elements) + ' did not appear';
-            else
-                return null;
-        },
-        callback
-    );
-
-}
-
-function _waitForElementsNotPresent( selectors, callback ) { // call callback when no selecters exist on the page
-
-    if ( typeof(selectors) == "string" )
-        selectors = [ selectors ];
-
-    var page = this;
-
-    return this.waitForEvent(
-        function() {
-            var present_elements = [];
-            selectors.forEach(
-                function(selector) {
-                    if ( page.evaluate(function(selector) {return document.querySelector(selector)}, selector ) )
-                        present_elements.push(selector);
-                }
-            );
-            if ( present_elements.length )
-                return JSON.stringify(present_elements) + ' remained present';
-            else
-                return null;
-        },
-        callback
-    );
-
-}
-
-function _click(selector) { // click an HTML element
-    var page = this;
-    return this.waitForElementsPresent(
-        [ selector ],
-        function () {
-            page.evaluate(function(selector) {
-                var element = document.querySelector(selector);
-                var event = document.createEvent("MouseEvent");
-                event.initMouseEvent( "click", true, true, window, null, 0, 0, 0, 0, false, false, false, false, 0, null );
-                element.dispatchEvent(event);
-            }, selector);
-        }
-    );
-}
-
-function _submit_form(submit_selector, fields, callback) { // fill in the relevant fields, then click the submit button
-    var page = this;
-    return this.waitForElementsPresent(
-        Object.keys(fields).concat([submit_selector]),
-        function() {
-            var file_inputs =
-                page.evaluate(function(fields) {
-                    return Object.keys(fields).filter(function(key) {
-                        var element = document.querySelector(key);
-                        if ( element.type == 'file' ) {
-                            return true;
-                        } else {
-                            element.value = fields[key];
-                            return false;
-                        }
-                    });
-                }, fields);
-            file_inputs.forEach(function(field) {
-                var filename = fields[field];
-                if ( filename ) {
-                    if ( fs.exists(filename) ) {
-                        page.uploadFile(field, filename);
-                    } else {
-                        console.log( "Tried to upload non-existent file: " + filename );
-                        phantom.exit(1);
-                    }
-                }
-            });
-            page.click(submit_selector);
-            if ( callback ) callback();
-        }
-    );
-}
-
-function _showConsoleMessage() { // show console.log() commands from page context (enabled by default)
-    this.onConsoleMessage = function(message) {
-        if ( message.search("\n") != -1 )
-            message = ( "\n" + message ).replace( /\n(.)/g, "\n\t$1" );
-        system.stderr.writeLine('console: ' + message);
-    };
-}
-
-function _showResourceError() { // show errors loading resources
-    console.log('Started logging resorce error');
-    this.onResourceError = function(resourceError) {
-        console.log('Unable to load resource (' + resourceError.url + ')');
-        console.log('Error code: ' + resourceError.errorCode + '. Description: ' + resourceError.errorString);
-    };
-}
-function _showResourceReceived() { // show information when resources are received from the web
-    console.log('Started logging resorce received');
-    this.onResourceReceived = function(response) {
-        if ( response.stage == 'start' )
-            console.log('Received ' + response.url + ': bodySize=' + response.bodySize)
-    };
-}
-
-function _hideResourceError   () { console.log('Stopped logging resorce error'   ); this.onResourceError    = function() {} }
-function _hideResourceReceived() { console.log('Stopped logging resorce received'); this.onResourceReceived = function() {} }
-function _hideConsoleMessage  () {                                                  this.onConsoleMessage   = function() {} }
 
 // Initialise a page object:
 function page( url, callback ) {
@@ -240,20 +75,6 @@ function page( url, callback ) {
         console.error(msgStack.join('\n'));
         phantom.exit(1);
     };
-    page.waitForEvent              = _waitForEvent;
-    page.waitForElementsPresent    = _waitForElementsPresent;
-    page.waitForElementsNotPresent = _waitForElementsNotPresent;
-    page.click                     = _click;
-    page.submit_form               = _submit_form;
-    page.showResourceError         = _showResourceError;
-    page.showResourceReceived      = _showResourceReceived;
-    page.hideResourceError         = _hideResourceError;
-    page.hideResourceReceived      = _hideResourceReceived;
-    page.showConsoleMessage        = _showConsoleMessage;
-    page.hideConsoleMessage        = _hideConsoleMessage;
-
-    page.showConsoleMessage();
-
     page.settings.loadImages = false;
 
     return page.open( url, function(status) {
@@ -710,6 +531,7 @@ function build_chrome() {
                              .concat( settings.contentCSSFiles)
                              .concat( settings.backgroundScriptFiles);
     var store_upload_files = ['Chrome/background.js','Chrome/chrome-bootstrap.css','Chrome/manifest.json'];
+    Array.prototype.push.apply(store_upload_files, extension_files);
     if( settings.icons ) {
         manifest.icons = settings.icons;
         manifest['browser_action']={'default_icon':settings.icons};
@@ -862,7 +684,7 @@ function build_chrome() {
             if ( fs.exists('build/chrome-store-upload.zip') ) fs.remove('build/chrome-store-upload.zip');
             childProcess.execFile(
                 'zip',
-                ['build/chrome-store-upload.zip'].concat( store_upload_files ),
+                ['-r','build/chrome-store-upload.zip','Chrome/'],
                 null,
                 function(err,stdout,stderr) {
                     if ( stderr != '' ) { console.log(stderr.replace(/\n$/,'')); return program_counter.end(1); }
@@ -884,7 +706,7 @@ var args = system.args;
 console.log('running on '+system.os.name+"\n");
 program_counter.begin();
 
-//build_safari();
+build_safari();
 build_firefox();
 build_chrome ();
 

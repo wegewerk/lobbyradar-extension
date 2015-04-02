@@ -25,6 +25,7 @@ function applyTooltips() {
         animation: 'none',
         autoClose: true,
         content: 'Daten werden geladen',
+        theme: 'tooltipster-lobbyradar tooltipster-default',
         delay: 0,
         speed: 0,
         functionBefore:function(origin, continueTooltip) {

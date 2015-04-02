@@ -1,11 +1,13 @@
+if( typeof(importScripts) != 'undefined' ) importScripts("resource://gre/modules/workers/require.js");
+
+var _ = false;
+
 onmessage = function(e) {
-  console.log('Message received from main script');
-  var workerResult = 'Result: ' + (e.data[0] * e.data[1]);
-  console.log('Posting message back to main script');
-  postMessage(workerResult);
+  _ = require(e.data.basedir+'underscore.js');
+  postMessage(do_search(e.data.names,e.data.bodytext));
 }
 
-function do_search(bodytext,tabId,vendor_whitelisted) {
+function do_search(names,bodytext) {
     var stats ={};
     var search_start = new Date().getTime();
 
@@ -24,8 +26,6 @@ function do_search(bodytext,tabId,vendor_whitelisted) {
     stats['searchtime'] = (stop-search_start);
     stats['hits'] = found_names.length;
     stats['searches'] = searches;
-    stats['can_disable'] = !vendor_whitelisted;
-    tabData.set(tabId, stats);
     console.log((stats['searchtime']/1000).toPrecision(2)+' s');
-    return found_names;
+    return {found_names:found_names,stats:stats};
 }
