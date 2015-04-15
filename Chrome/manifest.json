@@ -30,11 +30,13 @@
 				"fg_page.js",
 				"moment.js",
 				"underscore.js",
-				"worker_search.js"
+				"worker_search.js",
+				"shariff.complete.js"
 			],
 			"css": [
 				"style.css",
-				"tooltipster.css"
+				"tooltipster.css",
+				"shariff.complete.css"
 			],
 			"run_at": "document_idle"
 		}

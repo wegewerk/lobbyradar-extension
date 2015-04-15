@@ -38,8 +38,8 @@
      */
     "contentScriptWhen": "late",
 
-    "contentScriptFiles":    [ "jquery.js","jquery_highlight.js","jquery.tooltipster.min.js","fg_page.js","moment.js","underscore.js", "worker_search.js" ],
-    "contentCSSFiles":       [ "style.css","tooltipster.css" ],
+    "contentScriptFiles":    [ "jquery.js","jquery_highlight.js","jquery.tooltipster.min.js","fg_page.js","moment.js","underscore.js", "worker_search.js","shariff.complete.js" ],
+    "contentCSSFiles":       [ "style.css","tooltipster.css","shariff.complete.css" ],
     "backgroundScriptFiles": [ "underscore.js","bg_common.js", "bg_search.js","bg_browserbutton.js","jquery.js",],
     "extra_files":           [ "css","lobbyradar.png" ],
 

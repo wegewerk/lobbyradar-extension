@@ -706,8 +706,8 @@ var args = system.args;
 console.log('running on '+system.os.name+"\n");
 program_counter.begin();
 
-build_safari();
-build_firefox();
+//build_safari();
+//build_firefox();
 build_chrome ();
 
 program_counter.end(0);

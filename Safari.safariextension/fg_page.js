@@ -44,7 +44,7 @@ function applyTooltips() {
 
 function mark_hits(found_names,cb) {
     if(!found_names.length){
-        cb();
+        cb(false);
         return;
     }
     console.log('mark_hits started');
@@ -76,7 +76,8 @@ function mark_hits(found_names,cb) {
         applyTooltips();
         stop_t = new Date().getTime();
         console.log('tooltipster took '+ (stop_t - start_t) +' ms');
-        cb();
+        var marked_hits = $body.find('[class^=lobbyradar_hit_]').attr('class');
+        cb(marked_hits);
     }
     highlight_step();
 }
@@ -134,8 +135,9 @@ function generateTooltip(id, callback) {
             BabelExt.bgMessage({requestType:'searchNames',bodytext:bodytext},function(found_names){
                 BabelExt.bgMessage({requestType:'setBrowserButton_waiting'});
                 window.setTimeout(function(){
-                    mark_hits(found_names,function(){
-                        BabelExt.bgMessage({requestType:'updateBrowserButton'});
+                    mark_hits(found_names,function(marked_hits){
+                        console.log(marked_hits);
+                        BabelExt.bgMessage({requestType:'updateBrowserButton',hits:marked_hits});
                     });
                 },10);
             });

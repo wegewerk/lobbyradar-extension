@@ -59,7 +59,6 @@ tabData = {
 
     // When a tab is closed, delete all its data
     onTabClosed: function(tabId) {
-        console.log('Tab '+tabId+' closed');
         delete tabData[tabId];
     }
 };
