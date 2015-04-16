@@ -385,7 +385,7 @@ function build_firefox() {
           :  'exports.include = ["http://' + settings.match_domain + '"];\n'
         ) +
         'exports.contentScriptWhen = "' + when_string[settings.contentScriptWhen] + '";\n' +
-        'exports.contentScriptFile = ' + JSON.stringify(settings.contentScriptFiles) + ";\n"+
+        'exports.contentScriptFile = ' + JSON.stringify(settings.contentScriptFiles.concat(settings.contentScriptFiles_ff)) + ";\n"+
         'exports.contentStyleFile = ' + JSON.stringify(settings.contentCSSFiles) + ";\n"+
         'exports.icons = ' + JSON.stringify(settings.icons) + ";\n"
         ,
@@ -420,6 +420,7 @@ function build_firefox() {
     fs.removeTree('Firefox/data'); // PhantomJS won't list dangling symlinks, so we have to just delete the directory and recreate it
     fs.makeDirectory('Firefox/data');
     extension_files = extension_files.concat(settings.contentScriptFiles);
+    extension_files = extension_files.concat(settings.contentScriptFiles_ff);
     extension_files = extension_files.concat(settings.contentCSSFiles);
     if (settings.icons[16]  ) extension_files.push( settings.icons[16] );
     if (settings.icons[32]  ) extension_files.push( settings.icons[32] );
@@ -706,8 +707,8 @@ var args = system.args;
 console.log('running on '+system.os.name+"\n");
 program_counter.begin();
 
-//build_safari();
-//build_firefox();
 build_chrome ();
+build_firefox();
+//build_safari();
 
 program_counter.end(0);

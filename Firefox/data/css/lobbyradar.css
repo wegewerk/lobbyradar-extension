@@ -36,18 +36,19 @@ a .header-person{
 	padding-bottom: 15px;
 }
 
+#btn_disable_for_site,
+#btn_enable_for_site,
 #btn_settings {
-	position: absolute;
-	right: 10px;
-	bottom: 10px;
+    margin: 10px;
+    float: left;
 }
 
-#btn_disable_for_site {
-	margin-top:10px;
+#btn_settings {
+    float: right;
 }
 
-#btn_enable_for_site {
-	margin-top:10px;
+.navbar {
+    min-width: 333px;
 }
 
 .navbar-inverse {
@@ -82,6 +83,7 @@ a.navbar-brand:focus {
 .navbar+.container {
 	margin-top: 80px;
 	color:white;
+    margin-bottom: 80px;
 }
 
 .help-block {

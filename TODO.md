@@ -3,7 +3,7 @@
 Change Requests
 -----------------
 - Anpassung an Spezielle Seiten (bitkom/lobbypedia/...)
-- Integration von Facebook-share, Twitter mit der Heise-Lösung. zusätzlich E-Mail ( Link auf das Kontaktformular )
+- ZDF-Logo im Popup
 
 Chrome
 -----------
@@ -12,6 +12,7 @@ Chrome
 - Liste im Tooltip nach anzahl Verbindungen sortieren, nur die ersten 10 anzeigen, mehr-button anbieten
 - Jede Person nur 4 mal taggen
 - Anpassung Darstellungen: Verkleinerung des Kastens und Integration des MIZ-Logos
+- Integration von Facebook-share, Twitter mit der Heise-Lösung. zusätzlich E-Mail ( Link auf das Kontaktformular )
 
 Safari
 ---------

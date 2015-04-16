@@ -30,7 +30,6 @@
 				"fg_page.js",
 				"moment.js",
 				"underscore.js",
-				"worker_search.js",
 				"shariff.complete.js"
 			],
 			"css": [
