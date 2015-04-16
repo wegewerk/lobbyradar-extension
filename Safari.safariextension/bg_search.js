@@ -12,7 +12,8 @@ var callbackQ = [];
 function parseNameList(result) {
     var local_names = {};
     _.each(result.result,function(ent,uid){
-        local_names[uid]={names:ent[1], connections:ent[2], regexes:new Array()};
+        local_names[uid]={names:ent[1], connections:ent[2], regexes:new Array(), uid:uid};
+
         // make Regexes from names
         _.each(local_names[uid].names,function(name) {
             // make regex matching this exact string by escaping chars special to regexes
@@ -134,7 +135,7 @@ function do_search(bodytext,tabId,vendor_whitelisted) {
             var result = bodytext.match(person.regexes[nameidx]);
             // Name in found_names aufnehmen, wenn noch nicht vorhanden
             if( result && !_.where(found_names,{name:name}).length) {
-                found_names.push({uid:uid,name:name,result:result});
+                found_names.push({uid:uid,name:name,num_conn:person.connections.length});
             }
         })
     });
@@ -168,6 +169,12 @@ function searchNames(bodytext, sendResponse, senderTab) {
             sendResponse([]);
         }
     }
+}
+function updateHits(hits,sendResponse, senderTab ) {
+        var storedTabdata = tabData.get(senderTab.id);
+        storedTabdata['hits'] = _.sortBy(_.unique(hits),'name');
+        tabData.set(senderTab.id,storedTabdata);
+        sendResponse([]);
 }
 
 function detail_for_id(id, sendResponse) {
@@ -230,6 +237,8 @@ function optionsChanged(callback) {
 function respondToLobbyradarMessage(request, sender, sendResponse) {
     switch(request.requestType) {
         case 'searchNames': searchNames(request.bodytext, sendResponse, sender.tab);
+                         break;
+        case 'updateHits': updateHits(request.hits, sendResponse, sender.tab);
                          break;
         case 'detail_for_id': detail_for_id(request.id, sendResponse);
                          break;

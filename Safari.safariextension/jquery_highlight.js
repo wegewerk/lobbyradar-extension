@@ -44,10 +44,11 @@
  */
 
 jQuery.extend({
-    highlight: function (node, re, nodeName, className, wordsOnly, word, re_word) {
+    highlight: function (node, re, nodeName, className, wordsOnly, word, re_word,ret) {
         if (node.nodeType === 3) {
             var match = node.data.match(re);
             if (match) {
+                if( ret.maxHits === 0 ) return ret;
                 var highlight = document.createElement(nodeName || 'span');
                 highlight.className = className || 'highlight';
                 if(wordsOnly) {
@@ -61,16 +62,19 @@ jQuery.extend({
                 var wordClone = wordNode.cloneNode(true);
                 highlight.appendChild(wordClone);
                 wordNode.parentNode.replaceChild(highlight, wordNode);
-                return 1; //skip added node in parent
+                ret.match = 1;
+                ret.maxHits--;
+                return ret; //skip added node in parent
             }
         } else if ((node.nodeType === 1 && node.childNodes) && // only element nodes that have children
                 !/(script|style)/i.test(node.tagName) && // ignore script and style nodes
                 !(node.tagName === nodeName.toUpperCase() && node.className === className)) { // skip if already highlighted
             for (var i = 0; i < node.childNodes.length; i++) {
-                i += jQuery.highlight(node.childNodes[i], re, nodeName, className,wordsOnly,word,re_word);
+                ret = jQuery.highlight(node.childNodes[i], re, nodeName, className,wordsOnly,word,re_word,ret);
+                i += ret.match;
             }
         }
-        return 0;
+        return ret;
     }
 });
 
@@ -86,7 +90,7 @@ jQuery.fn.unhighlight = function (options) {
 };
 
 jQuery.fn.highlight = function (word, options) {
-    var settings = { className: 'highlight', element: 'span', caseSensitive: false, wordsOnly: false };
+    var settings = { className: 'highlight', element: 'span', caseSensitive: false, wordsOnly: false, maxHits:-1 };
     jQuery.extend(settings, options);
 
     var pattern = "(" + word.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&") + ")";
@@ -99,8 +103,10 @@ jQuery.fn.highlight = function (word, options) {
         pattern = "(^|\\s|[,.-])" + pattern + "($|\\s|[,.-])";
     }
     var re = new RegExp(pattern, flag);
+    var document_results={match:0,maxHits:settings.maxHits};
 
     return this.each(function () {
-        jQuery.highlight(this, re, settings.element, settings.className,settings.wordsOnly,word,new RegExp(pattern_word,'i'));
+        document_results = jQuery.highlight(this, re, settings.element, settings.className,settings.wordsOnly,word,new RegExp(pattern_word,'i'), document_results);
+        if(document_results.maxHits<=0 ) console.log(document_results);
     });
 };

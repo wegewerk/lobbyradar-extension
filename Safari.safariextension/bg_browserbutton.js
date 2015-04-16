@@ -8,7 +8,7 @@ if(SAFARI) {
     var updateBrowserButton = function( tabId ) {
         var storedTabdata = tabData.get(tabId);
         if(storedTabdata && storedTabdata.hits) {
-            ToolbarButton.badge = storedTabdata.hits.toString();
+            ToolbarButton.badge = storedTabdata.hits.length.toString();
         } else {
             ToolbarButton.badge = '0';
         }
@@ -27,7 +27,7 @@ if(SAFARI) {
         chrome.browserAction.setBadgeBackgroundColor({ color: "#555",tabId:tabId });
         var storedTabdata = tabData.get(tabId);
         if(storedTabdata.hits) {
-            chrome.browserAction.setBadgeText({text:storedTabdata.hits.toString(),tabId:tabId});
+            chrome.browserAction.setBadgeText({text:storedTabdata.hits.length.toString(),tabId:tabId});
         } else {
             chrome.browserAction.setBadgeText({text:"0",tabId:tabId});
         }

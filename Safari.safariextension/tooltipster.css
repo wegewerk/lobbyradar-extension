@@ -61,7 +61,7 @@
 	border-bottom: 1px solid rgb(190,190,200);
 }
 .tooltipster-content .lobbyradar_footer {
-	padding: 14px 8px 14px 14px;
+	padding: 14px 14px 14px 14px;
 }
 .tooltipster-content strong {
 	font-weight: 700;
@@ -70,10 +70,13 @@
 	display: block;
 	list-style: none;
 	padding: 10px 0 !important;
-	width: 314px;
+	width: 100%;
 	border-bottom: 1px solid rgb(216,216,226);
 	margin: 0;
 	background: transparent !important;
+}
+.tooltipster-content .lobbyradar_item.hidden {
+    display:none;
 }
 .tooltipster-content .lobbyradar_item a {
 	text-decoration: none;

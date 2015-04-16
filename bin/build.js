@@ -297,13 +297,16 @@ function build_safari() {
 
     var start_scripts = get_node('Start');
     var   end_scripts = get_node('End');
+    var   stylesheets = get_node('Stylesheets');
 
     while (start_scripts.firstChild) start_scripts.removeChild(start_scripts.firstChild);
     while (  end_scripts.firstChild)   end_scripts.removeChild(  end_scripts.firstChild);
+    while (  stylesheets.firstChild)   stylesheets.removeChild(  stylesheets.firstChild);
 
     // list of files to be copied into extension dir
     var extension_files = [].concat( settings.contentScriptFiles)
                             .concat( settings.contentCSSFiles)
+                            .concat( settings.contentCSSFiles_safari)
                             .concat( settings.backgroundScriptFiles);
     if( settings.popup && settings.popup.extra_files ) {
         extension_files = extension_files.concat(settings.popup.extra_files);
@@ -328,9 +331,19 @@ function build_safari() {
               end_scripts.appendChild(script);
         }
     });
+    // make entries in plist file for stylesheets
+    settings.contentCSSFiles.concat(settings.contentCSSFiles_safari).forEach(function(file) {
+
+        var style = document.createElement("string");
+        style.textContent = file;
+
+        stylesheets.appendChild( document.createTextNode('\n\t\t\t') );
+        stylesheets.appendChild(style);
+    });
 
     start_scripts.appendChild( document.createTextNode('\n\t\t\t') );
       end_scripts.appendChild( document.createTextNode('\n\t\t\t') );
+      stylesheets.appendChild( document.createTextNode('\n\t\t') );
 
     var xml_txt = '<?xml version="1.0" encoding="UTF-8"?>\n' + new XMLSerializer().serializeToString(document).replace(">",">\n") + "\n";
     fs.write( 'Safari.safariextension/Info.plist', xml_txt );
@@ -386,7 +399,7 @@ function build_firefox() {
         ) +
         'exports.contentScriptWhen = "' + when_string[settings.contentScriptWhen] + '";\n' +
         'exports.contentScriptFile = ' + JSON.stringify(settings.contentScriptFiles.concat(settings.contentScriptFiles_ff)) + ";\n"+
-        'exports.contentStyleFile = ' + JSON.stringify(settings.contentCSSFiles) + ";\n"+
+        'exports.contentStyleFile = ' + JSON.stringify(settings.contentCSSFiles.concat(settings.contentCSSFiles_ff)) + ";\n"+
         'exports.icons = ' + JSON.stringify(settings.icons) + ";\n"
         ,
         'w'
@@ -422,6 +435,7 @@ function build_firefox() {
     extension_files = extension_files.concat(settings.contentScriptFiles);
     extension_files = extension_files.concat(settings.contentScriptFiles_ff);
     extension_files = extension_files.concat(settings.contentCSSFiles);
+    extension_files = extension_files.concat(settings.contentCSSFiles_ff);
     if (settings.icons[16]  ) extension_files.push( settings.icons[16] );
     if (settings.icons[32]  ) extension_files.push( settings.icons[32] );
     if( settings.popup && settings.popup != {} ){
@@ -514,22 +528,25 @@ function build_chrome() {
             "matches": [ match_url ],
             "exclude_matches": settings.exclude_matches,
             "js": settings.contentScriptFiles,
-            "css": settings.contentCSSFiles,
+            "css": settings.contentCSSFiles.concat(settings.contentCSSFiles_chrome),
             "run_at": when_string[settings.contentScriptWhen]
-        }
-    ],
-    "permissions": [
-            match_url,
-        "contextMenus",
-        "tabs",
-        "history",
-        "notifications"
-    ]
+        }],
+        "permissions": [
+                match_url,
+            "contextMenus",
+            "tabs",
+            "history",
+            "notifications"
+        ],
+         "web_accessible_resources": [
+            "css/font/*.*"
+         ]
     };
 
     var extension_files = [] // default background-files for this platform already are in Chrome/ directory
                              .concat( settings.contentScriptFiles)
                              .concat( settings.contentCSSFiles)
+                             .concat( settings.contentCSSFiles_chrome)
                              .concat( settings.backgroundScriptFiles);
     var store_upload_files = ['Chrome/background.js','Chrome/chrome-bootstrap.css','Chrome/manifest.json'];
     Array.prototype.push.apply(store_upload_files, extension_files);
@@ -709,6 +726,6 @@ program_counter.begin();
 
 build_chrome ();
 build_firefox();
-//build_safari();
+build_safari();
 
 program_counter.end(0);

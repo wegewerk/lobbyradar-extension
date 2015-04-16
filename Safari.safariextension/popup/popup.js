@@ -1,3 +1,4 @@
+var detail_url_extern = 'http://lobbyradar.opendatacloud.de/entity/';
 var BG;
 if(SAFARI) {
     BG = safari.extension.globalPage.contentWindow;
@@ -7,9 +8,7 @@ if(SAFARI) {
 
 function enable_for_site(url) {
     var hostname = BG.parseURL(url).hostname;
-    BabelExt.bgMessage({requestType:'addWhitelist',hostname:hostname},function(result){
-        console.log(result);
-    });
+    BabelExt.bgMessage({requestType:'addWhitelist',hostname:hostname});
 }
 
 function disable_for_site(url) {
@@ -51,10 +50,19 @@ function update_content() {
             if(info.can_disable){
                 $('#btn_disable_for_site').show();
             }
-           if( info.hits ) {
+           if( info.hits.length ) {
                 $('#hits').show();
-                $('#num_hits').text(info.hits);
+                $('#num_hits').text(info.hits.length);
                 $('#searchtime').text((info.searchtime/1000).toPrecision(2));
+                $('#hitlist').empty();
+                $.each(info.hits,function(id,person){
+                    $('#hitlist').append('<li class="lobbyradar_item"><a href="'+detail_url_extern+person.uid+'">'+person.name+'</a></li>');
+                });
+                $('.lobbyradar_item').click(function(){
+
+                    chrome.tabs.create({url: $('a',this).attr('href')});
+                });
+
             } else {
                 $('#nohits').show();
             }

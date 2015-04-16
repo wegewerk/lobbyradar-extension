@@ -35,7 +35,8 @@
 			"css": [
 				"style.css",
 				"tooltipster.css",
-				"shariff.complete.css"
+				"shariff.complete.css",
+				"fontawesome_chrome.css"
 			],
 			"run_at": "document_idle"
 		}
@@ -47,6 +48,9 @@
 		"history",
 		"notifications",
 		"storage"
+	],
+	"web_accessible_resources": [
+		"css/font/*.*"
 	],
 	"icons": {
 		"16": "lobbyradar-16.png",

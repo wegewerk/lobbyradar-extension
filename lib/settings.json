@@ -42,6 +42,9 @@
     // contentscriptfiles nur für Firefox
     "contentScriptFiles_ff": [ "worker_search.js" ],
     "contentCSSFiles":       [ "style.css","tooltipster.css","shariff.complete.css" ],
+    "contentCSSFiles_chrome":[ "fontawesome_chrome.css" ],
+    "contentCSSFiles_ff":    [ "fontawesome_ff.css" ],
+    "contentCSSFiles_safari":[ "fontawesome_safari.css" ],
     "backgroundScriptFiles": [ "underscore.js","bg_common.js", "bg_search.js","bg_browserbutton.js","jquery.js",],
     "extra_files":           [ "css","lobbyradar.png" ],
 
@@ -59,8 +62,8 @@
         "page": "popup/popup.html",
         "extra_files": [ "popup" ],
         "icon": "lobbyradar-16-mono.png", // safari only. Chrome uses best match from icons{} array
-        "width": 280,
-        "height": 200
+        "width": 361,
+        "height": 480
     },
 
     "preferences": [

@@ -61,7 +61,7 @@
 				<string>fg_page.js</string>
 				<string>moment.js</string>
 				<string>underscore.js</string>
-				<string>worker_search.js</string>
+				<string>shariff.complete.js</string>
 			</array>
 			<key>Start</key>
 			<array>
@@ -72,6 +72,8 @@
 		<array>
 			<string>style.css</string>
 			<string>tooltipster.css</string>
+			<string>shariff.complete.css</string>
+			<string>fontawesome_safari.css</string>
 		</array>
 	</dict>
 	<key>Description</key>
