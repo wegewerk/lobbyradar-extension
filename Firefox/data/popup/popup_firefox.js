@@ -22,10 +22,18 @@ self.port.on('currentTabInfo',function(tabData){
         if(info.can_disable){
             $('#btn_disable_for_site').show();
         }
-       if( info.hits ) {
+       if( info.hits.length ) {
             $('#hits').show();
-            $('#num_hits').text(info.hits);
+            $('#num_hits').text(info.hits.length);
             $('#searchtime').text((info.searchtime/1000).toPrecision(2));
+            $('#hitlist').empty();
+            $.each(info.hits,function(id,person){
+                $('#hitlist').append('<li class="lobbyradar_item"><a href="'+detail_url_extern+person.uid+'">'+person.name+'</a></li>');
+            });
+            $('.lobbyradar_item').click(function(){
+                self.port.emit('openTab',{url: $('a',this).attr('href')});
+            });
+
         } else {
             $('#nohits').show();
         }

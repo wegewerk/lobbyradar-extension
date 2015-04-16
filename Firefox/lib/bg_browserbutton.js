@@ -49,6 +49,7 @@ var panel = panels.Panel({
   onHide: function(){ToolbarButton.state('window', {checked: false});}
 });
 
+// das tabData-Objekt wird hier nur als Anker für die Events verwendet
 panel.port.on('addWhitelist',function(url){
     emit(tabData,'addWhitelist',lobbyradar_tools.parseURL(url).hostname);
 });
@@ -57,6 +58,9 @@ panel.port.on('removeWhitelist',function(url){
 });
 panel.port.on('openPrefs',function(){
     emit(tabData,'openPrefs');
+});
+panel.port.on('openTab',function(){
+    emit(tabData,'openTab');
 });
 
 function makeTabObject() {

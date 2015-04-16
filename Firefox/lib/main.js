@@ -65,6 +65,11 @@ on(tabData,'openPrefs',function(){
             .BrowserOpenAddonsMgr('addons://detail/'+self.id+'/preferences');
 
 });
+// Popup möchte Eine Detailseite eienr entity öffnen (ertern)
+on(tabData,'openTab',function(data){
+    tabs.open(data.url);
+});
+
 // alle Einstellungsänderungen an einen change-handler weitergeben
 require("sdk/simple-prefs").on("", lobbyradar.lobbyradar.prefsChanged);
 
