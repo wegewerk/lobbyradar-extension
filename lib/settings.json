@@ -13,7 +13,7 @@
     "description": "Discover Lobby Networks",
     "license":     "GPL",
     "author":      "mdt",
-    "version":     "1.1",
+    "version":     "1.2",
     "website":     "http://lobbyradar.opendatacloud.de",
     "icons": {
             "16": "lobbyradar-16.png",
