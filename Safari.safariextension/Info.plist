@@ -5,7 +5,7 @@
 	<key>Author</key>
 	<string>mdt</string>
 	<key>Builder Version</key>
-	<string>10600.3.18</string>
+	<string>10600.4.10.7</string>
 	<key>CFBundleDisplayName</key>
 	<string>Lobbyradar</string>
 	<key>CFBundleIdentifier</key>
@@ -25,14 +25,14 @@
 		<key>Popovers</key>
 		<array>
 			<dict>
-				<key>Identifier</key>
-				<string>lobbyradarPopover</string>
 				<key>Filename</key>
 				<string>popup/popup.html</string>
-				<key>Width</key>
-				<real>361</real>
 				<key>Height</key>
 				<real>640</real>
+				<key>Identifier</key>
+				<string>lobbyradarPopover</string>
+				<key>Width</key>
+				<real>361</real>
 			</dict>
 		</array>
 		<key>Toolbar Items</key>
