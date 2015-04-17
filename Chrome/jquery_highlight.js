@@ -107,6 +107,5 @@ jQuery.fn.highlight = function (word, options) {
 
     return this.each(function () {
         document_results = jQuery.highlight(this, re, settings.element, settings.className,settings.wordsOnly,word,new RegExp(pattern_word,'i'), document_results);
-        if(document_results.maxHits<=0 ) console.log(document_results);
     });
 };

@@ -30,7 +30,7 @@
 				"fg_page.js",
 				"moment.js",
 				"underscore.js",
-				"shariff.complete.js"
+				"shariff.min.js"
 			],
 			"css": [
 				"style.css",

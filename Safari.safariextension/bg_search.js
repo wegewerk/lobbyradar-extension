@@ -117,7 +117,6 @@ function startUpdater(updateInterval) {
     updateInterval = updateInterval*1000;
     console.log('starting updater with interval '+updateInterval);
     if( remoteUpdater ){
-        console.log('updater found. '+remoteUpdater);
         clearInterval(remoteUpdater);
     }
     remoteUpdater=setInterval(updateAll,updateInterval);
@@ -135,7 +134,7 @@ function do_search(bodytext,tabId,vendor_whitelisted) {
             var result = bodytext.match(person.regexes[nameidx]);
             // Name in found_names aufnehmen, wenn noch nicht vorhanden
             if( result && !_.where(found_names,{name:name}).length) {
-                found_names.push({uid:uid,name:name,num_conn:person.connections.length});
+                found_names.push({uid:uid,name:name});
             }
         })
     });

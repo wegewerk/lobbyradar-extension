@@ -9,7 +9,9 @@ var lobbyradar_tools = require('bg_common').lobbyradar_tools;
 var ToolbarButton = false;
 var tabData = false;
 var activeTab = false;
-
+var panelsizes = { small:{w:361,h:250},
+                     big:{w:361,h:640}
+                };
 exports.buttonfunctions = {
     initialize: function(global_tabData){
         ToolbarButton = ToggleButton({
@@ -20,7 +22,12 @@ exports.buttonfunctions = {
                 "32": './'+settings.icons[32]
             },
             onChange: function(state) { if (state.checked) {
-                                            panel.show({ position: ToolbarButton });
+                                            var activeSize = panelsizes.small;
+                                            if(state.badge && state.badge != '0' ) activeSize = panelsizes.big;
+                                            panel.show({ position: ToolbarButton ,
+                                                         height: activeSize.h,
+                                                         width : activeSize.w
+                                            });
                                       }
             },
             badgeColor:'#143B52'
@@ -30,7 +37,7 @@ exports.buttonfunctions = {
     updateBrowserButton: function( tab ) {
         var storedTabdata = tabData.get(tab.id);
         if(storedTabdata && storedTabdata.hits) {
-            ToolbarButton.state(tab,{ badge:storedTabdata.hits.toString() } );
+            ToolbarButton.state(tab,{ badge:storedTabdata.hits.length.toString() } );
         } else {
             ToolbarButton.state(tab,{ badge:'0' } );
         }
@@ -59,8 +66,8 @@ panel.port.on('removeWhitelist',function(url){
 panel.port.on('openPrefs',function(){
     emit(tabData,'openPrefs');
 });
-panel.port.on('openTab',function(){
-    emit(tabData,'openTab');
+panel.port.on('openTab',function(data){
+    emit(tabData,'openTab',data);
 });
 
 function makeTabObject() {

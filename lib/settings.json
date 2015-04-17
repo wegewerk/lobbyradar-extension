@@ -38,7 +38,7 @@
      */
     "contentScriptWhen": "late",
 
-    "contentScriptFiles":    [ "jquery.js","jquery_highlight.js","jquery.tooltipster.min.js","fg_page.js","moment.js","underscore.js", "shariff.complete.js" ],
+    "contentScriptFiles":    [ "jquery.js","jquery_highlight.js","jquery.tooltipster.min.js","fg_page.js","moment.js","underscore.js", "shariff.min.js" ],
     // contentscriptfiles nur für Firefox
     "contentScriptFiles_ff": [ "worker_search.js" ],
     "contentCSSFiles":       [ "style.css","tooltipster.css","shariff.complete.css" ],
@@ -63,7 +63,7 @@
         "extra_files": [ "popup" ],
         "icon": "lobbyradar-16-mono.png", // safari only. Chrome uses best match from icons{} array
         "width": 361,
-        "height": 480
+        "height": 640
     },
 
     "preferences": [

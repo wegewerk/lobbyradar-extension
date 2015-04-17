@@ -23,7 +23,7 @@ var tabData = false; // wird von initialize gesetzt
 function parseNameList(result) {
     var local_names = {};
     _.each(result.result,function(ent,uid){
-        local_names[uid]={names:ent[1], connections:ent[2], regexes:new Array()};
+        local_names[uid]={names:ent[1], connections:ent[2], regexes:new Array(), uid:uid};
         // make Regexes from names
         _.each(local_names[uid].names,function(name) {
             // make regex matching this exact string by escaping chars special to regexes
@@ -128,7 +128,6 @@ function startUpdater(updateInterval) {
     updateInterval = updateInterval*1000;
     console.log('starting updater with interval '+updateInterval);
     if( remoteUpdater ){
-        console.log('updater found. '+remoteUpdater);
         clearInterval(remoteUpdater);
     }
     remoteUpdater=setInterval(updateAll,updateInterval);
@@ -147,7 +146,6 @@ function searchNames(bodytext, sendResponse, senderTab) {
         var vendor_whitelisted = _.indexOf( vendor_whitelist, hostname) >=0;
         var blacklisted = _.indexOf( blacklist, hostname) >=0;
         if( (personal_whitelisted || vendor_whitelisted) && !blacklisted ) {
-            console.log('worker url '+self.data.url());
             var searchWorker = new ChromeWorker(self.data.url("worker_search.js"));
             searchWorker.postMessage({
                 bodytext:bodytext,
@@ -155,7 +153,6 @@ function searchNames(bodytext, sendResponse, senderTab) {
                 names:names
             });
             searchWorker.onmessage = function(workerResult) {
-                console.log('recieved worker result',workerResult.data);
                 workerResult.data.stats['can_disable'] = !vendor_whitelisted;
                 tabData.set(senderTab.id, workerResult.data.stats);
                 sendResponse(workerResult.data.found_names);
@@ -166,6 +163,13 @@ function searchNames(bodytext, sendResponse, senderTab) {
             sendResponse([]);
         }
     }
+}
+
+function updateHits(hits,sendResponse, senderTab ) {
+        var storedTabdata = tabData.get(senderTab.id);
+        storedTabdata['hits'] = _.sortBy(_.unique(hits),'name');
+        tabData.set(senderTab.id,storedTabdata);
+        sendResponse([]);
 }
 
 function detail_for_id(id, sendResponse) {
@@ -237,7 +241,9 @@ exports.lobbyradar = {
     dispatch: function(request,callback) {
         switch(request.requestType) {
             case 'detail_for_id': detail_for_id(request.id, callback);break;
-            case 'searchNames': searchNames(request.bodytext, callback, request.tab);break;
+            case 'searchNames'  : searchNames(request.bodytext, callback, request.tab);break;
+            case 'updateHits'   : updateHits(request.hits, callback, request.tab);break;
+
         }
     },
     addWhitelist: addWhitelist,

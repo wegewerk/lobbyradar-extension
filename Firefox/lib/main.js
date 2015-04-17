@@ -65,9 +65,10 @@ on(tabData,'openPrefs',function(){
             .BrowserOpenAddonsMgr('addons://detail/'+self.id+'/preferences');
 
 });
-// Popup möchte Eine Detailseite eienr entity öffnen (ertern)
+// Popup möchte Eine Detailseite einer entity öffnen (ertern)
 on(tabData,'openTab',function(data){
-    tabs.open(data.url);
+    var gBrowser = Services.wm.getMostRecentWindow('navigator:browser').gBrowser;
+    gBrowser.selectedTab = gBrowser.addTab(data.url);
 });
 
 // alle Einstellungsänderungen an einen change-handler weitergeben
@@ -98,6 +99,7 @@ pageMod.PageMod({
             case 'updateBrowserButton': lobbyradarBtn.updateBrowserButton(worker.tab);break;
             case 'setBrowserButton_waiting': lobbyradarBtn.setBrowserButton_waiting(worker.tab);break;
             case 'setBrowserButton_searching': lobbyradarBtn.setBrowserButton_searching(worker.tab);break;
+            case 'updateHits':
             case 'detail_for_id':
             case 'searchNames': lobbyradar.lobbyradar.dispatch(request,function(returnvalue) {
                                     worker.postMessage({message:{

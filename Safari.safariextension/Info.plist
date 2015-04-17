@@ -32,7 +32,7 @@
 				<key>Width</key>
 				<real>361</real>
 				<key>Height</key>
-				<real>480</real>
+				<real>640</real>
 			</dict>
 		</array>
 		<key>Toolbar Items</key>
@@ -61,7 +61,7 @@
 				<string>fg_page.js</string>
 				<string>moment.js</string>
 				<string>underscore.js</string>
-				<string>shariff.complete.js</string>
+				<string>shariff.min.js</string>
 			</array>
 			<key>Start</key>
 			<array>

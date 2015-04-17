@@ -1,3 +1,4 @@
+var detail_url_extern = 'http://lobbyradar.opendatacloud.de/entity/';
 var current_Taburl = false;
 
 
@@ -28,10 +29,11 @@ self.port.on('currentTabInfo',function(tabData){
             $('#searchtime').text((info.searchtime/1000).toPrecision(2));
             $('#hitlist').empty();
             $.each(info.hits,function(id,person){
-                $('#hitlist').append('<li class="lobbyradar_item"><a href="'+detail_url_extern+person.uid+'">'+person.name+'</a></li>');
+                $('#hitlist').append('<li class="lobbyradar_item"><a data-uid="'+person.uid+'" href="#">'+person.name+'</a></li>');
             });
             $('.lobbyradar_item').click(function(){
-                self.port.emit('openTab',{url: $('a',this).attr('href')});
+                var data = {url: detail_url_extern+$('a',this).attr('data-uid')};
+                self.port.emit('openTab',data);
             });
 
         } else {
