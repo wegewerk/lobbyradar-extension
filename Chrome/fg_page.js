@@ -2,9 +2,9 @@ var start = new Date().getTime();
 var startuptime;
 var match_elements = 'p,td,h1,h2,h3,h4,h5,h6,a';
 var detail_url_extern = 'http://lobbyradar.opendatacloud.de/entity/';
-var contribute_url_extern = 'mailto://lobbyradar@zdf.de?subject=Verbindung melden %name (%uid)&body=Ich möchte eine neue Verbindung melden:';
-var complain_url_extern = 'mailto://lobbyradar@zdf.de?subject=Fehler melden %name (%uid)&body=Ich möchte einen Fehler melden:';
-var mail_url_extern = 'mailto://?subject=Lobbyradar - Entdecke das Netzwerk der Macht&body=%s';
+var contribute_url_extern = 'mailto:lobbyradar@zdf.de?subject=Verbindung melden %name (%uid)&body=Ich möchte eine neue Verbindung melden:';
+var complain_url_extern = 'mailto:lobbyradar@zdf.de?subject=Fehler melden %name (%uid)&body=Ich möchte einen Fehler melden:';
+var mail_url_extern = 'mailto:?subject=Lobbyradar - Entdecke das Netzwerk der Macht&body=%s';
 
 function applyTooltips() {
     var updateTTheight = function(id) {
@@ -90,7 +90,7 @@ function mark_hits(found_names,cb) {
             onComplete();
         } else {
             if(typeof(chrome) != 'undefined') highlight_step();
-            else window.setTimeout(highlight_step,100);
+            else window.setTimeout(highlight_step,0);
         }
     }
     onComplete = function() {

@@ -42,7 +42,7 @@ function update_content() {
         };
         var info = tabData.value;
         var tab = tabData.tab;
-        if( info.stage == 'search' || info.stage == 'mark' ) {
+        if( !info.stage || info.stage == 'search' || info.stage == 'mark' ) {
             $('#plugin_working').show();
             window.setTimeout(update_content,100);
         } else {
