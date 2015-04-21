@@ -1,0 +1,63 @@
+#btn_disable_for_site,
+#btn_enable_for_site,
+#plugin_disabled, #hits, #nohits {
+    display:none;
+}
+
+.lighttext {
+    opacity: 0;
+}
+.lighttext:hover {
+    opacity: 0.8;
+}
+body {
+    overflow: hidden;
+}
+
+html, body {
+    height: auto;
+}
+.lobbyradar_item {
+    display: block;
+    list-style: none;
+    padding: 10px 0 !important;
+    width: 314px;
+    border-bottom: 1px solid rgb(216,216,226);
+    margin: 0;
+    background: transparent !important;
+}
+.lobbyradar_item a {
+    text-decoration: none;
+    color: white;
+    background: transparent !important;
+    padding: 0;
+    margin: 0;
+}
+.lobbyradar_item a img {
+    padding: 0 4px 3px 0;
+    margin: 2px 0 0 0;
+    vertical-align: top;
+}
+.lobbyradar_item a:hover {
+    text-decoration: underline;
+    background: transparent !important;
+}
+.lobbyradar_item a:visited {
+    background: transparent !important;
+}
+.lobbyradar_item a {
+    max-width: 236px !important;
+    display: inline-block !important;
+}
+.lobbyradar_item:last-child {
+    border: none;
+}
+
+.lobbyradar_list {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    padding: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    height: 450px;
+}

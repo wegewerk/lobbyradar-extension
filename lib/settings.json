@@ -4,17 +4,17 @@
  */
 {
     // In Linux, you can make a GUID by running `uuidgen` on the command line:
-    "id":            "C99B9302-9D86-11E4-8A25-0242AC11000D",
+    "id":            "DF6BD873-26A4-4A36-96DB-208B10ACC4D0",
     "bundleid":      "de.miz-babelsberg.lobbyradar", // used by safari only
 
     // General config parameters
     "name":        "lobbyradar",
     "title":       "Lobbyradar",
     "description": "Discover Lobby Networks",
-    "license":     "GPL",
-    "author":      "mdt",
-    "version":     "1.2",
-    "website":     "http://lobbyradar.opendatacloud.de",
+    "license":     "MIT",
+    "author":      "Medieninnovationszentrum Babelsberg MIZ",
+    "version":     "1.3",
+    "website":     "http://www.lobbyradar.zdf.de",
     "icons": {
             "16": "lobbyradar-16.png",
             "32": "lobbyradar-32.png",
@@ -25,7 +25,7 @@
     },
 
     "long_description":
-        "This extension shows additional Information to Person and Corporation names.",
+        "Lobbyradar markiert die Namen und Organisationen, die in unserer Datenbank hinterlegt sind, in den Texten, die Sie lesen. Fährt man dann mit der Maus über die Markierung, lädt Lobbyradar die wichtigsten Infos aus unserer Datenbank und zeigt sie an. So werden Nachrichten und Geschichten in einen neuen Kontext gesetzt und Sie erhalten nützliche Zusatzinformationen.",
 
     // userscript config parameters:
 

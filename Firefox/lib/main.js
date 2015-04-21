@@ -49,7 +49,7 @@ localStorage.removeItem = function(key) {
 	delete ss.storage[key];
 };
 
-var settings = require("./settings.js");
+var settings = require("./settings");
 var lobbyradarBtn  =  require('bg_browserbutton').buttonfunctions;
 
 // globales Tabdata-Objekt an den Button und das Suchmodul übergeben

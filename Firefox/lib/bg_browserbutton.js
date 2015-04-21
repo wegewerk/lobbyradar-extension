@@ -4,6 +4,7 @@ var self = require("sdk/self");
 var { ToggleButton } = require("sdk/ui/button/toggle");
 var settings = require("./settings.js");
 var tabs = require('sdk/tabs');
+var { setTimeout } = require("sdk/timers");
 var lobbyradar_tools = require('bg_common').lobbyradar_tools;
 
 var ToolbarButton = false;
@@ -23,7 +24,7 @@ exports.buttonfunctions = {
             },
             onChange: function(state) { if (state.checked) {
                                             var activeSize = panelsizes.small;
-                                            if(state.badge && state.badge != '0' ) activeSize = panelsizes.big;
+                                            if(state.badge && state.badge != '0' && state.badge != '+++' && state.badge != '...') activeSize = panelsizes.big;
                                             panel.show({ position: ToolbarButton ,
                                                          height: activeSize.h,
                                                          width : activeSize.w
@@ -36,17 +37,32 @@ exports.buttonfunctions = {
     },
     updateBrowserButton: function( tab ) {
         var storedTabdata = tabData.get(tab.id);
+        storedTabdata.stage='done';
+        tabData.set(tab.id,storedTabdata);
         if(storedTabdata && storedTabdata.hits) {
             ToolbarButton.state(tab,{ badge:storedTabdata.hits.length.toString() } );
+            panel.resize( panelsizes.big.w,panelsizes.big.h);
         } else {
-            ToolbarButton.state(tab,{ badge:'0' } );
+            if( storedTabdata && !storedTabdata.disabled ) {
+                ToolbarButton.state(tab,{ badge:'0' } );
+            } else {
+                ToolbarButton.state(tab,{ badge:'' } );
+            }
         }
     },
     setBrowserButton_searching: function( tab ) {
-            ToolbarButton.state(tab,{ badge:'...' } );
+        var storedTabdata = tabData.get(tab.id);
+        storedTabdata.stage='search';
+        tabData.set(tab.id,storedTabdata);
+        ToolbarButton.state(tab,{ badge:'...' } );
+        panel.resize( panelsizes.small.w,panelsizes.small.h);
     },
     setBrowserButton_waiting: function( tab ) {
-            ToolbarButton.state(tab,{ badge:'+++' } );
+        var storedTabdata = tabData.get(tab.id);
+        storedTabdata.stage='mark';
+        tabData.set(tab.id,storedTabdata);
+        ToolbarButton.state(tab,{ badge:'+++' } );
+        panel.resize( panelsizes.small.w,panelsizes.small.h);
     }
 }
 
@@ -77,6 +93,12 @@ function makeTabObject() {
     }
 }
 
-panel.on("show",function(){
-    panel.port.emit('currentTabInfo',makeTabObject() );
-});
+function sendTabdata() {
+    var tabdata = makeTabObject();
+    panel.port.emit('currentTabInfo',tabdata );
+    if( !tabdata.value || !tabdata.value.stage || tabdata.value.stage == 'search' || tabdata.value.stage == 'mark' ) {
+        setTimeout(sendTabdata,100);
+    }
+}
+
+panel.on("show",sendTabdata);

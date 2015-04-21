@@ -23,7 +23,7 @@ var tabData = false; // wird von initialize gesetzt
 function parseNameList(result) {
     var local_names = {};
     _.each(result.result,function(ent,uid){
-        local_names[uid]={names:ent[1], connections:ent[2], regexes:new Array(), uid:uid};
+        local_names[uid]={names:ent[1], connections:_.uniq(ent[2]), regexes:new Array(), uid:uid};
         // make Regexes from names
         _.each(local_names[uid].names,function(name) {
             // make regex matching this exact string by escaping chars special to regexes
@@ -32,7 +32,7 @@ function parseNameList(result) {
             // simple \b does not work with unicode text
             // see http://stackoverflow.com/questions/10590098/javascript-regexp-word-boundaries-unicode-characters
             //var pattern = "\b" + nameReg + "\b";
-            var pattern = "(?:^|[,.\-\\s]|)" + nameReg + "(?:$|[,.\-\\s]|)";
+            var pattern = "(?:^|[,.\\s\\-\\(\\)\\[\\]]|)" + nameReg + "(?:$|[,.\\s\\-\\(\\)\\[\\]]|)";
             try {
                 local_names[uid].regexes.push(new RegExp(pattern, 'gi'));
             } catch(e) {
@@ -46,8 +46,7 @@ function parseNameList(result) {
 }
 
 function parseWhitelist(result) {
-    var res = result.result;
-    res.push('www.heute.de');
+    var res = _.map(result.result,function(url){ return url.toLowerCase(); });
     console.log(_.size(res)+' urls in whitelist');
     return res;
 }
@@ -167,7 +166,10 @@ function searchNames(bodytext, sendResponse, senderTab) {
 
 function updateHits(hits,sendResponse, senderTab ) {
         var storedTabdata = tabData.get(senderTab.id);
-        storedTabdata['hits'] = _.sortBy(_.unique(hits),'name');
+        storedTabdata['hits'] = _.chain(hits)
+                                 .unique(function(hit){ return hit.name; })
+                                 .sortBy(function(hit){return hit.name.toLowerCase(); })
+                                 .value();
         tabData.set(senderTab.id,storedTabdata);
         sendResponse([]);
 }

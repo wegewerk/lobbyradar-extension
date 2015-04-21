@@ -33,9 +33,12 @@ var parseURL = function(url) {
 
 var getCurrentTabInfo = function(callback, secondTime) {
     if (!SAFARI) {
+      console.log('getCurrentTabInfo');
       chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-        if (tabs.length === 0)
-          return; // For example: only the background devtools or a popup are opened
+        if (tabs.length === 0) {
+            console.log('no tabs open?');
+            return; // For example: only the background devtools or a popup are opened
+        }
 
         var tab = tabs[0];
 
@@ -54,6 +57,9 @@ var getCurrentTabInfo = function(callback, secondTime) {
           tab: tab,
           value: tabData.get(tab.id)
         };
+        if(!result.value) {
+            result.value={state:'search'}
+        }
 
         callback(result);
       });

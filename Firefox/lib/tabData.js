@@ -4,7 +4,7 @@ var tabData ={};
 exports.tabData = {
     // get data stored for a tab
     get: function(tabId) {
-        return tabData[tabId];
+        return tabData[tabId] ? tabData[tabId] : {};
     },
 
     // store value for tab

@@ -699,20 +699,40 @@ function build_chrome() {
                 fs.move( 'Chrome.crx', crx );
                 console.log('Built ' + crx);
             }
-            if ( fs.exists('build/chrome-store-upload.zip') ) fs.remove('build/chrome-store-upload.zip');
-            childProcess.execFile(
-                'zip',
-                ['-r','build/chrome-store-upload.zip','Chrome/'],
-                null,
-                function(err,stdout,stderr) {
-                    if ( stderr != '' ) { console.log(stderr.replace(/\n$/,'')); return program_counter.end(1); }
-                    console.log('Built build/chrome-store-upload.zip');
-                    return program_counter.end(0);
-                }
-            );
+            return program_counter.end(0);
         });
     };
 
+}
+
+function build_distpackage() {
+    var olddir = fs.workingDirectory;
+    console.log('running in '+olddir);
+    var platforms = ['Chrome','Firefox','Safari.safariextension'];
+    platforms.forEach(function(platform) {
+        console.log( 'copyFile('+ platform+', \'build/unpacked/\''+ platform +');');
+        copyFile( platform, 'build/unpacked/' + platform );
+    });
+
+    fs.changeWorkingDirectory('build/unpacked/')
+    var newdir = fs.workingDirectory;
+    var command = 'cd '+newdir+' && '+'zip -r ../dist.zip . && cd -';
+
+    console.log('please exec '+command);
+}
+
+function usage() {
+    console.log(
+        'Usage: ' + args[0] + ' [dist]\n' +
+        'Commands:\n' +
+        '    no arguments - builds extensions for Chrome, Firefox and Safari\n' +
+        '    dist - pack all platforms into one dist.zip. Ship this to the customer.\n'+
+        '           Customer needs to unpack it and release each platform separately.\n'+
+        '           For Help about these processes see:\n'+
+        '           Chrome: https://developer.chrome.com/extensions/packaging\n'         +
+        '           Safari: https://developer.apple.com/library/safari/documentation/Tools/Conceptual/SafariExtensionGuide/DistributingYourExtension/DistributingYourExtension.html\n'+
+        '           Firefox: Upload the xpi to https://addons.mozilla.org/de/developers/addon/submit/1'
+    );
 }
 
 /*
@@ -724,8 +744,20 @@ var args = system.args;
 console.log('running on '+system.os.name+"\n");
 program_counter.begin();
 
-build_chrome ();
-build_firefox();
-build_safari();
+switch ( args[1] || '' ) {
+
+case 'help':
+    usage();
+    break;
+
+case 'dist':
+    build_distpackage();
+    break;
+
+default:
+    build_chrome ();
+    build_firefox();
+    build_safari();
+}
 
 program_counter.end(0);

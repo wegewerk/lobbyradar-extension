@@ -7,6 +7,8 @@ if(SAFARI) {
     });
     var updateBrowserButton = function( tabId ) {
         var storedTabdata = tabData.get(tabId);
+        storedTabdata.stage='done';
+        tabData.set(tabId,storedTabdata);
         if(storedTabdata && storedTabdata.hits) {
             ToolbarButton.badge = storedTabdata.hits.length.toString();
         } else {
@@ -15,9 +17,15 @@ if(SAFARI) {
     }
 
     var setBrowserButton_searching = function( tabId ) {
+        var storedTabdata = tabData.get(tabId);
+        storedTabdata.stage='search';
+        tabData.set(tabId,storedTabdata);
         ToolbarButton.badge = '...'; // safari is not displaying this. unfortunately
     }
     var setBrowserButton_waiting = function( tabId ) {
+        var storedTabdata = tabData.get(tabId);
+        storedTabdata.stage='mark';
+        tabData.set(tabId,storedTabdata);
         ToolbarButton.badge = '+++'; // safari is not displaying this. unfortunately
     }
 } else {
@@ -26,6 +34,8 @@ if(SAFARI) {
         chrome.browserAction.setBadgeText({text:'',tabId:tabId});
         chrome.browserAction.setBadgeBackgroundColor({ color: "#555",tabId:tabId });
         var storedTabdata = tabData.get(tabId);
+        storedTabdata.stage='done';
+        tabData.set(tabId,storedTabdata);
         if(storedTabdata.hits) {
             chrome.browserAction.setBadgeText({text:storedTabdata.hits.length.toString(),tabId:tabId});
         } else {
@@ -34,11 +44,17 @@ if(SAFARI) {
     }
 
     var setBrowserButton_searching = function( tabId ) {
+        var storedTabdata = tabData.get(tabId);
+        storedTabdata.stage='search';
+        tabData.set(tabId,storedTabdata);
         chrome.browserAction.setTitle({title:'Lobbyradar sucht...',tabId:tabId});
         chrome.browserAction.setBadgeText({text:'...',tabId:tabId});
         chrome.browserAction.setBadgeBackgroundColor({ color: "#a00",tabId:tabId });
     }
     var setBrowserButton_waiting = function( tabId ) {
+        var storedTabdata = tabData.get(tabId);
+        storedTabdata.stage='mark';
+        tabData.set(tabId,storedTabdata);
         chrome.browserAction.setTitle({title:'Lobbyradar arbeitet...',tabId:tabId});
         chrome.browserAction.setBadgeText({text:'+++',tabId:tabId});
         chrome.browserAction.setBadgeBackgroundColor({ color: "#a00",tabId:tabId });
@@ -49,7 +65,7 @@ if(SAFARI) {
 tabData = {
     // get data stored for a tab
     get: function(tabId) {
-        return tabData[tabId];
+        return tabData[tabId] ? tabData[tabId] : {};
     },
 
     // store value for tab

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>DefaultValue</key>
+		<string></string>
+		<key>Key</key>
+		<string>whitelist</string>
+		<key>Title</key>
+		<string>Whitelist</string>
+		<key>Type</key>
+		<string>Hidden</string>
+	</dict>
+	<dict>
+		<key>DefaultValue</key>
+		<string>3600</string>
+		<key>Key</key>
+		<string>updateinterval</string>
+		<key>Title</key>
+		<string>Update Interval</string>
+		<key>Type</key>
+		<string>ListBox</string>
+		<key>Titles</key>
+		<array>
+			<string>alle 10 Minuten</string>
+			<string>stündlich</string>
+			<string>täglich</string>
+			<string>wöchentlich</string>
+		</array>
+		<key>Values</key>
+		<array>
+			<string>600</string>
+			<string>3600</string>
+			<string>86400</string>
+			<string>604800</string>
+		</array>
+	</dict>
+</array>
+</plist>

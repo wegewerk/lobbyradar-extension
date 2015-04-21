@@ -2,9 +2,9 @@ var start = new Date().getTime();
 var startuptime;
 var match_elements = 'p,td,h1,h2,h3,h4,h5,h6,a';
 var detail_url_extern = 'http://lobbyradar.opendatacloud.de/entity/';
-var contribute_url_extern = 'http://www.lobbyradar.zdf.de/verbindung-melden';
-var complain_url_extern = 'http://www.lobbyradar.zdf.de/fehler-melden';
-var mail_url_extern = 'http://www.lobbyradar.zdf.de/share/mail';
+var contribute_url_extern = 'mailto://lobbyradar@zdf.de?subject=Verbindung melden %name (%uid)&body=Ich möchte eine neue Verbindung melden:';
+var complain_url_extern = 'mailto://lobbyradar@zdf.de?subject=Fehler melden %name (%uid)&body=Ich möchte einen Fehler melden:';
+var mail_url_extern = 'mailto://?subject=Lobbyradar - Entdecke das Netzwerk der Macht&body=%s';
 
 function applyTooltips() {
     var updateTTheight = function(id) {
@@ -22,6 +22,7 @@ function applyTooltips() {
     start_mark_hits = new Date().getTime();
 
     $('span[class^=lobbyradar_hit]').tooltipster({
+        attachTip_to: 'body',
         interactive: true,
         position: "right",
         positionTracker:true,
@@ -47,13 +48,15 @@ function applyTooltips() {
                 new Shariff(function() {
                     var div = document.createElement("div");
                     div.classList.add("shariff");
-                    document.querySelector('#lobbyradar_footer_'+id).appendChild(div);
+                    if(document.querySelector('#lobbyradar_footer_'+id)) {
+                        document.querySelector('#lobbyradar_footer_'+id).appendChild(div);
+                    }
                     return div;
                 }(), {
                     theme: "grey",
                     services: ["facebook","twitter","mail"],
                     url: detail_url_extern+id,
-                    mailUrl: mail_url_extern + '?body='+detail_url_extern+id
+                    mailUrl: mail_url_extern.replace('%s', detail_url_extern+id)
                 });
                 origin.tooltipster('reposition');
             })
@@ -87,7 +90,7 @@ function mark_hits(found_names,cb) {
             onComplete();
         } else {
             if(typeof(chrome) != 'undefined') highlight_step();
-            else window.setTimeout(highlight_step,0);
+            else window.setTimeout(highlight_step,100);
         }
     }
     onComplete = function() {
@@ -148,17 +151,17 @@ function generateTooltip(id, callback) {
                         });
                         $.each(connections,function(i,connection) {
                             tt_content += '<li class="lobbyradar_item';
-                            if(i>10) tt_content +=' hidden';
+                            if(i>9) tt_content +=' hidden';
                             tt_content += '">';
                             tt_content += connection.row_content;
                             tt_content += '</li>';
-                            if(i==10) tt_content +='<li class="lobbyradar_item showAll"><a href="#">alle anzeigen</a></li>';
+                            if(i==9) tt_content +='<li class="lobbyradar_item showAll"><a href="#">alle anzeigen</a></li>';
                         });
                         tt_content = tt_content + '</ul></section><section id="lobbyradar_footer_'+id+'" class="lobbyradar_footer">'
-                                     +'<a target="_blank" href="'+contribute_url_extern+'">'
+                                     +'<a target="_blank" href="'+contribute_url_extern.replace('%uid',id).replace('%name',parent_person.names[0])+'">'
                                      +'<button class="lobbyradar_button">Verbindung melden</button>'
                                      +'</a>'
-                                     +'<a target="_blank" href="'+complain_url_extern+'">'
+                                     +'<a target="_blank" href="'+complain_url_extern.replace('%uid',id).replace('%name',parent_person.names[0])+'">'
                                      +'<button class="lobbyradar_button">Fehler melden</button>'
                                      +'</a></section>';
                         callback(tt_content);
