@@ -140,7 +140,6 @@ function do_search(bodytext,tabId,vendor_whitelisted) {
     });
     stop = new Date().getTime();
     stats['searchtime'] = (stop-search_start);
-    stats['hits'] = found_names.length;
     stats['searches'] = searches;
     stats['can_disable'] = !vendor_whitelisted;
     tabData.set(tabId, stats);
