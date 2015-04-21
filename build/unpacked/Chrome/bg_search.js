@@ -93,7 +93,6 @@ function updateWhitelist(callback) {
     var url = update_whitelist_URL;
     var result;
     console.log('update whitelist from '+url);
-    //var url = chrome.extension.getURL('names.json');
     xhr.open('GET', url, true);
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
@@ -140,7 +139,6 @@ function do_search(bodytext,tabId,vendor_whitelisted) {
     });
     stop = new Date().getTime();
     stats['searchtime'] = (stop-search_start);
-    stats['hits'] = found_names.length;
     stats['searches'] = searches;
     stats['can_disable'] = !vendor_whitelisted;
     tabData.set(tabId, stats);

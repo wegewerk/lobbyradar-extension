@@ -42,9 +42,9 @@ function update_content() {
         };
         var info = tabData.value;
         tab = tabData.tab;
-        if( !info.stage || info.stage == 'search' || info.stage == 'mark' ) {
+        if( !info.stage || info.stage == 'search' || info.stage == 'mark' || !info.hits ) {
             $('#plugin_working').show();
-            window.setTimeout(update_content,100);
+            window.setTimeout(update_content,250);
         } else {
             if( info.disabled ) {
                 $('#plugin_disabled').show();

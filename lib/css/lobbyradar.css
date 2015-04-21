@@ -81,7 +81,6 @@ a.navbar-brand:focus {
 }
 
 .navbar+.container {
-	margin-top: 80px;
 	color:white;
     margin-bottom: 80px;
 }

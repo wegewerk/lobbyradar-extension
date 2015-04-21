@@ -1,5 +1,5 @@
 var detail_url_extern = 'http://lobbyradar.opendatacloud.de/entity/';
-var BG;
+var BG,tab;
 if(SAFARI) {
     BG = safari.extension.globalPage.contentWindow;
 } else {
@@ -41,10 +41,10 @@ function update_content() {
             return;
         };
         var info = tabData.value;
-        var tab = tabData.tab;
-        if( !info.stage || info.stage == 'search' || info.stage == 'mark' ) {
+        tab = tabData.tab;
+        if( !info.stage || info.stage == 'search' || info.stage == 'mark' || !info.hits ) {
             $('#plugin_working').show();
-            window.setTimeout(update_content,100);
+            window.setTimeout(update_content,250);
         } else {
             if( info.disabled ) {
                 $('#plugin_disabled').show();
@@ -56,7 +56,7 @@ function update_content() {
                 if(info.can_disable){
                     $('#btn_disable_for_site').show();
                 }
-               if( info.hits.length ) {
+               if( info.hits && info.hits.length ) {
                     $('#hits').show();
                     $('#num_hits').text(info.hits.length);
                     $('#searchtime').text((info.searchtime/1000).toPrecision(2));

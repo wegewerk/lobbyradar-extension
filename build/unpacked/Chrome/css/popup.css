@@ -17,6 +17,10 @@ body {
 html, body {
     height: auto;
 }
+
+.navbar a {
+    width:100%;
+}
 .lobbyradar_item {
     display: block;
     list-style: none;

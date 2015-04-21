@@ -93,7 +93,6 @@ function updateWhitelist(callback) {
     var url = update_whitelist_URL;
     var result;
     console.log('update whitelist from '+url);
-    //var url = chrome.extension.getURL('names.json');
     xhr.open('GET', url, true);
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {

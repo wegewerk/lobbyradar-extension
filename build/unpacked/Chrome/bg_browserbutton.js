@@ -9,7 +9,7 @@ if(SAFARI) {
         var storedTabdata = tabData.get(tabId);
         storedTabdata.stage='done';
         tabData.set(tabId,storedTabdata);
-        if(storedTabdata && storedTabdata.hits) {
+        if(storedTabdata && storedTabdata.hits && storedTabdata.hits.length) {
             ToolbarButton.badge = storedTabdata.hits.length.toString();
         } else {
             ToolbarButton.badge = '0';
