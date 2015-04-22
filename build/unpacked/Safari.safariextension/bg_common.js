@@ -123,7 +123,7 @@ function set_localstorage(key,value,callback){
 
 function replaceUmlauts(string)
 {
-    return string.replace(/ä|Ä/g, 'a')
-                .replace(/ö|Ö/g, 'o')
-                .replace(/ü|Ü/g, 'u');
+    return string.replace(/\u00e4|\u00c4/g, 'a')
+                 .replace(/\u00f6|\u00d6/g, 'o')
+                 .replace(/\u00fc|\u00dc/g, 'u');
 }
