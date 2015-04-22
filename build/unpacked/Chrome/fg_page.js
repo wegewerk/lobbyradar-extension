@@ -41,6 +41,7 @@ function applyTooltips() {
             var id = $(this).attr('class').split(' ')[0];
             id = id.split('_').pop();
             updateTTheight(id);
+            origin.tooltipster('content','Daten werden geladen');
             generateTooltip(id, function(content){
                 origin.tooltipster('content',content);
                 updateTTheight(id);
