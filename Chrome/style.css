@@ -116,11 +116,18 @@ span[class^="lobbyradar_hit"] > a:hover {
     width: 33% !important;
     min-width:0 !important;
     margin-bottom: 0 !important;
+    margin-right: 1.8% !important;
     list-style-type: none !important;
     background: none !important;
     padding: 0 !important;
 }
+.tooltipster-lobbyradar .shariff li:last-child {
+    margin-right: 0 !important;
+}
+.tooltipster-lobbyradar .shariff ul {
+    margin: 0 !important;
+}
 .tooltipster-lobbyradar .shariff .theme-grey .shariff-button a {
-    background: rgb(214,214,220);
-    color: rgb(60, 60, 70);
+    background: rgb(214,214,220) !important;
+    color: rgb(60, 60, 70) !important;
 }
