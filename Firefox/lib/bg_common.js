@@ -6,5 +6,12 @@ exports.lobbyradar_tools = {
     parseURL: function(url) {
         if( isUndefined( url ) ) return false;
         return sdk_parseUrl( url );
+    },
+    // umlaute für die Sortierung ersetzen
+    replaceUmlauts: function(string)
+    {
+        return string.replace(/ä|Ä/g, 'a')
+                     .replace(/ö|Ö/g, 'o')
+                     .replace(/ü|Ü/g, 'u');
     }
 }

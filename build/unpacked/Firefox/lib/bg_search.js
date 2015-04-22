@@ -168,7 +168,7 @@ function updateHits(hits,sendResponse, senderTab ) {
         var storedTabdata = tabData.get(senderTab.id);
         storedTabdata['hits'] = _.chain(hits)
                                  .unique(function(hit){ return hit.name; })
-                                 .sortBy(function(hit){return hit.name.toLowerCase(); })
+                                 .sortBy(function(hit){ return lobbyradar_tools.replaceUmlauts(hit.name.toLowerCase()); })
                                  .value();
         tabData.set(senderTab.id,storedTabdata);
         sendResponse([]);
