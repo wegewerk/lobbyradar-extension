@@ -35,8 +35,8 @@
 			"css": [
 				"style.css",
 				"tooltipster.css",
-				"shariff.complete.css",
-				"fontawesome_chrome.css"
+				"shariff.min.css",
+				"share-icons.css"
 			],
 			"run_at": "document_idle"
 		}

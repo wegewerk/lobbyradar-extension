@@ -12,7 +12,7 @@ function applyTooltips() {
         // Liste darf maximal so hoch sein wie das Browserfenster
         // abzüglich Header/footer des Tooltips (60=footer, 40= sicherheitsabstand)
         var windowHeight = $(window).height();
-        var max_list_height = windowHeight - header_height - 60  - 40 ;
+        var max_list_height = windowHeight - header_height - 60  - 80 ;
         $('#lobbyradar_list_'+id).css('max-height',max_list_height);
     };
     var showAllconnections = function() {
@@ -50,11 +50,11 @@ function applyTooltips() {
                     var div = document.createElement("div");
                     div.classList.add("shariff");
                     if(document.querySelector('#lobbyradar_footer_'+id)) {
-                        document.querySelector('#lobbyradar_footer_'+id).appendChild(div);
+                        document.querySelector('#lobbyradar_footer_'+id+' .sharebuttons').appendChild(div);
                     }
                     return div;
                 }(), {
-                    theme: "grey",
+                    theme: "transparent",
                     services: ["facebook","twitter","mail"],
                     url: detail_url_extern+id,
                     mailUrl: mail_url_extern.replace('%s', detail_url_extern+id)
@@ -162,9 +162,11 @@ function generateTooltip(id, callback) {
                             tt_content += '</li>';
                             if(i==9) tt_content +='<li class="lobbyradar_item showAll"><a href="#">alle anzeigen</a></li>';
                         });
-                        tt_content = tt_content + '</ul></section><section id="lobbyradar_footer_'+id+'" class="lobbyradar_footer">'
+                        tt_content = tt_content + '</ul></section>'
+                                     +'<section id="lobbyradar_footer_'+id+'" class="lobbyradar_footer">'
+                                     +'<span class="sharebuttons">Teile diese Verbindung über</span>'
                                      +'<a target="_blank" href="'+contribute_url_extern.replace('%uid',id).replace('%name',parent_person.names[0])+'">'
-                                     +'<button class="lobbyradar_button">Verbindung melden</button>'
+                                     +'<button class="lobbyradar_button lobbyradar_button_left">Verbindung melden</button>'
                                      +'</a>'
                                      +'<a target="_blank" href="'+complain_url_extern.replace('%uid',id).replace('%name',parent_person.names[0])+'">'
                                      +'<button class="lobbyradar_button">Fehler melden</button>'

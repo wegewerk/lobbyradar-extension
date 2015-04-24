@@ -30,7 +30,7 @@ function applyTooltips() {
         maxWidth: 344,
         arrow:false,
         animation: 'none',
-        autoClose: true,
+        autoClose: false,
         onlyOne: true,
         content: 'Daten werden geladen',
         theme: 'tooltipster-lobbyradar tooltipster-default',
