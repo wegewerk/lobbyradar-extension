@@ -41,8 +41,8 @@
     "contentScriptFiles":    [ "jquery.js","jquery_highlight.js","jquery.tooltipster.min.js","fg_page.js","moment.js","underscore.js", "shariff.min.js" ],
     // contentscriptfiles nur für Firefox
     "contentScriptFiles_ff": [ "worker_search.js" ],
-    "contentCSSFiles":       [ "style.css","tooltipster.css","shariff.complete.css" ],
-    "contentCSSFiles_chrome":[ "fontawesome_chrome.css" ],
+    "contentCSSFiles":       [ "style.css","tooltipster.css","shariff.min.css","share-icons.css" ],
+    "contentCSSFiles_chrome":[ ],
     "contentCSSFiles_ff":    [ "fontawesome_ff.css" ],
     "contentCSSFiles_safari":[ "fontawesome_safari.css" ],
     "backgroundScriptFiles": [ "underscore.js","bg_common.js", "bg_search.js","bg_browserbutton.js","jquery.js",],

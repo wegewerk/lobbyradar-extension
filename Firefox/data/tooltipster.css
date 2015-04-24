@@ -36,7 +36,7 @@
 	position: absolute;
 	left: 0;
 	top: 0;
-	z-index: 9999999;
+	z-index: 2147483644;
 	pointer-events: none;
 	width: auto;
 	overflow: visible;
@@ -61,7 +61,7 @@
 	border-bottom: 1px solid rgb(190,190,200);
 }
 .tooltipster-content .lobbyradar_footer {
-	padding: 14px 14px 14px 14px;
+	padding: 4px 14px 14px 14px;
 }
 .tooltipster-content strong {
 	font-weight: 700;
@@ -135,7 +135,7 @@
 	text-transform: none;
 	cursor: pointer;
 }
-.tooltipster-content a:first-child .lobbyradar_button {
+.tooltipster-content .lobbyradar_button_left {
 	margin-right: 11px !important;
 }
 .tooltipster-content .lobbyradar_button:hover {

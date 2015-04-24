@@ -757,7 +757,7 @@ case 'dist':
 default:
     build_chrome ();
     build_firefox();
-    build_safari();
+//    build_safari();
 }
 
 program_counter.end(0);

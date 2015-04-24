@@ -109,11 +109,13 @@ span[class^="lobbyradar_hit"] > a:hover {
 }
 
 .tooltipster-lobbyradar .shariff {
-    margin-top: 17px;
+    margin: 0 !important;
+    display: inline-block;
 }
 .tooltipster-lobbyradar .shariff li {
     min-width: 0 !important;
     width: 33% !important;
+    height: 17px !important;
     min-width:0 !important;
     margin-bottom: 0 !important;
     margin-right: 1.8% !important;
@@ -121,13 +123,39 @@ span[class^="lobbyradar_hit"] > a:hover {
     background: none !important;
     padding: 0 !important;
 }
+
+.tooltipster-lobbyradar .sharebuttons {
+  float: right;
+  border-bottom: 1px solid #fff;
+  width: 100%;
+  text-align: right;
+  margin-bottom: 10px;
+  padding-bottom: 4px;
+  font-size: 10px !important;
+}
+
 .tooltipster-lobbyradar .shariff li:last-child {
     margin-right: 0 !important;
 }
 .tooltipster-lobbyradar .shariff ul {
     margin: 0 !important;
 }
-.tooltipster-lobbyradar .shariff .theme-grey .shariff-button a {
-    background: rgb(214,214,220) !important;
+
+.tooltipster-lobbyradar .shariff .theme-transparent .shariff-button a {
+    background: transparent !important;
     color: rgb(60, 60, 70) !important;
 }
+
+.tooltipster-lobbyradar .shariff .fa {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    background-size: contain;
+}
+.tooltipster-lobbyradar .orientation-horizontal {
+    margin-left: 10px !important;
+}
+.tooltipster-lobbyradar .shariff .share_text {
+    display: none !important;
+}
+
