@@ -609,7 +609,7 @@ function build_chrome() {
             '   <link rel="stylesheet" type="text/css" href="css/lobbyradar.css" />\n' +
             '   <script src="jquery.js"></script>\n' +
             '   <script src="moment.js"></script>\n' +
-            '</head><body>\n' +
+            '</head><body class="optionspage">\n' +
             '   <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">\n' +
             '       <div class="container-fluid">\n' +
             '           <div class="navbar-header">\n' +
@@ -757,7 +757,7 @@ case 'dist':
 default:
     build_chrome ();
     build_firefox();
-//    build_safari();
+    build_safari();
 }
 
 program_counter.end(0);

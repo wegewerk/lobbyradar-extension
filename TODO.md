@@ -1,14 +1,7 @@
-Bugs
+Changes
 -----
-Beschränkung auf 4 Markierungen nicht immer gegeben (FX)
-Sortierung Umlaute
-
-
-Chrome
------------
-
-Safari
----------
+Tooltip ragt oben raus, wenn rechts zu wenig platz _UND_ Browser nicht hoch genug, so dass TT unten raus springt
+Safari styling
 
 Firefox
 -------
@@ -24,3 +17,8 @@ Done
 - Anpassung an Spezielle Seiten (bitkom/lobbypedia/...)
 - ZDF-Logo im Popup
 Platzierung Popups bei spaltenübergreifendem Text (alle)
+Sortierung Umlaute
+Chrome Options page: navbar überlappt content
+Twitter: #Lobbyradar-Browserweiterung hat diese Verbindungen von "ENTITY" gefunden. LINK via @zdflobbyradar
+Whitelist mit und ohne www unterstützen
+ZDF-Logo: orange
