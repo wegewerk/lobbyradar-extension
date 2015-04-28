@@ -17,11 +17,6 @@
 	overflow: hidden;
 }
 
-/* This next selector defines the color of the border on the outside of the arrow. This will automatically match the color and size of the border set on the main tooltip styles. Set display: none; if you would like a border around the tooltip but no border around the arrow */
-.tooltipster-lobbyradar .tooltipster-arrow .tooltipster-arrow-border {
-	/* border-color: ... !important; */
-}
-
 /* If you're using the icon option, use this next selector to style them */
 .tooltipster-icon {
 	cursor: help;
@@ -69,8 +64,8 @@
 	margin: 0 !important;
 	background: transparent !important;
 }
-.tooltipster-content .lobbyradar_item.hidden {
-    display:none;
+.tooltipster-content li.lobbyradar_item.hidden {
+    display:none !important;
 }
 .tooltipster-content .lobbyradar_item a {
 	text-decoration: none;
@@ -108,7 +103,7 @@
 	color: rgb(60,60,70) !important;
 	border: none !important;
 	outline: none !important;
-	width: 159px !important;
+	width: 157px !important;
 	border-radius: 3px !important;
 	letter-spacing: 0 !important;
 	padding: 8px 5px !important;

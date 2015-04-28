@@ -19,7 +19,8 @@ function applyTooltips() {
     };
     var showAllconnections = function() {
         $('.lobbyradar_item').removeClass('hidden');
-        $('.lobbyradar_item.showAll').hide();
+        $('.lobbyradar_item.showAll').addClass('hidden');
+        return false;
     }
     start_mark_hits = new Date().getTime();
 

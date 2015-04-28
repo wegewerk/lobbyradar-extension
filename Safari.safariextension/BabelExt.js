@@ -206,7 +206,7 @@ var BabelExt = (function(Global, unsafeGlobal) {
       };
       break;
     default:
-      console.log("I can't detect your browser. instance.detectedBrowser is "+instance.detectedBrowser);
+      // console.log("I can't detect your browser. instance.detectedBrowser is "+instance.detectedBrowser);
       break;
   }
 
