@@ -51,28 +51,22 @@
 	color: rgb(60,60,70);
 }
 .tooltipster-base .tooltipster-content {
-	overflow: hidden;
-	height: auto;
+	overflow: hidden !important;
+	height: auto !important;
 }
-.tooltipster-content .lobbyradar_middle {
-	background: #fff;
-	padding: 4px 14px;
-	border-top: 1px solid rgb(190,190,200);
-	border-bottom: 1px solid rgb(190,190,200);
-}
-.tooltipster-content .lobbyradar_footer {
-	padding: 4px 14px 14px 14px;
+.tooltipster-content section.lobbyradar_footer {
+	padding: 4px 14px 14px 14px !important;
 }
 .tooltipster-content strong {
-	font-weight: 700;
+	font-weight: 700 !important;
 }
 .tooltipster-content .lobbyradar_item {
-	display: block;
-	list-style: none;
+	display: block !important;
+	list-style: none !important;
 	padding: 10px 0 !important;
-	width: 100%;
-	border-bottom: 1px solid rgb(216,216,226);
-	margin: 0;
+	width: 100% !important;
+	border-bottom: 1px solid rgb(216,216,226) !important;
+	margin: 0 !important;
 	background: transparent !important;
 }
 .tooltipster-content .lobbyradar_item.hidden {
@@ -112,20 +106,20 @@
 .tooltipster-content button.lobbyradar_button {
 	background: rgb(214,214,220) !important;
 	color: rgb(60,60,70) !important;
-	border: none;
-	outline: none;
-	width: 159px;
-	border-radius: 3px;
-	letter-spacing: 0;
+	border: none !important;
+	outline: none !important;
+	width: 159px !important;
+	border-radius: 3px !important;
+	letter-spacing: 0 !important;
 	padding: 8px 5px !important;
 	border-radius: 2px !important;
 	font: 400 14px 'Lato',arial,sans-serif !important;
-	text-transform: none;
-	cursor: pointer;
-    text-shadow: none;
+	text-transform: none !important;
+	cursor: pointer !important;
+    text-shadow: none !important;
 }
 .tooltipster-content button.lobbyradar_button_left {
-	margin-right: 15px;
+	margin-right: 15px !important;
 }
 .tooltipster-content button.lobbyradar_button:hover {
 	background: rgb(204,204,210);

@@ -85,6 +85,11 @@ a.navbar-brand:focus {
     margin-bottom: 80px;
 }
 
+.optionspage .navbar+.container {
+    margin-top: 80px;
+}
+
+
 .help-block {
     color: #fff;
 }

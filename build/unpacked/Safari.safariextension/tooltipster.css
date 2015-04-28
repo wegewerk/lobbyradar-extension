@@ -1,6 +1,6 @@
 
 /* This is the default Tooltipster theme (feel free to modify or duplicate and create multiple themes!): */
-.tooltipster-default {
+.tooltipster-lobbyradar {
 	width: 334px;
 	border-radius: 3px;
 	border: 1px solid #b1b1b9;
@@ -10,7 +10,7 @@
 }
 
 /* Use this next selector to style things like font-size and line-height: */
-.tooltipster-default .tooltipster-content {
+.tooltipster-lobbyradar .tooltipster-content {
 	font: 400 14px 'Lato',arial,sans-serif !important;
 	line-height: 16px;
 	padding: 0;
@@ -18,7 +18,7 @@
 }
 
 /* This next selector defines the color of the border on the outside of the arrow. This will automatically match the color and size of the border set on the main tooltip styles. Set display: none; if you would like a border around the tooltip but no border around the arrow */
-.tooltipster-default .tooltipster-arrow .tooltipster-arrow-border {
+.tooltipster-lobbyradar .tooltipster-arrow .tooltipster-arrow-border {
 	/* border-color: ... !important; */
 }
 
@@ -36,7 +36,7 @@
 	position: absolute;
 	left: 0;
 	top: 0;
-	z-index: 9999999;
+	z-index: 2147483644;
 	pointer-events: none;
 	width: auto;
 	overflow: visible;
@@ -51,28 +51,22 @@
 	color: rgb(60,60,70);
 }
 .tooltipster-base .tooltipster-content {
-	overflow: hidden;
-	height: auto;
+	overflow: hidden !important;
+	height: auto !important;
 }
-.tooltipster-content .lobbyradar_middle {
-	background: #fff;
-	padding: 4px 14px;
-	border-top: 1px solid rgb(190,190,200);
-	border-bottom: 1px solid rgb(190,190,200);
-}
-.tooltipster-content .lobbyradar_footer {
-	padding: 14px 14px 14px 14px;
+.tooltipster-content section.lobbyradar_footer {
+	padding: 4px 14px 14px 14px !important;
 }
 .tooltipster-content strong {
-	font-weight: 700;
+	font-weight: 700 !important;
 }
 .tooltipster-content .lobbyradar_item {
-	display: block;
-	list-style: none;
+	display: block !important;
+	list-style: none !important;
 	padding: 10px 0 !important;
-	width: 100%;
-	border-bottom: 1px solid rgb(216,216,226);
-	margin: 0;
+	width: 100% !important;
+	border-bottom: 1px solid rgb(216,216,226) !important;
+	margin: 0 !important;
 	background: transparent !important;
 }
 .tooltipster-content .lobbyradar_item.hidden {
@@ -108,40 +102,29 @@
 	padding: 0;
 	margin: 0;
 }
-.tooltipster-content .quelle {
-	float: right !important;
-	font-weight: 700 !important;
-}
-.tooltipster-content .lobbyradar_item a.quelle, .tooltipster-content .quelle a, .tooltipster-content .quelle a:visited {
-	font-weight: 700 !important;
-	color: rgb(60,60,70) !important;
-}
-.tooltipster-content .quelle {
-	float: right;
-	color: rgb(60,60,70) !important;
-	font-weight: 400 !important;
-}
-.tooltipster-content .lobbyradar_button {
+
+.tooltipster-content button.lobbyradar_button {
 	background: rgb(214,214,220) !important;
 	color: rgb(60,60,70) !important;
-	border: none;
-	outline: none;
-	width: 152px;
-	border-radius: 3px;
-	letter-spacing: 0;
+	border: none !important;
+	outline: none !important;
+	width: 159px !important;
+	border-radius: 3px !important;
+	letter-spacing: 0 !important;
 	padding: 8px 5px !important;
 	border-radius: 2px !important;
 	font: 400 14px 'Lato',arial,sans-serif !important;
-	text-transform: none;
-	cursor: pointer;
+	text-transform: none !important;
+	cursor: pointer !important;
+    text-shadow: none !important;
 }
-.tooltipster-content a:first-child .lobbyradar_button {
-	margin-right: 11px !important;
+.tooltipster-content button.lobbyradar_button_left {
+	margin-right: 15px !important;
 }
-.tooltipster-content .lobbyradar_button:hover {
+.tooltipster-content button.lobbyradar_button:hover {
 	background: rgb(204,204,210);
 }
-.tooltipster-content .lobbyradar_button:active {
+.tooltipster-content button.lobbyradar_button:active {
 	box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
 }
 .lobbyradar_item a {

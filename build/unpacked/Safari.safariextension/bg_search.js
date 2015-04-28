@@ -30,8 +30,9 @@ function parseNameList(result) {
     return local_names;
 }
 
+// führendes www abschneiden
 function parseWhitelist(result) {
-    var res = _.map(result.result,function(url){ return url.toLowerCase();});
+    var res = _.map(result.result,function(url){ return url.toLowerCase().replace(/www\./,'');});
     console.log(_.size(res)+' urls in whitelist');
     return res;
 }
@@ -155,6 +156,8 @@ function searchNames(bodytext, sendResponse, senderTab) {
         return true;
     } else {
         var hostname = parseURL(senderTab.url).hostname;
+        hostname = hostname.replace(/^www\./,''); // führendes www. ignorieren
+
         var personal_whitelisted = _.indexOf( whitelist, hostname) >=0;
         var vendor_whitelisted = _.indexOf( vendor_whitelist, hostname) >=0;
         var blacklisted = _.indexOf( blacklist, hostname) >=0;
@@ -191,6 +194,8 @@ function detail_for_id(id, sendResponse) {
 
 function addWhitelist( hostname, sendResponse ) {
     var error = false;
+    hostname = hostname.replace(/^www\./,''); // führendes www. ignorieren
+
     if(!_.isArray(whitelist)) whitelist = _.values(whitelist);
     whitelist = _.compact(whitelist); // remove null values
     if(    _.indexOf( whitelist, hostname) == -1

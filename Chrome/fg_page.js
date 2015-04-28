@@ -5,8 +5,7 @@ var detail_url_extern = 'http://lobbyradar.opendatacloud.de/entity/%uid';
 var contribute_url_extern = 'mailto:lobbyradar@zdf.de?subject=Verbindung melden %name (%uid)&body=Ich möchte eine neue Verbindung melden:';
 var complain_url_extern = 'mailto:lobbyradar@zdf.de?subject=Fehler melden %name (%uid)&body=Ich möchte einen Fehler melden:';
 var mail_url_extern = 'mailto:?subject=Lobbyradar - Entdecke das Netzwerk der Macht&body=%s';
-//var tweet_text = '#Lobbyradar-Browserweiterung hat diese Verbindungen von %name gefunden. ';
-var tweet_text = '#Lobbyradar: %name ';
+var tweet_text = '#Lobbyradar-Browserweiterung hat diese Verbindungen von %name gefunden. ';
 var tweet_via = "zdflobbyradar";
 
 function applyTooltips() {
@@ -33,7 +32,7 @@ function applyTooltips() {
         maxWidth: 361,
         arrow:false,
         animation: 'none',
-        autoClose: false,
+        autoClose: true,
         onlyOne: true,
         content: 'Daten werden geladen',
         theme: 'tooltipster-lobbyradar tooltipster-default',
