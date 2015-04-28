@@ -57,7 +57,7 @@
 			<array>
 				<string>jquery.js</string>
 				<string>jquery_highlight.js</string>
-				<string>jquery.tooltipster.min.js</string>
+				<string>jquery.tooltipster.js</string>
 				<string>fg_page.js</string>
 				<string>moment.js</string>
 				<string>underscore.js</string>

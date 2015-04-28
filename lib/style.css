@@ -57,11 +57,12 @@ span[class^="lobbyradar_hit"] > a:hover {
 }
 
 .lobbyradar_top {
-    padding:15px !important;
+    padding: 0 15px 15px 15px !important;
 }
 
 .lobbyradar_top  .header-logos {
     display: block;
+    margin-left:-15px;
 }
 .lobbyradar_top  .header-logos::after {
     clear: both;
@@ -69,9 +70,6 @@ span[class^="lobbyradar_hit"] > a:hover {
 .lobbyradar_top  .header-logos .logo_l {
     margin-top: 10px;
     display: inline-block;
-}
-.lobbyradar_top  .header-logos .logo_r {
-    float:right;
 }
 
 .lobbyradar_top  .header-person {

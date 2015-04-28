@@ -36,9 +36,9 @@
      * * 'middle' guarantees the DOM exists, but might run while the page is still loading
      * * 'late' guarantees the scripts are run aft the page finishes loading
      */
-    "contentScriptWhen": "late",
+    "contentScriptWhen": "middle",
 
-    "contentScriptFiles":    [ "jquery.js","jquery_highlight.js","jquery.tooltipster.min.js","fg_page.js","moment.js","underscore.js", "shariff.min.js" ],
+    "contentScriptFiles":    [ "jquery.js","jquery_highlight.js","jquery.tooltipster.js","fg_page.js","moment.js","underscore.js", "shariff.min.js" ],
     // contentscriptfiles nur für Firefox
     "contentScriptFiles_ff": [ "worker_search.js" ],
     "contentCSSFiles":       [ "style.css","tooltipster.css","shariff.min.css","share-icons.css" ],

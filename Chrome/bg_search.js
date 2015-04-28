@@ -159,7 +159,7 @@ function searchNames(bodytext, sendResponse, senderTab) {
         hostname = hostname.replace(/^www\./,''); // führendes www. ignorieren
 
         var personal_whitelisted = _.indexOf( whitelist, hostname) >=0;
-        var vendor_whitelisted = vendor_whitelist
+        var vendor_whitelisted = _.indexOf( vendor_whitelist, hostname) >=0;
         var blacklisted = _.indexOf( blacklist, hostname) >=0;
         if( (personal_whitelisted || vendor_whitelisted) && !blacklisted ) {
             sendResponse(do_search(bodytext,senderTab.id,vendor_whitelisted));
