@@ -43,8 +43,8 @@
     "contentScriptFiles_ff": [ "worker_search.js" ],
     "contentCSSFiles":       [ "style.css","tooltipster.css","shariff.min.css","share-icons.css" ],
     "contentCSSFiles_chrome":[ ],
-    "contentCSSFiles_ff":    [ "fontawesome_ff.css" ],
-    "contentCSSFiles_safari":[ "fontawesome_safari.css" ],
+    "contentCSSFiles_ff":    [ ],
+    "contentCSSFiles_safari":[ ],
     "backgroundScriptFiles": [ "underscore.js","bg_common.js", "bg_search.js","bg_browserbutton.js","jquery.js",],
     "extra_files":           [ "css","lobbyradar.png" ],
 

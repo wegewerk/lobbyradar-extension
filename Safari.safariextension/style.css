@@ -149,6 +149,7 @@ span[class^="lobbyradar_hit"] > a:hover {
     width: 15px;
     height: 15px;
     background-size: contain;
+    -webkit-background-size: contain;
 }
 .tooltipster-lobbyradar .orientation-horizontal {
     margin-left: 10px !important;
