@@ -214,6 +214,8 @@ function addWhitelist( hostname, sendResponse ) {
 
 function removeWhitelist( hostname, sendResponse ) {
     var error = false;
+    hostname = hostname.replace(/^www\./,''); // führendes www. ignorieren
+
     if(!_.isArray(whitelist)) whitelist = _.values(whitelist);
     whitelist = _.without(whitelist,hostname); // remove entry
     whitelist = _.compact(whitelist); // remove null values
