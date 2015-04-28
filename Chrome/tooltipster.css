@@ -90,8 +90,8 @@
 	max-width: 236px !important;
 	display: inline-block !important;
 }
-.tooltipster-content .lobbyradar_item:last-child {
-	border: none;
+.tooltipster-content li.lobbyradar_item:last-child {
+    border-bottom-width: 0 !important;
 }
 .tooltipster-content #lobbyradar_list {
 	padding: 0;

@@ -48,7 +48,7 @@ span[class^="lobbyradar_hit"] > a:hover {
 
 .lobbyradar_top,
 section.lobbyradar_footer {
-    background:rgba(20, 59, 82, 1);
+    background:rgba(20, 59, 82, 1) !important;
     color:white!important;
 }
 
@@ -71,10 +71,11 @@ section.lobbyradar_footer {
 .lobbyradar_top  .header-person {
     font-size:155% !important;
     padding-bottom:10px !important;
+    color:#fff !important;
 }
 
 .lobbyradar_top a {
-    color:white!important;
+    color:#fff !important;
 }
 
 section.lobbyradar_middle {
@@ -146,8 +147,8 @@ section.lobbyradar_middle {
     display: inline-block;
     width: 15px;
     height: 15px;
-    background-size: contain;
-    -webkit-background-size: contain;
+    background-size: contain !important;
+    -webkit-background-size: contain !important;
 }
 .tooltipster-lobbyradar .orientation-horizontal {
     margin-left: 10px !important;
