@@ -716,7 +716,7 @@ function build_distpackage() {
 
     fs.changeWorkingDirectory('build/unpacked/')
     var newdir = fs.workingDirectory;
-    var command = 'cd '+newdir+' && '+'zip -r ../dist.zip . && cd -';
+    var command = 'cd '+newdir+' && '+'zip -r ../extensions_unpacked.zip . && cd -';
 
     console.log('please exec '+command);
 }
