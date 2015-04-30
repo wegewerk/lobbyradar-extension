@@ -1,4 +1,4 @@
-var detail_url_extern = 'http://lobbyradar.opendatacloud.de/entity/';
+var detail_url_extern = 'http://www.lobbyradar.de/entity/';
 var BG,tab;
 if(SAFARI) {
     BG = safari.extension.globalPage.contentWindow;

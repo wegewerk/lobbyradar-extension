@@ -1,7 +1,7 @@
 {
 	"name": "Lobbyradar",
 	"author": "Medieninnovationszentrum Babelsberg MIZ",
-	"version": "1.3.2",
+	"version": "1.3.3",
 	"manifest_version": 2,
 	"description": "Discover Lobby Networks",
 	"background": {
@@ -20,7 +20,8 @@
 				"*://*/*"
 			],
 			"exclude_matches": [
-				"*://lobbyradar.opendatacloud.de/*"
+				"*://lobbyradar.opendatacloud.de/*",
+				"*://www.lobbyradar.de/*"
 			],
 			"js": [
 				"BabelExt.js",

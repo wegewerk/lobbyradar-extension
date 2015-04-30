@@ -1,10 +1,10 @@
-var update_names_URL     = 'http://lobbyradar.opendatacloud.de/api/plugin/export';
-var update_whitelist_URL = 'http://lobbyradar.opendatacloud.de/api/plugin/whitelist';
+var update_names_URL     = 'http://www.lobbyradar.de/api/plugin/export';
+var update_whitelist_URL = 'http://www.lobbyradar.de/api/plugin/whitelist';
 var update_pending = false;
 var names = false;
 var whitelist = []; // personal whitelist
 var vendor_whitelist = false; // default whitelist. wird per API aktualisiert
-var blacklist = ['lobbyradar.opendatacloud.de'];
+var blacklist = ['www.lobbyradar.de', 'lobbyradar.de'];
 var remoteUpdater = false;
 var default_update_interval = 60*60; // 1 hour
 var callbackQ = [];
