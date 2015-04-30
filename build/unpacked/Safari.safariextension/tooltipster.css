@@ -42,7 +42,7 @@
 .tooltipster-lobbyradar.tooltipster-base .tooltipster-content {
 	overflow: hidden !important;
 	height: auto !important;
-    width: 370px;
+    width: 370px !important;
 }
 .tooltipster-content section.lobbyradar_footer {
 	padding: 4px 14px 14px 14px !important;
