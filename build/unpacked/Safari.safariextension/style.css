@@ -105,7 +105,7 @@ section.lobbyradar_middle {
 }
 
 .tooltipster-lobbyradar .shariff {
-    margin: 0 !important;
+    margin: -3px 0 0 0 !important;
     display: inline-block;
     vertical-align: top;
 }
@@ -127,7 +127,8 @@ section.lobbyradar_middle {
   width: 100% !important;
   text-align: right !important;
   margin-bottom: 10px !important;
-  padding-bottom: 4px !important;
+  padding-bottom: 2px !important;
+  padding-top: 2px !important;
   font-size: 10px !important;
 }
 
@@ -135,7 +136,13 @@ section.lobbyradar_middle {
     margin-right: 0 !important;
 }
 .tooltipster-lobbyradar .shariff ul {
-    margin: 0 !important;
+    margin: 0 0 0 10px !important;
+}
+.tooltipster-lobbyradar .shariff li.shariff-button {
+    margin-right: 5px;
+}
+.tooltipster-lobbyradar .shariff li.shariff-button.mail {
+    margin-left: 4px;
 }
 
 .tooltipster-lobbyradar .shariff .theme-transparent .shariff-button a {

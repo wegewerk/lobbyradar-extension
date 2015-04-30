@@ -17,12 +17,6 @@
 	overflow: hidden;
 }
 
-/* If you're using the icon option, use this next selector to style them */
-.tooltipster-icon {
-	cursor: help;
-	margin-left: 4px;
-}
-
 /* This is the base styling required to make all Tooltipsters work */
 .tooltipster-base {
 	padding: 0;
@@ -45,9 +39,10 @@
 	font-size: 14px;
 	color: rgb(60,60,70);
 }
-.tooltipster-base .tooltipster-content {
+.tooltipster-lobbyradar.tooltipster-base .tooltipster-content {
 	overflow: hidden !important;
 	height: auto !important;
+    width: 370px;
 }
 .tooltipster-content section.lobbyradar_footer {
 	padding: 4px 14px 14px 14px !important;
@@ -103,7 +98,7 @@
 	color: rgb(60,60,70) !important;
 	border: none !important;
 	outline: none !important;
-	width: 157px !important;
+	width: 162px !important;
 	border-radius: 3px !important;
 	letter-spacing: 0 !important;
 	padding: 8px 5px !important;
@@ -114,7 +109,7 @@
     text-shadow: none !important;
 }
 .tooltipster-content button.lobbyradar_button_left {
-	margin-right: 15px !important;
+	margin-right: 18px !important;
 }
 .tooltipster-content button.lobbyradar_button:hover {
 	background: rgb(204,204,210);
