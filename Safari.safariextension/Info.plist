@@ -25,14 +25,14 @@
 		<key>Popovers</key>
 		<array>
 			<dict>
-				<key>Identifier</key>
-				<string>lobbyradarPopover</string>
 				<key>Filename</key>
 				<string>popup/popup.html</string>
-				<key>Width</key>
-				<real>361</real>
 				<key>Height</key>
 				<real>640</real>
+				<key>Identifier</key>
+				<string>lobbyradarPopover</string>
+				<key>Width</key>
+				<real>361</real>
 			</dict>
 		</array>
 		<key>Toolbar Items</key>
