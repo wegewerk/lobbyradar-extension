@@ -7,5 +7,5 @@ den Web Store vertrieben wurden.
 
 Die Datei extensions_unpacked.zip enthält die ungepackten Extensions. Diese werden nur für den Vertrieb über die Stores benötigt.
 
-Der eigentliche Quellcode mit build-script ist verfügbar unter https://gitlab.wegewerk.net/browserextensions/lobbyradar
+Der eigentliche Quellcode mit build-script ist verfügbar unter https://github.com/wegewerk/lobbyradar-extension
 
