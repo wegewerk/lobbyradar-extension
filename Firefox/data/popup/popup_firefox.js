@@ -1,4 +1,4 @@
-var detail_url_extern = 'http://www.lobbyradar.de/entity/';
+var detail_url_extern = 'https://www.lobbyradar.de/entity/';
 var current_Taburl = false;
 
 self.port.on('currentTabInfo',function(tabData){

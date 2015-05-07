@@ -1,5 +1,5 @@
-var update_names_URL     = 'http://www.lobbyradar.de/api/plugin/export';
-var update_whitelist_URL = 'http://www.lobbyradar.de/api/plugin/whitelist';
+var update_names_URL     = 'https://www.lobbyradar.de/assets/data/entities.json';
+var update_whitelist_URL = 'https://www.lobbyradar.de/assets/data/whitelist.json';
 var update_pending = false;
 var names = false;
 var whitelist = []; // personal whitelist
@@ -11,7 +11,7 @@ var callbackQ = [];
 
 function parseNameList(result) {
     var local_names = {};
-    _.each(result.result,function(ent,uid){
+    _.each(result,function(ent,uid){
         local_names[uid]={names:ent[1], connections:_.uniq(ent[2]), regexes:new Array(), uid:uid};
 
         // make Regexes from names
@@ -32,7 +32,7 @@ function parseNameList(result) {
 
 // führendes www abschneiden
 function parseWhitelist(result) {
-    var res = _.map(result.result,function(url){ return url.toLowerCase().replace(/www\./,'');});
+    var res = _.map(result,function(url){ return url.toLowerCase().replace(/www\./,'');});
     console.log(_.size(res)+' urls in whitelist');
     return res;
 }
